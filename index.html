@@ -14,14 +14,6 @@ $(function(){
   // ---------- Boot ----------
   createHeader();
 
-  // Prepare wrapper containers (once)
-  if (!$("#site-wrapper").length) {
-    $("body").append(`
-      <main id="site-wrapper"></main>
-      <footer id="global-footer"></footer>
-    `);
-  }
-
   // Load manifest and initialize routing
   $.getJSON("manifest.json")
     .done(data => {
@@ -39,12 +31,15 @@ $(function(){
     const section = params.get("section");
     const project = params.get("project");
 
-    $(".content, .project-back, .back-btn").remove();
+    // Always clear transient UI
+    $(".project-back").remove();
+    $("#site-wrapper").empty();
 
-    if (section && project && manifest[section] && manifest[section][project]) {
-      renderProject(section, project, false);
+    if (section && project && manifest?.[section]?.[project]) {
+      renderProject(section, project);
     } else {
-      renderHome();
+      // Default landing page = featured-only home
+      renderHomeFeatured();
     }
   }
 
@@ -68,120 +63,131 @@ $(function(){
       </span>
     `);
 
+    // ✅ No flash: do NOT render "home then filter after a timeout".
+    // Instead, render the target view directly.
     $(document)
       .off("click.nav")
-      .on("click.nav", "#show-all", e => { e.preventDefault(); goHomeAndFilter("all"); })
-      .on("click.nav", "#show-projects", e => { e.preventDefault(); goHomeAndFilter("projects"); })
-      .on("click.nav", "#show-publications", e => { e.preventDefault(); goHomeAndFilter("publications"); })
-      .on("click.nav", "#show-activities", e => {  e.preventDefault(); goHomeAndFilter("activities"); })
-
-      // ✅ this is the corrected line (removed stray parent)
-      .on("click.nav", "#show-about", e => {
+      .on("click.nav", "#show-all", function(e){
         e.preventDefault();
-        $(".content, .project-back, .back-btn").remove();
+        history.pushState({}, "", "./");
+        $(".project-back").remove();
+        renderHomeFeatured();
+        setActive("all");
+      })
+      .on("click.nav", "#show-projects", function(e){
+        e.preventDefault();
+        history.pushState({}, "", "./");
+        $(".project-back").remove();
+        renderSectionGrid("projects");
+        setActive("projects");
+      })
+      .on("click.nav", "#show-publications", function(e){
+        e.preventDefault();
+        history.pushState({}, "", "./");
+        $(".project-back").remove();
+        renderSectionGrid("publications");
+        setActive("publications");
+      })
+      .on("click.nav", "#show-activities", function(e){
+        e.preventDefault();
+        history.pushState({}, "", "./");
+        $(".project-back").remove();
+        renderSectionGrid("activities");
+        setActive("activities");
+      })
+      .on("click.nav", "#show-about", function(e){
+        e.preventDefault();
+        history.pushState({}, "", "./");
+        $(".project-back").remove();
         renderAbout();
+        setActive("about");
       });
   }
 
-
-  // ---------- Go Home + Filter ----------
-  function goHomeAndFilter(section){
-    $(".content, .project-back, .back-btn").remove();
-    history.pushState({}, "", "./");
-
-    if (manifest){
-      renderHome();
-      setTimeout(()=>showSection(section), 200);
-    } else {
-      $.getJSON("manifest.json").done(data=>{
-        manifest = data;
-        renderHome();
-        setTimeout(()=>showSection(section), 200);
-      });
-    }
+  function setActive(which){
+    $("#menu a").removeClass("active");
+    if(which === "projects") $("#show-projects").addClass("active");
+    else if(which === "publications") $("#show-publications").addClass("active");
+    else if(which === "activities") $("#show-activities").addClass("active");
+    else if(which === "about") $("#show-about").addClass("active");
+    // "all" -> no underline (or uncomment next line if you want)
+    // else $("#show-all").addClass("active");
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  // ---------- Home (Grid) ----------
-  function renderHome(){
+  // ---------- Landing: Featured-only Home ----------
+  function renderHomeFeatured(){
     $("#site-wrapper").html("<div class='content grid' style='display:none'></div>");
     const $grid = $("#site-wrapper .grid");
 
     for (const section in manifest){
-      // ✅ Skip about section entirely when building the homepage grid
       if (section === "about") continue;
 
       const folders = manifest[section];
       for (const folder in folders){
         const files = folders[folder];
-        const img = files.find(f => /featured\.(jpe?g)$/i.test(f));
-        const txt = files.find(f => /\.txt$/i.test(f));
-        const hasFeatured = Boolean(img);
 
-        if (hasFeatured) {
-          $grid.append(`
-            <div class='grid-item ${section}-item' data-section='${section}' data-folder='${folder}'>
-              <a href='?section=${encodeURIComponent(section)}&project=${encodeURIComponent(folder)}' class='open-project'>
-                <img src='${section}/${img}' alt='${folder}'/>
-              </a>
-              ${txt ? `<p class='desc'>${folder}</p>` : ""}
-            </div>
-          `);
-        }
+        // Only show featured on home
+        const featured = files.find(f => /featured\.(jpe?g)$/i.test(f));
+        if (!featured) continue;
+
+        $grid.append(`
+          <div class='grid-item ${section}-item' data-section='${section}' data-folder='${folder}'>
+            <a href='?section=${encodeURIComponent(section)}&project=${encodeURIComponent(folder)}' class='open-project'>
+              <img src='${section}/${featured}' alt='${folder}'/>
+            </a>
+            <p class='desc'>${folder}</p>
+          </div>
+        `);
       }
     }
 
-
-    // Load about text
-    $grid.find("[data-file]").each(function(){
-      const el = $(this);
-      const file = el.data("file");
-      if(file && file.endsWith(".txt")){
-        $.get(file, t => el.text(t));
-      }
-    });
-
-    // Click thumbnail
-    $grid.on("click", ".open-project", function(e){
+    // Delegate click -> open project
+    $grid.off("click.open").on("click.open", ".open-project", function(e){
       e.preventDefault();
       const parent = $(this).closest(".grid-item");
       navigateTo(parent.data("section"), parent.data("folder"));
     });
 
-    $grid.fadeIn(300);
+    $grid.fadeIn(250);
   }
 
-  // ---------- Section Filter ----------
-  function showSection(section){
-    const $grid = $(".grid");
-    if(!$grid.length) { renderHome(); }
+  // ---------- Section Grid: show ALL items ----------
+  function renderSectionGrid(section){
+    $("#site-wrapper").html("<div class='content grid' style='display:none'></div>");
+    const $grid = $("#site-wrapper .grid");
 
-    // when switching to projects or publications, ensure all folders are visible (not only featured)
-    if(section === "projects" || section === "publications" || section === "activities"){
-      rebuildSection(section);
+    const folders = manifest?.[section];
+    if (!folders) {
+      $grid.html(`<p style="padding:2rem">No "${section}" section found in manifest.</p>`);
+      $grid.fadeIn(150);
       return;
     }
 
+    for (const folder in folders){
+      const files = folders[folder];
 
+      // For section pages, pick first image (not featured-only)
+      const img = files.find(f => /\.(png|jpe?g|gif)$/i.test(f));
+      if(!img) continue;
 
-    const $all  = $grid.find(".grid-item");
-    const $proj = $grid.find(".projects-item");
-    const $comm = $grid.find(".publications-item");
-    const $about= $grid.find(".about-item");
-
-    $("#menu a").removeClass("active");
-    $all.stop(true,true).css({ display:"none", opacity:0, pointerEvents:"none" });
-
-    const reveal = $el => $el.css({
-      display:"flex", opacity:0, pointerEvents:"auto", flex:"0 1 clamp(260px, 40vw, 520px)"
-    }).animate({opacity:1}, 250);
-
-    switch(section){
-      case "projects": $("#show-projects").addClass("active"); reveal($proj); break;
-      case "publications": $("#show-publications").addClass("active"); reveal($comm); break;
-      case "about": $("#show-about").addClass("active"); reveal($about); break;
-      default: $("#show-all").addClass("active"); reveal($all); break;
+      $grid.append(`
+        <div class='grid-item ${section}-item' data-section='${section}' data-folder='${folder}'>
+          <a href='?section=${encodeURIComponent(section)}&project=${encodeURIComponent(folder)}' class='open-project'>
+            <img src='${section}/${img}' alt='${folder}'/>
+          </a>
+          <p class='desc'>${folder}</p>
+        </div>
+      `);
     }
 
+    $grid.off("click.open").on("click.open", ".open-project", function(e){
+      e.preventDefault();
+      const parent = $(this).closest(".grid-item");
+      navigateTo(parent.data("section"), parent.data("folder"));
+    });
+
+    $grid.fadeIn(250);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -190,7 +196,7 @@ $(function(){
     $("#site-wrapper").html("<div class='content about-view' style='display:none'></div>");
     const $view = $("#site-wrapper .about-view");
 
-    const aboutFiles = manifest.about["."] || [];
+    const aboutFiles = (manifest?.about?.["."]) || [];
     const txt = aboutFiles.find(f => /\.txt$/i.test(f));
     const img = aboutFiles.find(f => /\.(png|jpe?g|gif)$/i.test(f));
 
@@ -199,73 +205,48 @@ $(function(){
     }
     if (txt) {
       $view.append(`<div class='about-text' data-file='about/${txt}'>Loading…</div>`);
-    }
-
-    // Load the actual text (and render as HTML if needed)
-    $view.find(".about-text").each(function(){
-      const el = $(this);
-      const file = el.data("file");
-      $.get(file, t => {
-        if (/\<[^>]+\>/.test(t)) el.html(t); // render HTML if tags are present
-        else el.text(t);
+      $.get(`about/${txt}`, t => {
+        const $el = $view.find(".about-text");
+        if (/\<[^>]+\>/.test(t)) $el.html(t);
+        else $el.text(t);
       });
-    });
-
-    $view.fadeIn(300);
-  }
-
-
-  function rebuildSection(section){
-    $("#site-wrapper").html("<div class='content grid' style='display:none'></div>");
-    const $grid = $("#site-wrapper .grid");
-
-    const folders = manifest[section];
-    for (const folder in folders){
-      const files = folders[folder];
-      const img = files.find(f => /\.(png|jpe?g|gif)$/i.test(f));
-      const txt = files.find(f => /\.txt$/i.test(f));
-      if(!img) continue;
-
-      $grid.append(`
-        <div class='grid-item ${section}-item' data-section='${section}' data-folder='${folder}'>
-          <a href='?section=${encodeURIComponent(section)}&project=${encodeURIComponent(folder)}' class='open-project'>
-            <img src='${section}/${img}' alt='${folder}'/>
-          </a>
-          ${txt ? `<p class='desc'>${folder}</p>` : ""}
-        </div>
-      `);
+    } else {
+      $view.append(`<div class='about-text'>No about.txt found.</div>`);
     }
 
-    $grid.fadeIn(300);
+    $view.fadeIn(250);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   // ---------- Project View ----------
-  function renderProject(section, folder, pushState){
-    const files = (manifest && manifest[section]) ? manifest[section][folder] : null;
-    if(!files){ renderHome(); return; }
-
-    if (pushState) { navigateTo(section, folder); return; }
+  function renderProject(section, folder){
+    const files = manifest?.[section]?.[folder];
+    if(!files){
+      renderHomeFeatured();
+      return;
+    }
 
     $("#site-wrapper").html("<div class='content project-view' style='display:none'></div>");
     const $view = $("#site-wrapper .project-view");
 
-    // Back button
-    if (!$(".project-back").length) {
-      $("#global-header").after(`<div class='project-back'><a href='#' id='back-home'>← back</a></div>`);
-      $("#back-home").off("click").on("click", function(e){
-        e.preventDefault();
-        history.pushState({}, "", "./");
-        $(".project-back").remove();
-        routeFromURL();
-      });
-    }
+    // Back button (always present in project view)
+    $("#global-header").after(`<div class='project-back'><a href='#' id='back-home'>← back</a></div>`);
+    $("#back-home").off("click").on("click", function(e){
+      e.preventDefault();
+      history.pushState({}, "", "./");
+      $(".project-back").remove();
+      renderHomeFeatured();
+      setActive("all");
+    });
 
+    // Images
     for(const f of files){
       if(/\.(png|jpe?g|gif)$/i.test(f)){
         $view.append(`<div class='project-image'><img src='${section}/${f}' alt='${folder}' /></div>`);
       }
     }
 
+    // Text (render HTML if it contains tags)
     for(const f of files){
       if(/\.txt$/i.test(f)){
         $view.append(`<div class='project-text' data-file='${section}/${f}'>Loading…</div>`);
@@ -274,10 +255,15 @@ $(function(){
 
     $view.find(".project-text").each(function(){
       const el = $(this);
-      $.get(el.data("file"), t => el.text(t));
+      const file = el.data("file");
+      $.get(file, t => {
+        if (/\<[^>]+\>/.test(t)) el.html(t);
+        else el.text(t);
+      });
     });
 
-    $view.fadeIn(300);
+    $view.fadeIn(250);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
 });
@@ -378,16 +364,24 @@ span#menu{font-size:1.3rem}
   animation:fadeIn .8s forwards;
 }
 
-/* Footer (empty container now) */
+/* About view */
+.about-image img{
+  max-width: 400px;
+  width:100%;
+}
+
+/* Back button */
+.project-back{
+  padding:0.5em 2rem;
+  font-size:1rem;
+}
+
+/* Footer */
 #global-footer{
   width:100%;
   padding:2rem;
   background:white;
   box-sizing:border-box;
-}
-/* About view */
-.about-image img{
-  max-width: 400px;
 }
 
 /* Mobile */
