@@ -73,7 +73,9 @@ $(function(){
       .on("click.nav", "#show-all", e => { e.preventDefault(); goHomeAndFilter("all"); })
       .on("click.nav", "#show-projects", e => { e.preventDefault(); goHomeAndFilter("projects"); })
       .on("click.nav", "#show-publications", e => { e.preventDefault(); goHomeAndFilter("publications"); })
-      // ✅ this is the corrected line (removed stray paren)
+      .on("click.nav", "#show-activities", e => {  e.preventDefault(); goHomeAndFilter("activities"); })
+
+      // ✅ this is the corrected line (removed stray parent)
       .on("click.nav", "#show-about", e => {
         e.preventDefault();
         $(".content, .project-back, .back-btn").remove();
@@ -154,11 +156,11 @@ $(function(){
     if(!$grid.length) { renderHome(); }
 
     // when switching to projects or publications, ensure all folders are visible (not only featured)
-    if(section === "projects" || section === "publications"){
-      // rebuild grid showing all thumbnails for this category
+    if(section === "projects" || section === "publications" || section === "activities"){
       rebuildSection(section);
       return;
     }
+
 
 
     const $all  = $grid.find(".grid-item");
@@ -284,8 +286,8 @@ $(function(){
 <style>
 @font-face {
   font-family:'yolo';
-  src:url('https://dennisdebel.nl/2017/NimbusSanL-Reg.woff2') format('woff2'),
-      url('https://dennisdebel.nl/2017/NimbusSanL-Reg.ttf') format('truetype');
+  src:url('./NimbusSanL-Reg.woff2') format('woff2'),
+      url('./NimbusSanL-Reg.ttf') format('truetype');
 }
 
 body{font-family:"yolo";margin:0;padding:0;background:#fff;}
