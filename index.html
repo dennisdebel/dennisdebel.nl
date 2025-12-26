@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-<title>yin xue</title>
+<title>dennisdebel</title>
 <script src="./jquery.min.js"></script>
 
 <script>
@@ -59,10 +59,11 @@ $(function(){
   // ---------- Header ----------
   function createHeader(){
     $("#global-header").html(`
-      <span id='name'><a href='#' id='show-all'>yin xue</a></span>
+      <span id='name'><a href='#' id='show-all'>dennis de bel</a></span>
       <span id='menu'>
         <a href='#' id='show-projects'>projects</a>&nbsp;&nbsp;
-        <a href='#' id='show-commissions'>commissions</a>&nbsp;&nbsp;
+        <a href='#' id='show-publications'>publications</a>&nbsp;&nbsp;
+        <a href='#' id='show-activities'>activities</a>&nbsp;&nbsp;
         <a href='#' id='show-about'>about</a>
       </span>
     `);
@@ -71,7 +72,7 @@ $(function(){
       .off("click.nav")
       .on("click.nav", "#show-all", e => { e.preventDefault(); goHomeAndFilter("all"); })
       .on("click.nav", "#show-projects", e => { e.preventDefault(); goHomeAndFilter("projects"); })
-      .on("click.nav", "#show-commissions", e => { e.preventDefault(); goHomeAndFilter("commissions"); })
+      .on("click.nav", "#show-publications", e => { e.preventDefault(); goHomeAndFilter("publications"); })
       // ✅ this is the corrected line (removed stray paren)
       .on("click.nav", "#show-about", e => {
         e.preventDefault();
@@ -152,8 +153,8 @@ $(function(){
     const $grid = $(".grid");
     if(!$grid.length) { renderHome(); }
 
-    // when switching to projects or commissions, ensure all folders are visible (not only featured)
-    if(section === "projects" || section === "commissions"){
+    // when switching to projects or publications, ensure all folders are visible (not only featured)
+    if(section === "projects" || section === "publications"){
       // rebuild grid showing all thumbnails for this category
       rebuildSection(section);
       return;
@@ -162,7 +163,7 @@ $(function(){
 
     const $all  = $grid.find(".grid-item");
     const $proj = $grid.find(".projects-item");
-    const $comm = $grid.find(".commissions-item");
+    const $comm = $grid.find(".publications-item");
     const $about= $grid.find(".about-item");
 
     $("#menu a").removeClass("active");
@@ -174,7 +175,7 @@ $(function(){
 
     switch(section){
       case "projects": $("#show-projects").addClass("active"); reveal($proj); break;
-      case "commissions": $("#show-commissions").addClass("active"); reveal($comm); break;
+      case "publications": $("#show-publications").addClass("active"); reveal($comm); break;
       case "about": $("#show-about").addClass("active"); reveal($about); break;
       default: $("#show-all").addClass("active"); reveal($all); break;
     }
