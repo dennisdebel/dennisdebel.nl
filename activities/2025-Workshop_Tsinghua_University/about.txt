@@ -1,0 +1,41 @@
+Workshop visualizing electromagnetic fields using off the shelf materials and smartphones or cameras. Hosted at the Humanities Department of Tsinghua University Beijing. Part of <a href="https://mp.weixin.qq.com/s/A7pIDrXWncfSMQQVhx2xzg">The Era of Airwaves: An Exhibition on the Early History of Radio Technology</a> (电波纪元: 无线电技术早期历史展) exhibition curated by Iris Long. 
+<br><br>
+Participants used ESP32 with built-in RBG LED + a pick up coil as antenna and small buzzer for audible feedback to map the electromagnetic emissions of their personal devices as well as the university and visualize this using slow shutter photography. Code can be found <a href="https://github.com/dennisdebel/emi-slope-detection">here</a>. Demo video <a href="https://youtu.be/PQ2fLE_5Ueg">here</a> (youtube).<br><br>
+
+“厨房桌上的电磁波”：日常电磁辐射可视化探索<br><br>
+
+正在清华大学科学博物馆展出的“电波纪元——无线电技术早期历史展” 回顾了无线电技术早期发展历程以及它对社会文化产生的深远影响。在展期内，我们将举行一系列围绕展览主题进行的沙龙、工作坊与其他活动。<br><br>
+
+
+19 世纪末，赫兹（H. Hertz）通过实验首次验证了电磁波的存在，使麦克斯韦（J. C. Maxwell）此前提出的理论框架得到实证支持，“无形之波” 自此跃入可见的现实中。其后，马可尼（G. Marconi）等科学家在工程实践中实现了电磁波的通信应用，使无线信号得以跨越洲际，连接世界。基于人类对电磁波传播特性与频谱资源的持续调控与开发，Wi-Fi、蓝牙和导航雷达等技术应用不断演进与拓展，“传输”“信号”“辐射” 等词汇自然流淌在我们的日常用语与经验之中。探索围绕在我们身边的电磁辐射，不是只有工程师才关心的事——它也关乎我们对生活的好奇心：我们如何以此为媒介，感知、认识所栖居之地？<br><br>
+
+在本次工作坊中，我们将一同学习、探索如何用日常工具和材料，并以创造性的方式尝试捕捉、显影电磁辐射，并展开进一步设想和讨论。欢迎来自各个领域、具备不同经验水平的参与者，一同探寻一直环绕我们身边的隐形波动。<br><br>
+
+工作坊 Workshop  报名须知  <br><br>
+
+活动时间：<br>
+2025年11月14日（周五）<br>
+下午14:00-18:00 <br><br>
+
+活动地点：<br>
+蒙民伟人文楼211 <br><br>
+
+报名须知：<br>
+参与者需年满16周岁 <br><br>
+
+小贴士：<br>
+你不一定需要具备编程经验<br>
+不用担心，我们将一起学习和体验
+<br><br>
+
+ 1.报名者可在小程序后台查看审核进度，审核通过后，工作人员会通过微信联络参与者。校外报名者当日请凭报名身份证刷卡进校。<br>
+2.本次活动需要参与者携带个人笔记本电脑和充电线，并提前下载软件（工作人员会提前发送安装包给参与者），请参与者确认可以携带设备，并在活动前投入时间进行软件下载。具体操作会在报名成功后进行通知。
+
+<br><br>
+特邀导师
+<br><br>
+
+Dennis de Bel：生于1984年，荷兰无线电呼号：PD0WND。Dennis运用软件、电子设备和各种形式的波进行创作；通过动手实操的实践型研究和工作坊，他尝试解码更宏观的社会经济叙事，以及那些被植入我们早就习以为常的设备中的现实。他曾在Siggraph Los Angeles和Transmediale Berlin展出他的作品，并曾与ISEA Hong Kong，Radical Networks New York等机构合作举办工作坊。他在Design Academy Eindhoven 和Willem de Kooning Academy Rotterdam University of Applied Science担任客座讲师，同时还参与了Relearn summer-schools和Libre Graphics Meetings。 2017年，他联合创办了位于鹿特丹的Varia，该空间致力于发展切入日常技术的集体途径。现就职于 CAC新时线媒体艺术中心。
+
+<br><br>
+Wechat link: <a href="https://mp.weixin.qq.com/s/ZYqofenNdR8amCy9WnqdIA">https://mp.weixin.qq.com/s/ZYqofenNdR8amCy9WnqdIA</a>
