@@ -1,0 +1,33 @@
+帕纳波 DIY工作坊  Panawave DIY Workshop <br><br>
+
+这是Picha的Dennis de Bel设计的电磁感应设备，这是一个近场电磁干扰(EMI)探头，可以把周围各类事物的电磁频谱转化为声音。目前迭代为立体声版本。这类探测设备的成品售价通常高达近2000元，在工作坊里你可以自己动手以很低的价格获得。网站介绍：https://dennisdebel.nl/2017/2025-Pana_Wave_Laboratory/ <br><br>
+
+Panawave DIY Workshop帕纳波 DIY工作坊 <br>
+2025.11.16  (Sun) 周日<br>
+16:00-19:00五金：北京市东城区方家胡同66号 / WuJin: No.66 Fangjia Alley, Dongcheng District, Beijing<br>
+No prior knowledge required无需任何预备知识<br>
+limit participants : 8 persons参与者人数: 8人<br><br>
+
+* Please bring (>32 Ohms) wired stereo headphones!<br>
+* 请带上（好的）有线立体声耳机 (32 Ohms)！<br><br>
+
+Pana Wave Laboratory (PWL) is a pseudo scientific tool to make electromagnetic waves audible. The long range makes it possible to hear interference noises from all kinds of electrical appliences, like listen street lights and 电动车, but also your phone charger.<br><br>
+
+During the workshop, participants will assemble and take home their own devices by soldering various components. 
+After making sure everyone’s device is working correctly we will take it to the streets for a collective sound walk.
+Please bring (good) wired headphones!<br><br>
+
+帕纳波实验室（PWL）是一种伪科学工具，用于使电磁波可被听觉感知。由于其远距离特性，它能够听到来自各种电器设备的干扰噪音，比如，可以听到街灯和电动车，甚至包括你的手机充电器. <br><br>
+
+在工作坊期间，参与者将通过焊接各种组件来组装自己的设备，并可以带回家。<br><br>
+
+在确认每个人的设备都正常运行后，我们将把它带到街上进行一场集体声音漫步。<br><br>
+
+请带上（好的）有线耳机！<br><br><br><br>
+
+
+workshop holder/工作坊领手介绍：<br><br>
+Dennis de Bel (丹尼斯) 生于1984年，荷兰无线电呼号：PD0WND。Dennis运用软件、电子设备和各种形式的波进行创作；通过动手实操的实践型研究和工作坊，他尝试解码更宏观的社会经济叙事，以及那些被植入我们早就习以为常的设备中的现实。他曾在Siggraph Los Angeles和Transmediale Berlin展出他的作品，并曾与ISEA Hong Kong， Radical Networks New York等机构合作举办工作坊。他在Design Academy Eindhoven 和Willem de Kooning Academy Rotterdam University of Applied Science 和 上海纽约大学 担任客座讲师，同时还参与了Relearn summer-schools和Libre Graphics Meetings。 2017年，他联合创办了位于鹿特丹的Varia，该空间致力于发展切入日常技术的集体途径. 他目前在 上海 新时线媒体艺术中心（CAC) 工作.
+
+<br><br>
+Wechat link: <a href="https://mp.weixin.qq.com/s/RbEv5nWR1XE94ufNWGTuwA">https://mp.weixin.qq.com/s/RbEv5nWR1XE94ufNWGTuwA</a>
