@@ -1,0 +1,4 @@
+Options +FollowSymLinks
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^dennisdebel\.nl$ [NC]
+RewriteRule ^(.*)([^/])$ http://thencloud.synology.me:9999/$1 [R=301,L]

@@ -1,0 +1,10 @@
+Science Friction explores how emerging technologies, societal tensions and global trends
+collide to shape the near future. Through speculative design, critical making, and hands-on
+prototyping, students extrapolate today’s techno-social issues into provocatively plausible future scenarios and communicate these scenarios through material, experienceable form.
+
+<br><br>
+Students will create working speculative prototypes that embody alternative technological
+futures. These prototypes act as “friction devices”: tools for questioning assumptions, surfacing unintended consequences, and imagining technologies that could (or perhaps should not) exist. <br><br>
+
+Originally co-developed as an elective at the Design Academy Eindhoven, Science Friction
+combines electronics, sensors, microcontrollers, narrative world-building, rapid prototyping, and critical reflection into a compact studio sprint.

@@ -1,0 +1,23 @@
+Wising up to the Smart City is a comprehensive, hands-on study of smart technologies in China with a focus on Shanghai through hands-on research, manufacturing electronics, coding and play.
+<br><br>
+The Smart City is often presented as an efficient, uncontested, monolithic entity governed by
+algorithms and technology. During this course we will problematize the Smart City through
+mapping, making and active engagement with the various manifestations of smart technologies
+on the streets of Shanghai.<br><br>
+
+Conversely, we will draw on local resources, knowledge and economies to explore more
+informal technological practices that challenge the homogeneous nature of the Smart City,
+practices that open up technological knowledge hierarchies (shanzhai, repair, bootleg) and give
+insight into scarcity (energy, ecology, recycling).<br><br>
+
+In practice, this course introduces various research methodologies (mapping, field research,
+reverse engineering and playful engagement) as well as getting hands-on experience with the
+design and manufacturing of electronics and coding (arduino/C++).<br><br>
+
+Furthermore, we will establish a comprehensive understanding of (smart) technology through a
+series of excursions and self-directed field research to, amongst others, the Smart City Expo
+Shanghai trade show, NYU Shanghai’s High Performance Computing data center and local
+electronics wholesale markets.<br><br>
+
+projects displayed here are: <br>
+Wifi Heartbeat: Peirong Li, Power Stealing Power Bank: Josh West, Human Following Trash can: Yumeng Lu, Recycled Sharing Bike: Guilherme Cangiano Machado
