@@ -24,6 +24,14 @@ $(function(){
       .trim();
   }
 
+  function isImage(file){
+    return /\.(png|jpe?g|gif|webp)$/i.test(file);
+  }
+
+  function isVideo(file){
+    return /\.(mp4|mov)$/i.test(file);
+  }
+
   function sortedFolderKeys(section){
     const folders = manifest?.[section] || {};
     const keys = Object.keys(folders);
@@ -278,12 +286,28 @@ $(function(){
       </div>
     `);
 
-    // Images
+
+    // Media (images + video, keep order from manifest)
     for(const f of files){
-      if(/\.(png|jpe?g|gif)$/i.test(f)){
-        $view.append(`<div class='project-image'><img src='${section}/${f}' alt='${folder}' /></div>`);
+      if (isImage(f)) {
+        $view.append(`
+          <div class="project-media">
+            <img src="${section}/${f}" alt="${folder}">
+          </div>
+        `);
+      }
+      else if (isVideo(f)) {
+        $view.append(`
+          <div class="project-media">
+            <video controls playsinline preload="metadata">
+              <source src="${section}/${f}">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        `);
       }
     }
+
 
     // Text (render HTML if it contains tags)
     for(const f of files){
@@ -407,6 +431,24 @@ span#menu{font-size:1.3rem; text-align:right;}
   opacity:0;
   animation:fadeIn .8s forwards;
 }
+
+.project-media{
+  width:100%;
+  max-width:800px;
+  margin:0 auto 1rem auto;
+}
+
+.project-media img,
+.project-media video{
+  width:100%;
+  display:block;
+  border-radius:4px;
+}
+
+.project-media video{
+  background:#000;
+}
+
 
 .about-image img{max-width:400px;width:100%;}
 
