@@ -11,6 +11,42 @@
 $(function(){
   let manifest = null;
 
+  // ---------- Helpers: sort + pretty labels ----------
+  function extractYear(name){
+    const m = String(name).match(/^(\d{4})[-_ ]/);
+    return m ? parseInt(m[1], 10) : null;
+  }
+
+  function prettyName(name){
+    return String(name)
+      .replace(/[-_]+/g, " ")   // dashes/underscores -> spaces
+      .replace(/\s+/g, " ")    // collapse whitespace
+      .trim();
+  }
+
+  function sortedFolderKeys(section){
+    const folders = manifest?.[section] || {};
+    const keys = Object.keys(folders);
+
+    return keys.sort((a, b) => {
+      const ya = extractYear(a);
+      const yb = extractYear(b);
+
+      // If both have years: newest first
+      if (ya !== null && yb !== null) {
+        if (ya !== yb) return yb - ya;
+        return a.localeCompare(b);
+      }
+
+      // If only one has a year: year-folders first
+      if (ya !== null && yb === null) return -1;
+      if (ya === null && yb !== null) return 1;
+
+      // No years: alphabetical
+      return a.localeCompare(b);
+    });
+  }
+
   // ---------- Boot ----------
   createHeader();
 
@@ -63,8 +99,6 @@ $(function(){
       </span>
     `);
 
-    // ✅ No flash: do NOT render "home then filter after a timeout".
-    // Instead, render the target view directly.
     $(document)
       .off("click.nav")
       .on("click.nav", "#show-all", function(e){
@@ -110,8 +144,6 @@ $(function(){
     else if(which === "publications") $("#show-publications").addClass("active");
     else if(which === "activities") $("#show-activities").addClass("active");
     else if(which === "about") $("#show-about").addClass("active");
-    // "all" -> no underline (or uncomment next line if you want)
-    // else $("#show-all").addClass("active");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -120,11 +152,17 @@ $(function(){
     $("#site-wrapper").html("<div class='content grid' style='display:none'></div>");
     const $grid = $("#site-wrapper .grid");
 
-    for (const section in manifest){
-      if (section === "about") continue;
+    // If you want a consistent order of sections on the homepage, set it here:
+    const sectionOrder = ["projects", "publications", "activities"];
+    const sections = sectionOrder.filter(s => manifest?.[s]).concat(
+      Object.keys(manifest || {}).filter(s => !sectionOrder.includes(s))
+    );
 
+    for (const section of sections){
+      if (section === "about") continue;
       const folders = manifest[section];
-      for (const folder in folders){
+
+      for (const folder of sortedFolderKeys(section)){
         const files = folders[folder];
 
         // Only show featured on home
@@ -136,7 +174,7 @@ $(function(){
             <a href='?section=${encodeURIComponent(section)}&project=${encodeURIComponent(folder)}' class='open-project'>
               <img src='${section}/${featured}' alt='${folder}'/>
             </a>
-            <p class='desc'>${folder}</p>
+            <p class='desc'>${prettyName(folder)}</p>
           </div>
         `);
       }
@@ -164,7 +202,7 @@ $(function(){
       return;
     }
 
-    for (const folder in folders){
+    for (const folder of sortedFolderKeys(section)){
       const files = folders[folder];
 
       // For section pages, pick first image (not featured-only)
@@ -176,7 +214,7 @@ $(function(){
           <a href='?section=${encodeURIComponent(section)}&project=${encodeURIComponent(folder)}' class='open-project'>
             <img src='${section}/${img}' alt='${folder}'/>
           </a>
-          <p class='desc'>${folder}</p>
+          <p class='desc'>${prettyName(folder)}</p>
         </div>
       `);
     }
@@ -295,7 +333,7 @@ pre,address{display:none}
 #menu a:hover{text-decoration:underline}
 #menu a.active{text-decoration:underline;font-weight:bold}
 span#name{font-size:1.3rem}
-span#menu{font-size:1.3rem;    text-align: right;}
+span#menu{font-size:1.3rem; text-align: right;}
 
 /* ---------- Layout ---------- */
 #site-wrapper{
