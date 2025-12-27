@@ -251,6 +251,7 @@ $(function(){
     $view.fadeIn(250);
   }
 
+
   // ---------- Project View ----------
   function renderProject(section, folder){
     const files = manifest?.[section]?.[folder];
@@ -262,6 +263,7 @@ $(function(){
     $("#site-wrapper").html("<div class='content project-view' style='display:none'></div>");
     const $view = $("#site-wrapper .project-view");
 
+    // Back button
     $("#global-header").after(`<div class='project-back'><a href='#' id='back-home'>← back</a></div>`);
     $("#back-home").off("click").on("click", function(e){
       e.preventDefault();
@@ -269,12 +271,21 @@ $(function(){
       routeFromURL();
     });
 
+    // ✅ Title at top (like grid caption)
+    $view.append(`
+      <div class="project-title">
+        ${prettyName(folder)}
+      </div>
+    `);
+
+    // Images
     for(const f of files){
       if(/\.(png|jpe?g|gif)$/i.test(f)){
         $view.append(`<div class='project-image'><img src='${section}/${f}' alt='${folder}' /></div>`);
       }
     }
 
+    // Text (render HTML if it contains tags)
     for(const f of files){
       if(/\.txt$/i.test(f)){
         $view.append(`<div class='project-text' data-file='${section}/${f}'>Loading…</div>`);
@@ -291,6 +302,7 @@ $(function(){
     });
 
     $view.fadeIn(250);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
 });
@@ -341,6 +353,15 @@ span#menu{font-size:1.3rem; text-align:right;}
   gap:1.25rem;
   padding:2rem 1rem;
   box-sizing:border-box;
+}
+
+.project-title{
+  max-width: 800px;
+  margin: 0 auto 1rem auto;
+  padding: 0 1rem;
+  font-size: 1.2rem;
+  line-height: 1.3;
+  text-align: center;
 }
 
 .grid-item{
