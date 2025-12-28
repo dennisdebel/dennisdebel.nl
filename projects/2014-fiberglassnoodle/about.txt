@@ -1,0 +1,21 @@
+Experimental edible high speed network cable based on glass noodles. Leveraging the mediums properties for both light/data transportation as well as culinary delight.
+
+SPA LW SA MM 6: SPECIAL APPLICATION LIGHT WEIGHT SINGLE ARMOR MULTIMODE AIR BLOWN FIBER
+6 Minute cooking time. (EC) No 669/2009 annex I & (EU) No 187/2011 , 618/2013 annex I compliant. No patent pending.
+
+<br><br>
+Video demo <a href='https://www.youtube.com/watch?v=bqJuMwWOnac' target='_blank'>here</a>
+
+<br><br>
+Download the how-to poster (schematics, pcb stencils, bom) <a href='http://www.dennisdebel.nl/test/wp-content/uploads/2015/08/a1-poster-3.pdf'> here </a>.
+
+<br><br>
+Download the GERBER files <a href='http://dennisdebel.nl/2017/2014-fiberglassnoodle/noodle-tx.zip'> here (tx) </a> and <a href='http://dennisdebel.nl/2017/2014-fiberglassnoodle/noodle-rx.zip'> here (rx) </a>.
+
+<br><br>
+Download the Benchmark tool (requires minimodem) <a href='https://github.com/dennisdebel/noodle_benchmark'> here </a>.
+
+<br><br>
+SHA 2017 slides <a href='http://dennisdebel.nl/pres/?sha/'> here </a>. SHA 2017 video presentation <a href='https://media.ccc.de/v/SHA2017-142-from_glass_fiber_to_fiber_glass_noodles#t=0'>here</a>
+
+

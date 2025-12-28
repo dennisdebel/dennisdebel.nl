@@ -1,0 +1,3 @@
+Broken iPhone 3GS re-purposed as a functioning wireless telegraphy key. 
+
+By literal reverse engineering (turning the iphone inside out), a once broken smart-phone is downgraded to one of the earliest wireless communication tools; The wireless telegraphy key. It functions somewhere along the lines of early 'spark-gap transmitters'. By 'shorting' the iphone battery on the logic-board electro magnetic radiation is released that can be picked up by any (now practically obsolete) AM radio over a disnovative distance of about 50 cm. Built using parts only found inside an iPhone.
