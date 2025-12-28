@@ -1,6 +1,46 @@
-Im yinxue from China. <br>
-I think im so real photographer. <br>
-Capturing real stories through curious eyes and natural light. <br>
-Honest. Candid. A little wild！<br>
-My email: <br>
-y17602129925 @  163.com
+
+<p>Dennis de Bel (1984, Rotterdam, NL callsign PD0WND) is a hands-on artistic researcher, educator and radio amateur.</p>
+
+<p>His practice oscillates between various configurations of collaborations focusing on collectively exploring hardware, software and various forms of waves.</p>
+
+<p>This is actualised through a broad spectrum of talks, devices, dj sets, workshops and exchanges at for example ISEA, Transmediale, Radical Networks and Relearn, including various educational institutions such as Design Academy Eindhoven and NYU Shanghai.</p>
+
+<p>In 2017 he co-founded Varia, a physical space to actively develop collective approaches towards everyday technology informed by experiments with building physical, digital and social infrastructures of affinity.</p>
+
+<p>De Bel holds a MA from the Piet Zwart Institute (NL) and currently resides in Shanghai where he is Head of Research and Creation at the Chronus Art Center.</p>
+
+<p>
+Dennis de Bel (丹尼斯)生于1984年，荷兰无线电呼号：PD0WND。Dennis运用软件、电子设备和各种形式的波进行创作；通过动手实操的实践型研究和工作坊，他尝试解码更宏观的社会经济叙事，以及那些被植入我们早就习以为常的设备中的现实。他曾在Siggraph Los Angeles和Transmediale Berlin展出他的作品，并曾与ISEA Hong Kong， Radical Networks New York等机构合作举办工作坊。他在Design Academy Eindhoven 和Willem de Kooning Academy Rotterdam University of Applied Science 和 上海纽约大学 担任客座讲师，同时还参与了Relearn summer-schools和Libre Graphics Meetings。 2017年，他联合创办了位于鹿特丹的Varia，该空间致力于发展切入日常技术的集体途径. 他目前在 上海 新时线媒体艺术中心（CAC) 工作.
+</p>
+
+
+<p>
+<a href='https://homebrewserver.club/' target='_blank'>homebrewserver.club</a><br>
+<a href='http://varia.zone/' target='_blank'>varia.zone</a>
+</p>
+
+
+
+<div id='title'>contact</div>
+For inquiries please contact me at the following email address: dennisdebel@gmail.com . Further details can by found in my Resume below.
+<br>
+Callsign: PD0WND
+
+<div id='title'>resume & portfolio</div>
+<a href='http://www.dennisdebel.nl/upload/cv.pdf'>Download resume (PDF)</a> <br>
+<a href='http://www.dennisdebel.nl/upload/portfolio.pdf'>Download portfolio (PDF)</a>
+
+<div id='title'>legal</div>
+Account number: 612165213
+
+IBAN/SEPA: NL28ABNA0612165213
+
+BIC: ABNANL2A
+TAX: NL182813198B01
+Chamber of Commerce: 24484602
+
+<div id='title'>links</div>
+<a href='https://dennisdebel.nl/education-talks-workshops/'>Education, workshop and presentation documentation</a><br>
+<a href='http://www.youtube.com/user/danosdotnl?feature=mhum'>Youtube channel</a><br>
+<a href='http://github.com/dennisdebel'>Github</a><br>
+<a href='https://soundcloud.com/errorpage'>Soundcloud</a><br>
