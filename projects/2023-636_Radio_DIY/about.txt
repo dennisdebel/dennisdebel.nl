@@ -1,0 +1,1 @@
+Replica of China's (上海636收音机) first transistor radio. Designed for single sided pcbs production. Download the KiCad project files <a href="./radio-9014x1-ss.zip">here</a>, visit the Github <a href="https://github.com/dennisdebel/636_Radio">repository</a> or check out the first appearance of the 636 radio in <a href="./wxd-1964-03.pdf">无线电 magazine</a> (PDF, see last page).

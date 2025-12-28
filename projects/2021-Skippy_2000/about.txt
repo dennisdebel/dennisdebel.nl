@@ -1,0 +1,24 @@
+Skippy 2000 is the first eurorack compatible Compact Disk player controllable with control voltage (CV). 
+
+<br><br>
+Following year(s) of experimentation, the first batch was expected end of November 2021. This batch turned out to be a dud and there are only two unique working versions as of July 2022. If you are interested in helping out or have tips to make this more reproducable at a sample size larger than a one-off, don't hesitate to contact me.
+
+<br><br>
+<b>Specs<br></b>
+Width - 31HP <br>
+Depth - 48mm <br>
+Power -  12v @ 370 mA (Peak), 150 mA (Average)<br>
+
+<br><br>
+
+<b>IO</b><br>
+Play/Pause (tactile switch + CV)<br>
+Next/Fast Forward (tactile switch + CV)<br>
+Skip/glitch (CV)<br>
+Stop/Off (tactile switch)<br>
+2x Mono Audio outputs (stereo, unprotected)<br>
+
+<br><br>
+
+<b>Video demo (finally!)</b><br>
+<iframe width="100%" height="40%" src="https://www.youtube.com/embed/uDF9J3Gmxkk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>

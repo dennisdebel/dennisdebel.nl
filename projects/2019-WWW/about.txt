@@ -1,0 +1,74 @@
+<b>Exhibition text</b><br>
+ In Neal Stephenson’s Cryptonomicon, the mathematical genius Lawrence Pritchard Waterhouse is showing off his new mechanical invention to his supervisor, Lieutenant Colonel Earl Comstock. Comstock asks:<br>
+<br><br>
+“If you had to give a name to the whole apparatus, what would you call it?”
+<br>
+“Hmmm…” Waterhouse says. “Well, its basic job is to perform mathematical calculations-like a computer.”
+<br><br>
+Comstock snorts, “A computer is a human being.”
+<br><br>
+
+This conversation reflects the historical fact that in the 1930s and 40s, people who were employed to do calculations and this clerical labour were called “computers.” The different interpretations of the dialogue from war-time to the present mark a shift from a society in which the intelligence demanded for calculations and data collections were primarily associated with humans to the increasing delegation of these labours to computational and control machines. Following Norbert Wieners introduction into cybernetics in the 1950's publication 'The Human Use of Human Beings', the idea of technology as non-hierarchical, unbiased control agent for the creation of a harmonious society was set in stone.
+<br><br>
+
+Although heralded as merely an 'auxiliary measure’ a prime example of technology as means of control could be found the Beijing Temple of Heavens park. In 2017 the park had embraced the power of artificial intelligence and facial recognition technology to gain control over the hordes of visitors and their toilet paper usage. By means of camera operated facial recognition enabled toilet paper dispensers, visitors were introduced to a timed toilet paper cap at +-70cm per 9 minutes. Besides the dubious fact of having cameras in public restrooms, it's difficult to escape the irony in having one’s basic biological needs to be authorized by a high-tech data-harvesting machine.
+<br><br>
+
+Moreover, this obscene, cumbersome interface enables us to easily expose our deep-seated entanglement with everyday technologies. In order to take a shit we, first of all, need power and wireless infrastructures; secondly, facial recognition; thirdly, make sure the photo is qualified; fourthly, get the toilet paper and enjoy it. Don't forget the restroom concierge's constant attention, instructing, refilling and unjamming the grotesque apparatus, effectively preventing the cybernetic automaton from escaping human control.
+<br><br>
+
+As of November 2018 all the cybernetic toilet paper dispensers have disappeared from the park, to be replaced with the 'offline' variety. The artist therefore invites you to experience the archive of collected materials mediated through a bootleg version of the original facial recognition toilet paper dispenser. Allowing the viewer first hand experience of interfacing their human body to the machine.
+
+<br><br>
+In the past six months, Dennis de Bel explored how legacy technologies, ideologies, language and code have lead to our current technological status quo, and how human bodies are increasingly mediated through stacks of technology of varying opacities. Focusing on Beijing's Temple of Heaven Park and it's rich canon of technologies ranging from ancient rites, special service radio stations to artificial intelligence, Dennis assimilated a variety of signals, images and artifacts through mapping, kiting and 'international relations'.
+
+<br><br>
+Although the scientific and political paradigms have changed dramatically in the six centuries since the Temple of Heaven's construction, the historical function of the park revolving around practices of inscription, amplification and diffusion of messages through specialised infrastructures and protocols, as described by the scholar Eldon Pei, puts forth an intriguing case for the sacrificial altar as a forebearer of modern communicative technology and the very proof of the physicality of our increasingly 'digital' localities. 
+<br><br>
+
+Suported by:<br>
+Institute for Provocation（简称 IFP）and Mondrian Fund NL
+
+
+<br><br>
+ 
+
+在尼尔·斯蒂芬森1999年出版的传奇小说《编码宝典》中中，数学天才Lawrence Pritchard Waterhouse向他的上司厄尔·康斯托克中校炫耀他的新机械发明。
+
+ <br><br>
+
+康斯托克问：“如果你必须为整个设备命名，你会怎么称呼它？”
+<br><br>
+ 
+
+“嗯......”沃特豪斯说。 “嗯，它的基本工作是进行数学计算，像计算机一样。”
+
+ <br><br>
+
+康斯托克冷笑一声，“计算机不就是人么。”
+<br><br>
+ 
+
+他们的对话反映出，在20世纪30和40年代，受雇从事计算和这种文职工作的人被称为“计算机”。从战争时期到现在，对于这段对话的不同解释标志着社会的巨变——计算和数据收集的工作越来越多地从人力转移到机器。继诺伯特·维纳(Norbert Wieners)在1950年出版的《人有人的用处：控制论与社会》(The Human Use of Human Beings)中引入控制论之后，技术作为构建和谐社会的非等级、无偏见的控制因素的观念开始深入人心。
+
+ <br><br>
+
+在北京天坛公园，技术作为控制手段的使用非常突出。 2017年，公园引入了一种“辅助措施”——人工智能厕纸机，来控制游客的卫生纸用量。通过相机操作的人脸识别启用卫生纸分配器，访客能在每9分钟内取出70cm的厕纸（不能更多）。除了在公共卫生间使用摄像机这一可疑事实外，必须通过高科技数据采集机的授权才能满足基本生物性需求的做法也不无讽刺。
+
+ <br><br>
+
+这个猥琐而累赘的界面轻易地暴露出我们与日常技术根深蒂固的纠缠——为了拉屎，我们首先需要，电源和无线网；第二，面部识别；第三，确保照片合格；第四，取卫生纸，享受如厕。更别提公厕看管者需要时时刻刻对这个诡异装置保持关注，演示其使用方式、替换纸卷和防止机器阻塞，有效阻碍这一控制自动机脱离人类控制。
+
+ <br><br>
+
+自2018年11月起，天坛公园里装配的所有的自动控制厕纸机都消失了，换回了常规的“脱机”设备。因此，艺术家邀你亲身体验人机互动，以一台山寨的人脸识别厕纸机为媒介进入多种材料的档案。
+
+ 
+<br><br>
+在北京的六个月里，Dennis de Bel探讨了遗留技术、意识形态、语言和代码如何一同造就了我们当前的技术现状，以及我们的身体如何被重重不透明的技术帘幕所间隔。他以北京的天坛公园为例，从其古老的仪式，有“特殊目的”的广播电台到人工智能，Dennis通过制图、放风筝和“国际友谊”吸收了各种各样的信号、图像和物品。
+
+ 
+<br><br>
+尽管自天坛修建以来的六个世纪里，科学与政治范式已历经巨大的变化，但正如学者Eldon Pei所描述的，天坛公园的历史性功能是通过专业的基础设施和仪制对信息进行书写、放大和传播，如果将祭坛视为现代通讯技术的先驱，天坛实在是一个有趣的案例，显示我们的生活正在如何被“数字化”。
+
+

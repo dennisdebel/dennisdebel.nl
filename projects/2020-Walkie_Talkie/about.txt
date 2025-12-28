@@ -1,0 +1,9 @@
+Arduino + NRF24 based walkie talkie for use in workshops and sound-modem applications. Features: moderate range (400m), mini-jack input/output, serial input/output, push to talk button, clipping indicator, removable antenna, removable mic, switch for speaker output, 9 volt battery power, USB power and optional 3.3v regulator.
+
+<br><br>
+How-to, kits, board files soon.
+<br><br>
+Sound-modem usage example:
+<br><br>
+
+<iframe width="100%" height="315" src="https://www.youtube.com/embed/Ga4xj-EW2XQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>

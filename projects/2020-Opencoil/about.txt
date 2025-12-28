@@ -1,0 +1,34 @@
+OPENCOIL - 'A Roaming Speedshow' or the fine art of appropriating inductive charging pads in the wild. 
+<br>
+<br>
+The pavements of many cities around the world have been flooded in recent years by so-called 'dockless sharing vehicles'. With promises of eco-friendliness and electromobility, these risk capitalism activists have occupied the grey zone between private and public space on the streets of our cities. However, this unscrupulous conscientiousness of 'micro-mobility services' raises important questions about urban space, ownership, agency, production, ecology and very late capitalism.
+<br>
+<br>
+OPENCOIL explores the impact of micro-mobility services on urban space by using its decentralised infrastructure as an exhibition space, while also addressing the conditions and effects of this infrastructure.
+<br>
+<br>
+11 artists were invited to present their work 'offline' on a small Wifi micro-controller with ~2MB, only available within range of the wifi 'parasite'.
+The "digital gallery spaces" are attached to 11 randomly selected e-scooters. Distributing the exhibition throughout the city as a "roaming speed show". On show are works that deal with questions of the overlap between public and private space, the use of resources, as well as greenwashing, risk capitalism and vandalism.
+<br>
+<br>
+The participating artists are:
+<br>
+Aram Bartholl<br>
+Constant Dullaart<br>
+Dennis de Bel & Anton Jehle<br>
+JODI<br>
+Jonas Lund<br>
+Martin Howse<br>
+!Mediengruppe Bitnik<br>
+Rosa Menkman<br>
+Sarah Grant<br>
+Sofya Aleynikova<br>
+Danja Vasiliev<br>
+<br>
+<br>
+Special thanks to:
+<a href="http://netart.berlin/exhibtions/" target="_blank">Zentrum fur Netzkunst</a>, <a href="https://taz.de/Digitale-Kunstaktion-opencoil/!5720634/" target="_blank">Tilman Baumgartel</a>, CCC/rc3<br><br>
+
+Official website: <a href="http://opencoil.show/" target="_blank">http://opencoil.show/</a><br><br>
+Rc3 talk: <a href="https://media.ccc.de/v/rc3-11575-opencoil_a_roaming_speedshow" target="_blank">CCC video</a> & <a href="https://www.youtube.com/watch?v=oQIImMd5Nws" target="_blank">Youtube video</a><br><br>
+Git: <a href="https://github.com/speedy-scooty/opencoil" target="_blank">https://github.com/speedy-scooty/opencoil</a>

@@ -1,0 +1,20 @@
+This publication documents the work developed in during the first trimester of Piet Zwart Institute's Experimental Publishing programme 2019. In collaboration with Dennis de Bel and de Player. It involves working with notions of sound, language and interfaces, towards building a common organism - a modular synthesizer.<br><br>
+
+#define A modular synthesizer consists of separate specialized modules. Each individual module accepts inputs and produces an output. When interconnected, this allows for unexpected results where the whole is greater than the sum of its individual parts.<br><br>
+
+This point of departure led us to produce 10 unique contributions to the common assembly of the publication INPUT-OUTPUT: Tales from another module. Each contribution consists of one or more modules, which represent our individual interests in exploring this medium. Outputs vary between sound, image and text, resulting in an audio-visual performance.<br><br>
+
+<u>Students</u><br>
+Avital Barkai, Damlanur Bilgin, Sandra Golubjevaite, Tisa Neža Herlec, Mark van den Heuvel, Max Lehmann, Mika Motskobili, Clara Noseda, Anna Sandri, Ioana Tomici.
+<br><br>
+
+<u>Guests & Teachers</u><br>
+Olli Aarni, Dennis de Bel, Andre Castro, Leslie Drost-Robins, Aymeric Mansoux, Michael Murtaugh, Steve Rushton, De Player: Peter Fengler, Koos Siep, Frederic van de Velde.
+
+<br>
+<br>
+Project <a href="https://issue.xpub.nl/10/index.html" target="_blank">Website</a>
+Edition of 30 PCBS + Manual<br>
+Printed at <a href="http://varia.zone">varia</a>, <a href="https://www.deplayer.nl">de Player</a>, <a href="https://www.wdka.nl">wdka</a><br>
+Cut at <a href="https://www.deplayer.nl">de Player</a><br>
+Photos by Max Lehmann.

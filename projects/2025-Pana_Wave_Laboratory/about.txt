@@ -1,0 +1,32 @@
+Pana Wave Laboratory (PWL) is a pseudo scientific tool to make electromagnetic waves audible. Despite its compact frame it outperforms comparable designs in both frequency, range and price due to the custom JM666 chip. Instead of centimeter range, PWL is able to pick up sources from meters away. In its default configuration the bandwidth covers an extremely wide spectrum, spanning at least 50Hz to 7GHz, enabling you to listen to sources ranging from mains power to cellphone GSM signals, WiFi and 5G. The SMA solder pads allow for optional external antennas.<br><br>
+
+Box contains 1x M3 screwdriver, 1x M1.5 Hex key, 1x Assembled Pana Wave Laboratory, 1x Manual. 9V Battery not included. <br><br>
+
+Download the manual <a href="./pwl-manual.pdf">here</a><br><br><br><br>
+
+<b>Features</b> <br><br>
+
+- Extended bandwidth of at least 50hz - 7ghz Listen to gsm, wifi, bluetooth, 5G. Listen in on phone passcodes, also try hdmi, ethernet etc.<br>
+- Sensitive AC and static electricity (you can hear your steps…when you body discharges.<br>
+- 100x more sensitive than common emf sniffers (trouble seeker, electroslouch, bitsniffer, soma ether).<br>
+- 100x range of common emf sniffers: Near and far field em detection (~200cm range, depending on source signal).<br>
+- Loud! No pre amp needed.<br>
+- Omni directional antenna for farfield.<br>
+- Compact size, great range without the need for big (loop) antennas. <br>
+- Multifunctional Volume knob (volume + filter).<br>
+- Rejects audio frequency signals (speaker coils) and less microphonic than other sniffers.<br>
+- SMA pads for optional external antenna (isolated with jumper).<br>
+- Your body is an active element in the circuit. It will influence the devices behaviors. See more below at warm tips and tricks<br>
+
+<br><br><br><br>
+
+<b>Warm Tips and tricks</b><br><br>
+- Proper headphones with 3.5mm stereo jack recommended, 32 Ohm drivers with 1.5 meter lead recommended.<br>
+- You can hear incoming messages on WiFi, GSM, 4G, 5G before they arrive.<br>
+- You can hear phone screens (xy?).<br>
+- Your are the antenna, every move you make will be audible with this detector. Try walking, try touching metal objects.<br>
+- This is a highly experimental project. Feel free to experiment with coils, capacitors and antennas. <br>
+- Although mono, you will hear different signals left and right.<br>
+- Distance to body changes the capacity and thus the frequency response and range of the receiver, try using your hand as if playing a Theremin.<br>
+- If your unit sounds like a 8 bit toy rocket falling from the sky, it is time to change the battery.<br>
+- Use the external antenna SMA pads as touch interface.<br>

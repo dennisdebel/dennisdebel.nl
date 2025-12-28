@@ -1,0 +1,7 @@
+Near Field EMI probe for discovering the electromagnetic spectrum around you. Simple DIY kit originally developed for the <a href="https://troublemakershenzhen.com/">TroubleMaker Shenzhen</a> Reboot. Workshop pictures kindly provided by Lola Tan, thanks to the organisers and participants!
+
+<br><br>
+<h2> Update! New iteration!</h2>
+The TroubleSeeker is an amazing device to explore electromagnetic phenomenons and well suited for ages 7 and up to assemble. This success inspired the next iteration, a stereo edition, with some extra magic! Enter binaural beats and visualisation. More updates soon, keep an eye on the GIT repository down below! <br><br>
+
+Instructions to produce your own will be added and updated <a href="https://github.com/dennisdebel/BinauralBeeps">here</a>. 

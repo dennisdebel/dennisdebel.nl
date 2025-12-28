@@ -1,0 +1,1 @@
+Firecracker solenoid synthesizer module. Trigger in and out. Part of a series of prototype modules for the Eurorack format. Leveraging the platforms potential for reactionary media critique and monetary gain. Video below.
