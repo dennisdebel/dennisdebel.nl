@@ -1,0 +1,18 @@
+S.M.S., smoke as a medium for the masses
+
+
+"The extreme range of possible smartphones functions is fulfilling the imaginary about uncharted innovation in our daily tasks. Smartphones have replaced computers in this respect because of their innate mobile nature, opening up a completely new set of possibilities and revisiting some very old ones. S.M.S. (Smoke Messaging Service) by Dennis De Bel is an iPhone hardware add-on that allows it to emit smoke signals, one of the oldest forms of long-distance communication. It also uses a Polybius square encryption (dating back to 150 BC to the origin of cryptography) converting alphabetic characters into numeric ones. Sophisticated hardware cinematically reproducing an antique (and very limited) mode of communication is not only a historical paradox, but a sarcastic assertion of how it’s still possible to re-appropriate our methods of communication, even after we have formed ingrained relationships with companies to manage them for us."
+
+http://neural.it/2014/10/s-m-s-smoke-as-a-medium-for-the-masses/, retrieved March 3 2015.
+video v1: https://www.youtube.com/watch?v=BYZXAMV0hMg
+
+
+
+"SMS (smoke message service) by Dennis de Bel produced a hardware prototype for an SMS add-on for smartphones. Eschewing digital communications in favour of old- fashioned smoke signals, the prototype case features a hidden chamber for lamp oil. When a button on the side is pressed, the phone elicits puffs of smoke into the air. The lexicon of these is entirely up to the user(s) - traditional Morse code or an entirely new codification. Interestingly the smoke is also registered by the iPhone’s camera, pointing to a possible future where these analogue signals might once again be captured and translated into phone text conversation." O’Dwyer, Rachel,“Stop Pretending that Bits don’t decay”, Transmediale Report Neural #48, 2014
+
+
+In 2016 the 'Jupiter' company presented a somewhat similar concept, but instead of transmitting, focussed on consuming smoke. Check it out <a href="https://www.youtube.com/watch?v=psGm-VD1zNA" target="_blank">here</a>. Taking an unhealthy relationship to your phone to a whole next level. Welcome to the desert of the real, this is no paradoy.
+
+S.M.S. 2.0
+
+Version 2 of the Smoke Messaging Service add-on. Uses replaceable cartridges from electronic cigarettes and a fan to provide smoke. 
