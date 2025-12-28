@@ -172,7 +172,7 @@ $(function(){
     for (const section of sections){
       const folders = manifest[section];
 
-      for (const folder of sortedFolderKeys(section)){
+      for (const folder of sortedFolderKeys(section).slice().reverse()){
         const files = folders[folder];
         const featured = files.find(f => /featured\.(jpe?g)$/i.test(f));
         if (!featured) continue;
