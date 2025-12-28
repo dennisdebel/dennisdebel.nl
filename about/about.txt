@@ -14,23 +14,18 @@ Dennis de Bel (丹尼斯)生于1984年，荷兰无线电呼号：PD0WND。Dennis
 </p>
 
 
-<p>
-<a href='https://homebrewserver.club/' target='_blank'>homebrewserver.club</a><br>
-<a href='http://varia.zone/' target='_blank'>varia.zone</a>
-</p>
 
 
-
-<div id='title'>contact</div>
+<h2>contact</h2>
 For inquiries please contact me at the following email address: dennisdebel@gmail.com . Further details can by found in my Resume below.
 <br>
 Callsign: PD0WND
 
-<div id='title'>resume & portfolio</div>
+<h2>resume & portfolio</h2>
 <a href='http://www.dennisdebel.nl/upload/cv.pdf'>Download resume (PDF)</a> <br>
 <a href='http://www.dennisdebel.nl/upload/portfolio.pdf'>Download portfolio (PDF)</a>
 
-<div id='title'>legal</div>
+<h2>legal</h2>
 Account number: 612165213
 
 IBAN/SEPA: NL28ABNA0612165213
@@ -39,7 +34,9 @@ BIC: ABNANL2A
 TAX: NL182813198B01
 Chamber of Commerce: 24484602
 
-<div id='title'>links</div>
+<h2>links</h2>
+<a href='https://homebrewserver.club/' target='_blank'>homebrewserver.club</a><br>
+<a href='https://varia.zone/' target='_blank'>varia.zone</a>
 <a href='https://dennisdebel.nl/education-talks-workshops/'>Education, workshop and presentation documentation</a><br>
 <a href='http://www.youtube.com/user/danosdotnl?feature=mhum'>Youtube channel</a><br>
 <a href='http://github.com/dennisdebel'>Github</a><br>
