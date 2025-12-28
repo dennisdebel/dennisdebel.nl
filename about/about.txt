@@ -36,7 +36,7 @@ Chamber of Commerce: 24484602
 
 <h2>links</h2>
 <a href='https://homebrewserver.club/' target='_blank'>homebrewserver.club</a><br>
-<a href='https://varia.zone/' target='_blank'>varia.zone</a>
+<a href='https://varia.zone/' target='_blank'>varia.zone</a><br>
 <a href='https://dennisdebel.nl/education-talks-workshops/'>Education, workshop and presentation documentation</a><br>
 <a href='http://www.youtube.com/user/danosdotnl?feature=mhum'>Youtube channel</a><br>
 <a href='http://github.com/dennisdebel'>Github</a><br>
