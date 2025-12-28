@@ -167,25 +167,39 @@ $(function(){
     const $grid = $("#site-wrapper .grid");
 
     const sectionOrder = ["projects", "publications", "activities"];
-    const sections = sectionOrder.filter(s => manifest?.[s]);
+    const items = [];
 
-    for (const section of sections){
-      const folders = manifest[section];
+    for (const section of sectionOrder){
+      const folders = manifest?.[section];
+      if(!folders) continue;
 
-      for (const folder of sortedFolderKeys(section).slice().reverse()){
+      for (const folder of Object.keys(folders)){
         const files = folders[folder];
         const featured = files.find(f => /featured\.(jpe?g)$/i.test(f));
         if (!featured) continue;
 
-        $grid.append(`
-          <div class='grid-item ${section}-item' data-section='${section}' data-folder='${folder}'>
-            <a href='?section=${encodeURIComponent(section)}&project=${encodeURIComponent(folder)}' class='open-project'>
-              <img src='${section}/${featured}' alt='${folder}'/>
-            </a>
-            <p class='desc'>${prettyName(folder)}</p>
-          </div>
-        `);
+        items.push({
+          section,
+          folder,
+          featured,
+          year: extractYear(folder) ?? -1,
+          key: folder
+        });
       }
+    }
+
+    // newest year first, then name
+    items.sort((a,b) => (b.year - a.year) || a.key.localeCompare(b.key));
+
+    for (const it of items){
+      $grid.append(`
+        <div class='grid-item ${it.section}-item' data-section='${it.section}' data-folder='${it.folder}'>
+          <a href='?section=${encodeURIComponent(it.section)}&project=${encodeURIComponent(it.folder)}' class='open-project'>
+            <img src='${it.section}/${it.featured}' alt='${it.folder}'/>
+          </a>
+          <p class='desc'>${prettyName(it.folder)}</p>
+        </div>
+      `);
     }
 
     $grid.off("click.open").on("click.open", ".open-project", function(e){
@@ -196,6 +210,7 @@ $(function(){
 
     $grid.fadeIn(250);
   }
+
 
   // ---------- Section Grid: show ALL items ----------
   function renderSectionGrid(section){
