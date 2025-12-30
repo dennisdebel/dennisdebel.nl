@@ -505,7 +505,16 @@ span#menu{font-size:1.3rem; text-align:right;}
   letter-spacing: .2px;
 }
 
-.project-text a{ text-decoration:underline; }
+.project-text a{ 
+  text-decoration: none;          /* remove default underline */
+  border-bottom: 2px solid #000;  /* your custom underline */
+  display: inline;
+  padding-bottom: 0px;
+}
+
+.project-text a:hover{
+  border-bottom-color: rgba(0,0,0,0.6);
+}
 
 .project-media{
   width:100%;
