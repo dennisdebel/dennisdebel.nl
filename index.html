@@ -37,8 +37,14 @@ $(function(){
       .replace(/\s+/g, " ")
       .trim();
 
+    // Title Case each word
+    title = title.replace(/\b\w+/g, w =>
+      w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()
+    );
+
     return year ? `${title} (${year})` : title;
   }
+
 
 
   function isImage(file){
