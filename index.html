@@ -16,13 +16,30 @@ $(function(){
     const m = String(name).match(/^(\d{4})[-_ ]/);
     return m ? parseInt(m[1], 10) : null;
   }
-
+  
   function prettyName(name){
-    return String(name)
-      .replace(/[-_]+/g, " ")
+    const str = String(name);
+
+    // detect leading year
+    const m = str.match(/^(\d{4})[-_ ]+(.*)$/);
+
+    let year = null;
+    let title = str;
+
+    if (m) {
+      year = m[1];
+      title = m[2];
+    }
+
+    // normalize separators
+    title = title
+      .replace(/[_-]+/g, " ")
       .replace(/\s+/g, " ")
       .trim();
+
+    return year ? `${title} (${year})` : title;
   }
+
 
   function isImage(file){
     return /\.(png|jpe?g|gif|webp)$/i.test(file);
