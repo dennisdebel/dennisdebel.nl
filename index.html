@@ -16,7 +16,7 @@ $(function(){
     const m = String(name).match(/^(\d{4})[-_ ]/);
     return m ? parseInt(m[1], 10) : null;
   }
-  
+
   function prettyName(name){
     const str = String(name);
 
@@ -377,6 +377,26 @@ $(function(){
       url('./NimbusSanL-Reg.ttf') format('truetype');
 }
 body{font-family:"yolo";margin:0;padding:0;background:#fff;}
+
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+}
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+/* ensure text blocks never exceed viewport */
+.about-text, .project-text {
+  width: 100%;
+  max-width: 600px;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin-left: auto;
+  margin-right: auto;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
 a{color:black;text-decoration:none}
 pre,address{display:none}
 
