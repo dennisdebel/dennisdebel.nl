@@ -380,7 +380,6 @@ body{font-family:"yolo";margin:0;padding:0;background:#fff;}
 
 html, body {
   width: 100%;
-  overflow-x: hidden;
 }
 *, *::before, *::after {
   box-sizing: border-box;
@@ -419,12 +418,24 @@ span#menu{font-size:1.3rem; text-align:right;}
 #back-home{display: none;}
 
 #site-wrapper{
-  display:flex;
-  justify-content:center;
   width:100%;
   min-height:80vh;
   box-sizing:border-box;
+
+  /* iOS friendly: no flex centering */
+  display:block;
+  padding: 0 1rem;
 }
+
+.content.about-view,
+.content.project-view{
+  width:100%;
+  max-width:800px;
+  margin:0 auto;
+  padding: 1rem 0;
+  box-sizing:border-box;
+}
+
 
 .content.grid{
   max-width:1200px;
@@ -442,7 +453,7 @@ span#menu{font-size:1.3rem; text-align:right;}
 .project-title{
   max-width: 800px;
   margin: 0 auto 1rem auto;
-  padding: 9rem;
+  padding: 0 1rem;    /* NOT 9rem */
   font-size: 3rem;
   line-height: 1.3;
   text-align: center;
