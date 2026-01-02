@@ -61,6 +61,10 @@ input[type=range]{width:100%}
   let raf=null;
   let lastRevRate=1.0;
 
+  // relay state
+  let coilRate = 0;   // from relay: rate=...
+  let coilT = 0;      // from relay: t=...
+
   /* ================= UI ================= */
   const btn=document.getElementById("btn");
   const prime=document.getElementById("prime");
@@ -76,44 +80,47 @@ input[type=range]{width:100%}
 
 /* ================= WEBSOCKET INPUT ================= */
 
-// CHANGE THIS to your Render URL
-const WS_URL = "wss://your-app.onrender.com/ws";
+/* ================= RELAY WS ================= */
+// Fill these in:
+const RELAY = "your-app.onrender.com"; // no https://
+const room  = "motor";                 // must match ESP32 sender room
 
-let ws = null;
-let wsConnected = false;
+function connectRelay(){
+  const url = `wss://${RELAY}/ws?room=${encodeURIComponent(room)}&role=client`;
+  const ws = new WebSocket(url);
 
-function connectWS(){
-  ws = new WebSocket(WS_URL);
+  ws.onopen = () => { console.log("[relay] connected"); setStatus("relay connected"); };
+  ws.onclose= () => { console.log("[relay] closed"); setStatus("relay closed"); setTimeout(connectRelay, 2000); };
+  ws.onerror= () => { console.log("[relay] error"); setStatus("relay error"); };
 
-  ws.onopen = () => {
-    wsConnected = true;
-    console.log("[WS] connected");
-    setStatus("ws connected (idle)");
-  };
+  ws.onmessage = (ev) => {
+    const s = (""+ev.data).trim();
 
-  ws.onclose = () => {
-    wsConnected = false;
-    console.log("[WS] disconnected, retrying…");
-    setStatus("ws disconnected");
-    setTimeout(connectWS, 2000);
-  };
+    // parse relay protocol
+    const mr = s.match(/rate=([0-9.]+)/);
+    const mt = s.match(/t=([0-9.]+)/);
 
-  ws.onerror = (e) => {
-    console.warn("[WS] error", e);
-  };
+    if(mr) coilRate = parseFloat(mr[1]);
+    if(mt) coilT = parseFloat(mt[1]);
 
-  ws.onmessage = (e) => {
-    try {
-      const j = JSON.parse(e.data);
-      if (typeof j.thr === "number") {
-        // 🔑 THIS is the whole point
-        target = clamp(j.thr, 0, 255);
-      }
-    } catch(err) {
-      // ignore garbage
+    // Choose ONE driver:
+    // A) map coilRate to throttle target (recommended)
+    //    You MUST tune RATE_MAX to your motor/sensor.
+    const RATE_MAX = 250.0; // <-- adjust! (watch console/logs)
+    if (mr) {
+      const x = Math.max(0, Math.min(1, coilRate / RATE_MAX));
+      target = Math.round(x * 255);
     }
+
+    // (Optional) If you prefer to drive throttle by coilT:
+    // const T_MIN = 0.00, T_MAX = 0.50; // tune
+    // if (mt) {
+    //   const x = Math.max(0, Math.min(1, (coilT - T_MIN) / (T_MAX - T_MIN)));
+    //   target = Math.round(x * 255);
+    // }
   };
 }
+
 
 
   /* ================= HELPERS ================= */
