@@ -107,7 +107,7 @@ body{margin:0;font-family:system-ui;background:#0b0f14;color:#e9eef5}
   /* ================= RELAY ================= */
 
   function connectRelay(){
-    const url = `wss://${RELAY}/ws?room=${encodeURIComponent(ROOM)}&role=client`;
+    const url = `ws://${RELAY}/ws?room=${encodeURIComponent(ROOM)}&role=client`;
     const ws = new WebSocket(url);
 
     ws.onopen  = ()=>status.textContent="connected";
