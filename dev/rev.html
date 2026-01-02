@@ -3,135 +3,55 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Engine Throttle (Idle + Rev)</title>
+<title>Engine Throttle (Coil-Driven)</title>
 <style>
 :root{color-scheme:dark}
 body{margin:0;font-family:system-ui;background:#0b0f14;color:#e9eef5}
 .wrap{max-width:960px;margin:auto;padding:16px}
-.row{display:flex;gap:12px;flex-wrap:wrap}
-.card{flex:1;min-width:300px;background:#121a24;border:1px solid #1f2b3a;border-radius:14px;padding:14px}
-.btn{
-  width:100%;height:120px;border-radius:18px;border:1px solid #2b3a4d;
-  background:#1f6feb;color:white;font-size:22px;font-weight:800;
-}
-.btn.down{filter:brightness(1.1)}
+.card{background:#121a24;border:1px solid #1f2b3a;border-radius:14px;padding:14px}
 .muted{color:#9fb0c6;font-size:13px}
-input[type=range]{width:100%}
+.big{font-size:32px;font-weight:800}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="row">
-    <div class="card">
-      <button id="btn" class="btn">HOLD THROTTLE</button>
-      <p id="status" class="muted">idle (enable audio)</p>
-      <button id="prime">Enable Audio</button>
-    </div>
-
-    <div class="card">
-      <p class="muted">Pitch range</p>
-      <input id="pitchMin" type="range" min="0.8" max="1.2" step="0.01" value="1.0">
-      <input id="pitchMax" type="range" min="1.0" max="1.6" step="0.01" value="1.25">
-
-      <p class="muted">Fade (ms)</p>
-      <input id="fadeMs" type="range" min="100" max="1200" step="20" value="450">
-
-      <p class="muted">Idle pitch glide (ms)</p>
-      <input id="idleGlideMs" type="range" min="300" max="2000" step="50" value="900">
-
-      <p class="muted">Throttle inertia</p>
-      <input id="upRate" type="range" min="0.02" max="0.2" step="0.005" value="0.08">
-      <input id="downRate" type="range" min="0.02" max="0.2" step="0.005" value="0.04">
-    </div>
+  <div class="card">
+    <div class="big">Engine</div>
+    <p class="muted" id="status">connecting…</p>
+    <button id="prime">Enable Audio</button>
   </div>
 </div>
 
 <script>
 (() => {
-  /* ================= AUDIO STATE ================= */
+  /* ================= CONFIG ================= */
+
+  const RELAY = "recoil-d002.onrender.com";
+  const ROOM  = "motor";
+
+  const COIL_IDLE = 1.50;
+  const COIL_FULL = 2.10;
+
+  const PITCH_MIN = 1.00;
+  const PITCH_MAX = 1.28;
+
+  const COIL_SMOOTH = 0.10;
+
+  /* ================= AUDIO ================= */
+
   let ctx=null, master=null;
   let idleBuf=null, revBuf=null;
-
   let idleSrc=null, revSrc=null;
   let idleGain=null, revGain=null;
 
-  /* ================= ENGINE STATE ================= */
-  let throttle=0, target=0;
-  let isDown=false;
-  let raf=null;
-  let lastRevRate=1.0;
+  let coilValue = COIL_IDLE;
+  let coilSmooth = COIL_IDLE;
+  let lastRate = 1.0;
 
-  // relay state
-  let coilRate = 0;   // from relay: rate=...
-  let coilT = 0;      // from relay: t=...
+  const status = document.getElementById("status");
+  const prime  = document.getElementById("prime");
 
-  /* ================= UI ================= */
-  const btn=document.getElementById("btn");
-  const prime=document.getElementById("prime");
-  const status=document.getElementById("status");
-
-  const pitchMin=document.getElementById("pitchMin");
-  const pitchMax=document.getElementById("pitchMax");
-  const fadeMs=document.getElementById("fadeMs");
-  const idleGlideMs=document.getElementById("idleGlideMs");
-  const upRate=document.getElementById("upRate");
-  const downRate=document.getElementById("downRate");
-
-
-/* ================= WEBSOCKET INPUT ================= */
-
-/* ================= RELAY WS ================= */
-// Fill these in:
-const RELAY = "recoil-d002.onrender.com"; // no https://
-const room  = "motor";                 // must match ESP32 sender room
-
-function connectRelay(){
-  const url = `wss://${RELAY}/ws?room=${encodeURIComponent(room)}&role=client`;
-  const ws = new WebSocket(url);
-
-  ws.onopen = () => { console.log("[relay] connected"); setStatus("relay connected"); };
-  ws.onclose= () => { console.log("[relay] closed"); setStatus("relay closed"); setTimeout(connectRelay, 2000); };
-  ws.onerror= () => { console.log("[relay] error"); setStatus("relay error"); };
-
-  ws.onmessage = (ev) => {
-    const s = (""+ev.data).trim();
-
-    // parse relay protocol
-    const mr = s.match(/rate=([0-9.]+)/);
-    const mt = s.match(/t=([0-9.]+)/);
-
-    if(mr) coilRate = parseFloat(mr[1]);
-    if(mt) coilT = parseFloat(mt[1]);
-
-    // Choose ONE driver:
-    // A) map coilRate to throttle target (recommended)
-    //    You MUST tune RATE_MAX to your motor/sensor.
-    const RATE_MAX = 250.0; // <-- adjust! (watch console/logs)
-    if (mr) {
-      const x = Math.max(0, Math.min(1, coilRate / RATE_MAX));
-      target = Math.round(x * 255);
-    }
-
-    // (Optional) If you prefer to drive throttle by coilT:
-    // const T_MIN = 0.00, T_MAX = 0.50; // tune
-    // if (mt) {
-    //   const x = Math.max(0, Math.min(1, (coilT - T_MIN) / (T_MAX - T_MIN)));
-    //   target = Math.round(x * 255);
-    // }
-  };
-}
-
-
-
-  /* ================= HELPERS ================= */
-  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
-
-  function setStatus(s){ status.textContent=s; }
-
-  function kill(src){
-    if(!src) return;
-    try{ src.stop(); src.disconnect(); }catch(e){}
-  }
+  function kill(src){ if(src){ try{src.stop();src.disconnect();}catch(e){} } }
 
   function fade(param,val,ms){
     const t=ctx.currentTime;
@@ -140,7 +60,6 @@ function connectRelay(){
     param.linearRampToValueAtTime(val,t+ms/1000);
   }
 
-  /* ================= LOAD AUDIO ================= */
   async function load(url){
     const r=await fetch(url);
     return ctx.decodeAudioData(await r.arrayBuffer());
@@ -161,34 +80,17 @@ function connectRelay(){
     }
   }
 
-  /* ================= VOICES ================= */
   function startIdle(immediate=false,startRate=1.0){
     kill(idleSrc);
     idleSrc=ctx.createBufferSource();
     idleGain=ctx.createGain();
     idleSrc.buffer=idleBuf;
     idleSrc.loop=true;
-
-    idleSrc.playbackRate.setValueAtTime(startRate,ctx.currentTime);
+    idleSrc.playbackRate.value=startRate;
     idleGain.gain.value=immediate?1:0;
-
     idleSrc.connect(idleGain).connect(master);
     idleSrc.start();
-
-    if(!immediate){
-      fade(idleGain.gain,1,+fadeMs.value);
-      idleSrc.playbackRate.linearRampToValueAtTime(
-        +pitchMin.value,
-        ctx.currentTime + (+idleGlideMs.value/1000)
-      );
-    }
-  }
-
-  function stopIdle(){
-    if(!idleSrc) return;
-    fade(idleGain.gain,0,+fadeMs.value);
-    const s=idleSrc; idleSrc=null;
-    setTimeout(()=>kill(s),+fadeMs.value+40);
+    if(!immediate) fade(idleGain.gain,1,400);
   }
 
   function startRev(){
@@ -197,62 +99,58 @@ function connectRelay(){
     revGain=ctx.createGain();
     revSrc.buffer=revBuf;
     revSrc.loop=true;
-    revGain.gain.value=0;
+    revGain.gain.value=1;
     revSrc.connect(revGain).connect(master);
     revSrc.start();
-    fade(revGain.gain,1,+fadeMs.value);
   }
 
-  function stopRev(){
-    if(!revSrc) return;
-    fade(revGain.gain,0,+fadeMs.value);
-    const s=revSrc; revSrc=null;
-    setTimeout(()=>kill(s),+fadeMs.value+40);
+  /* ================= RELAY ================= */
+
+  function connectRelay(){
+    const url = `wss://${RELAY}/ws?room=${encodeURIComponent(ROOM)}&role=client`;
+    const ws = new WebSocket(url);
+
+    ws.onopen  = ()=>status.textContent="connected";
+    ws.onclose = ()=>status.textContent="disconnected";
+    ws.onerror = ()=>status.textContent="error";
+
+    ws.onmessage = (ev)=>{
+      const s=(""+ev.data).trim();
+      const m=s.match(/rate=([0-9.]+)/);
+      if(m) coilValue=parseFloat(m[1]);
+    };
   }
 
-  /* ================= UPDATE LOOP ================= */
+  /* ================= LOOP ================= */
+
   function tick(){
-    const rate = target>throttle ? +upRate.value : +downRate.value;
-    throttle += (target-throttle)*rate;
-    throttle = clamp(throttle,0,255);
+    coilSmooth += (coilValue - coilSmooth) * COIL_SMOOTH;
+
+    let x = (coilSmooth - COIL_IDLE) / (COIL_FULL - COIL_IDLE);
+    x = Math.max(0, Math.min(1, x));
+
+    const rate = PITCH_MIN + x * (PITCH_MAX - PITCH_MIN);
+    lastRate = rate;
 
     if(revSrc){
-      const t=throttle/255;
-      const curved=Math.pow(t,0.6);
-      const minR=+pitchMin.value;
-      const maxR=Math.max(minR,+pitchMax.value);
-      const r=minR + curved*(maxR-minR);
-      lastRevRate=r;
-      revSrc.playbackRate.setTargetAtTime(r,ctx.currentTime,0.12);
+      revSrc.playbackRate.setTargetAtTime(rate,ctx.currentTime,0.08);
     }
-    raf=requestAnimationFrame(tick);
+
+    // simple state
+    if(x > 0.03){
+      if(!revSrc){ kill(idleSrc); startRev(); }
+    }else{
+      if(!idleSrc){ kill(revSrc); startIdle(false,lastRate); }
+    }
+
+    requestAnimationFrame(tick);
   }
 
-  /* ================= INPUT ================= */
-  btn.onpointerdown=async()=>{
-    if(isDown) return;
-    isDown=true;
+  prime.onclick = async()=>{
     await ensureAudio();
-    setStatus("throttle");
-    stopIdle();
-    startRev();
-    target=255;
-    if(!raf) raf=requestAnimationFrame(tick);
+    connectRelay();
+    requestAnimationFrame(tick);
   };
-
-  btn.onpointerup=()=>{
-    if(!isDown) return;
-    isDown=false;
-    target=0;
-    setStatus("idle");
-    stopRev();
-    startIdle(false,lastRevRate);
-  };
-
-  prime.onclick=ensureAudio;
-
-  connectRelay();
-
 })();
 </script>
 </body>
