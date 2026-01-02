@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Engine Throttle (Idle + Rev)</title>
+<style>
+:root{color-scheme:dark}
+body{margin:0;font-family:system-ui;background:#0b0f14;color:#e9eef5}
+.wrap{max-width:960px;margin:auto;padding:16px}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+.card{flex:1;min-width:300px;background:#121a24;border:1px solid #1f2b3a;border-radius:14px;padding:14px}
+.btn{
+  width:100%;height:120px;border-radius:18px;border:1px solid #2b3a4d;
+  background:#1f6feb;color:white;font-size:22px;font-weight:800;
+}
+.btn.down{filter:brightness(1.1)}
+.muted{color:#9fb0c6;font-size:13px}
+input[type=range]{width:100%}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="row">
+    <div class="card">
+      <button id="btn" class="btn">HOLD THROTTLE</button>
+      <p id="status" class="muted">idle (enable audio)</p>
+      <button id="prime">Enable Audio</button>
+    </div>
+
+    <div class="card">
+      <p class="muted">Pitch range</p>
+      <input id="pitchMin" type="range" min="0.8" max="1.2" step="0.01" value="1.0">
+      <input id="pitchMax" type="range" min="1.0" max="1.6" step="0.01" value="1.25">
+
+      <p class="muted">Fade (ms)</p>
+      <input id="fadeMs" type="range" min="100" max="1200" step="20" value="450">
+
+      <p class="muted">Idle pitch glide (ms)</p>
+      <input id="idleGlideMs" type="range" min="300" max="2000" step="50" value="900">
+
+      <p class="muted">Throttle inertia</p>
+      <input id="upRate" type="range" min="0.02" max="0.2" step="0.005" value="0.08">
+      <input id="downRate" type="range" min="0.02" max="0.2" step="0.005" value="0.04">
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+  /* ================= AUDIO STATE ================= */
+  let ctx=null, master=null;
+  let idleBuf=null, revBuf=null;
+
+  let idleSrc=null, revSrc=null;
+  let idleGain=null, revGain=null;
+
+  /* ================= ENGINE STATE ================= */
+  let throttle=0, target=0;
+  let isDown=false;
+  let raf=null;
+  let lastRevRate=1.0;
+
+  /* ================= UI ================= */
+  const btn=document.getElementById("btn");
+  const prime=document.getElementById("prime");
+  const status=document.getElementById("status");
+
+  const pitchMin=document.getElementById("pitchMin");
+  const pitchMax=document.getElementById("pitchMax");
+  const fadeMs=document.getElementById("fadeMs");
+  const idleGlideMs=document.getElementById("idleGlideMs");
+  const upRate=document.getElementById("upRate");
+  const downRate=document.getElementById("downRate");
+
+
+/* ================= WEBSOCKET INPUT ================= */
+
+// CHANGE THIS to your Render URL
+const WS_URL = "wss://your-app.onrender.com/ws";
+
+let ws = null;
+let wsConnected = false;
+
+function connectWS(){
+  ws = new WebSocket(WS_URL);
+
+  ws.onopen = () => {
+    wsConnected = true;
+    console.log("[WS] connected");
+    setStatus("ws connected (idle)");
+  };
+
+  ws.onclose = () => {
+    wsConnected = false;
+    console.log("[WS] disconnected, retrying…");
+    setStatus("ws disconnected");
+    setTimeout(connectWS, 2000);
+  };
+
+  ws.onerror = (e) => {
+    console.warn("[WS] error", e);
+  };
+
+  ws.onmessage = (e) => {
+    try {
+      const j = JSON.parse(e.data);
+      if (typeof j.thr === "number") {
+        // 🔑 THIS is the whole point
+        target = clamp(j.thr, 0, 255);
+      }
+    } catch(err) {
+      // ignore garbage
+    }
+  };
+}
+
+
+  /* ================= HELPERS ================= */
+  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+
+  function setStatus(s){ status.textContent=s; }
+
+  function kill(src){
+    if(!src) return;
+    try{ src.stop(); src.disconnect(); }catch(e){}
+  }
+
+  function fade(param,val,ms){
+    const t=ctx.currentTime;
+    param.cancelScheduledValues(t);
+    param.setValueAtTime(param.value,t);
+    param.linearRampToValueAtTime(val,t+ms/1000);
+  }
+
+  /* ================= LOAD AUDIO ================= */
+  async function load(url){
+    const r=await fetch(url);
+    return ctx.decodeAudioData(await r.arrayBuffer());
+  }
+
+  async function ensureAudio(){
+    if(!ctx){
+      ctx=new AudioContext();
+      master=ctx.createGain();
+      master.gain.value=0.9;
+      master.connect(ctx.destination);
+    }
+    if(ctx.state!=="running") await ctx.resume();
+    if(!idleBuf){
+      idleBuf=await load("idling.wav");
+      revBuf =await load("rev.wav");
+      startIdle(true,1.0);
+    }
+  }
+
+  /* ================= VOICES ================= */
+  function startIdle(immediate=false,startRate=1.0){
+    kill(idleSrc);
+    idleSrc=ctx.createBufferSource();
+    idleGain=ctx.createGain();
+    idleSrc.buffer=idleBuf;
+    idleSrc.loop=true;
+
+    idleSrc.playbackRate.setValueAtTime(startRate,ctx.currentTime);
+    idleGain.gain.value=immediate?1:0;
+
+    idleSrc.connect(idleGain).connect(master);
+    idleSrc.start();
+
+    if(!immediate){
+      fade(idleGain.gain,1,+fadeMs.value);
+      idleSrc.playbackRate.linearRampToValueAtTime(
+        +pitchMin.value,
+        ctx.currentTime + (+idleGlideMs.value/1000)
+      );
+    }
+  }
+
+  function stopIdle(){
+    if(!idleSrc) return;
+    fade(idleGain.gain,0,+fadeMs.value);
+    const s=idleSrc; idleSrc=null;
+    setTimeout(()=>kill(s),+fadeMs.value+40);
+  }
+
+  function startRev(){
+    kill(revSrc);
+    revSrc=ctx.createBufferSource();
+    revGain=ctx.createGain();
+    revSrc.buffer=revBuf;
+    revSrc.loop=true;
+    revGain.gain.value=0;
+    revSrc.connect(revGain).connect(master);
+    revSrc.start();
+    fade(revGain.gain,1,+fadeMs.value);
+  }
+
+  function stopRev(){
+    if(!revSrc) return;
+    fade(revGain.gain,0,+fadeMs.value);
+    const s=revSrc; revSrc=null;
+    setTimeout(()=>kill(s),+fadeMs.value+40);
+  }
+
+  /* ================= UPDATE LOOP ================= */
+  function tick(){
+    const rate = target>throttle ? +upRate.value : +downRate.value;
+    throttle += (target-throttle)*rate;
+    throttle = clamp(throttle,0,255);
+
+    if(revSrc){
+      const t=throttle/255;
+      const curved=Math.pow(t,0.6);
+      const minR=+pitchMin.value;
+      const maxR=Math.max(minR,+pitchMax.value);
+      const r=minR + curved*(maxR-minR);
+      lastRevRate=r;
+      revSrc.playbackRate.setTargetAtTime(r,ctx.currentTime,0.12);
+    }
+    raf=requestAnimationFrame(tick);
+  }
+
+  /* ================= INPUT ================= */
+  btn.onpointerdown=async()=>{
+    if(isDown) return;
+    isDown=true;
+    await ensureAudio();
+    setStatus("throttle");
+    stopIdle();
+    startRev();
+    target=255;
+    if(!raf) raf=requestAnimationFrame(tick);
+  };
+
+  btn.onpointerup=()=>{
+    if(!isDown) return;
+    isDown=false;
+    target=0;
+    setStatus("idle");
+    stopRev();
+    startIdle(false,lastRevRate);
+  };
+
+  prime.onclick=ensureAudio;
+
+  connectWS();
+})();
+</script>
+</body>
+</html>
