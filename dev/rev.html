@@ -4,38 +4,66 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Engine Throttle (Coil-Driven)</title>
+
 <style>
 :root{color-scheme:dark}
 body{margin:0;font-family:system-ui;background:#0b0f14;color:#e9eef5}
 .wrap{max-width:960px;margin:auto;padding:16px}
-.card{background:#121a24;border:1px solid #1f2b3a;border-radius:14px;padding:14px}
+.card{background:#121a24;border:1px solid #1f2b3a;border-radius:14px;padding:16px}
 .muted{color:#9fb0c6;font-size:13px}
 .big{font-size:32px;font-weight:800}
+.kv{display:grid;grid-template-columns:120px 1fr;gap:6px 12px}
+button{margin-top:12px;padding:10px 14px;border-radius:10px;border:0;
+  background:#1f6feb;color:#fff;font-size:15px;font-weight:700;cursor:pointer}
 </style>
 </head>
+
 <body>
 <div class="wrap">
   <div class="card">
     <div class="big">Engine</div>
-    <p class="muted" id="status">connecting…</p>
-    <button id="prime">Enable Audio</button>
+    <p class="muted" id="status">idle</p>
+
+    <div class="kv">
+      <div>Raw ADC</div><div><b id="raw">—</b></div>
+      <div>Coil</div><div><b id="coil">—</b></div>
+      <div>Pitch</div><div><b id="pitch">—</b></div>
+    </div>
+
+    <button id="prime">Enable Audio + Connect</button>
   </div>
 </div>
 
 <script>
 (() => {
+
+  /* ================= HELPERS ================= */
+  const el = id => document.getElementById(id);
+  const clamp = (v,a,b)=>Math.max(a,Math.min(b,v));
+
   /* ================= CONFIG ================= */
 
   const RELAY = "recoil-d002.onrender.com";
   const ROOM  = "motor";
 
+  // these are YOUR measured coil amplitude values
   const COIL_IDLE = 1.50;
   const COIL_FULL = 2.10;
 
+  // engine pitch range
   const PITCH_MIN = 1.00;
   const PITCH_MAX = 1.28;
 
-  const COIL_SMOOTH = 0.10;
+  // smoothing (0..1, lower = smoother)
+  const COIL_SMOOTH = 0.12;
+
+  /* ================= UI ================= */
+
+  const statusEl = el("status");
+  const rawEl    = el("raw");
+  const coilEl   = el("coil");
+  const pitchEl  = el("pitch");
+  const primeBtn = el("prime");
 
   /* ================= AUDIO ================= */
 
@@ -44,114 +72,134 @@ body{margin:0;font-family:system-ui;background:#0b0f14;color:#e9eef5}
   let idleSrc=null, revSrc=null;
   let idleGain=null, revGain=null;
 
-  let coilValue = COIL_IDLE;
-  let coilSmooth = COIL_IDLE;
-  let lastRate = 1.0;
-
-  const status = document.getElementById("status");
-  const prime  = document.getElementById("prime");
-
-  function kill(src){ if(src){ try{src.stop();src.disconnect();}catch(e){} } }
-
-  function fade(param,val,ms){
-    const t=ctx.currentTime;
-    param.cancelScheduledValues(t);
-    param.setValueAtTime(param.value,t);
-    param.linearRampToValueAtTime(val,t+ms/1000);
+  function kill(src){
+    if(!src) return;
+    try{ src.stop(); src.disconnect(); }catch(e){}
   }
 
   async function load(url){
-    const r=await fetch(url);
+    const r = await fetch(url);
     return ctx.decodeAudioData(await r.arrayBuffer());
   }
 
   async function ensureAudio(){
     if(!ctx){
-      ctx=new AudioContext();
-      master=ctx.createGain();
-      master.gain.value=0.9;
+      ctx = new AudioContext();
+      master = ctx.createGain();
+      master.gain.value = 0.9;
       master.connect(ctx.destination);
     }
-    if(ctx.state!=="running") await ctx.resume();
+    if(ctx.state !== "running") await ctx.resume();
+
     if(!idleBuf){
-      idleBuf=await load("idling.wav");
-      revBuf =await load("rev.wav");
+      idleBuf = await load("idling.wav");
+      revBuf  = await load("rev.wav");
       startIdle(true,1.0);
     }
   }
 
-  function startIdle(immediate=false,startRate=1.0){
+  function startIdle(immediate=false,rate=1.0){
     kill(idleSrc);
-    idleSrc=ctx.createBufferSource();
-    idleGain=ctx.createGain();
-    idleSrc.buffer=idleBuf;
-    idleSrc.loop=true;
-    idleSrc.playbackRate.value=startRate;
-    idleGain.gain.value=immediate?1:0;
+    idleSrc = ctx.createBufferSource();
+    idleGain = ctx.createGain();
+    idleSrc.buffer = idleBuf;
+    idleSrc.loop = true;
+    idleSrc.playbackRate.value = rate;
+    idleGain.gain.value = immediate ? 1 : 0;
     idleSrc.connect(idleGain).connect(master);
     idleSrc.start();
-    if(!immediate) fade(idleGain.gain,1,400);
+    if(!immediate){
+      idleGain.gain.linearRampToValueAtTime(1, ctx.currentTime + 0.4);
+    }
   }
 
   function startRev(){
     kill(revSrc);
-    revSrc=ctx.createBufferSource();
-    revGain=ctx.createGain();
-    revSrc.buffer=revBuf;
-    revSrc.loop=true;
-    revGain.gain.value=1;
+    revSrc = ctx.createBufferSource();
+    revGain = ctx.createGain();
+    revSrc.buffer = revBuf;
+    revSrc.loop = true;
+    revGain.gain.value = 1;
     revSrc.connect(revGain).connect(master);
     revSrc.start();
   }
 
   /* ================= RELAY ================= */
 
-  function connectRelay(){
-    const url = `wss://${RELAY}/ws?room=motor&role=client`;
-    const ws = new WebSocket(url);
+  let ws=null;
 
-    ws.onopen  = ()=>status.textContent="connected";
-    ws.onclose = ()=>status.textContent="disconnected";
-    ws.onerror = ()=>status.textContent="error";
+  function connectRelay(){
+    const url = `wss://${RELAY}/ws?room=${ROOM}&role=client`;
+    ws = new WebSocket(url);
+
+    ws.onopen  = ()=>statusEl.textContent="connected";
+    ws.onclose = ()=>statusEl.textContent="disconnected";
+    ws.onerror = ()=>statusEl.textContent="error";
 
     ws.onmessage = (ev)=>{
       const s=(""+ev.data).trim();
-      const m=s.match(/rate=([0-9.]+)/);
-      if(m) coilValue=parseFloat(m[1]);
+
+      const mRaw = s.match(/raw=([0-9]+)/);
+      if(mRaw){
+        rawEl.textContent = mRaw[1];
+      }
+
+      const mRate = s.match(/rate=([0-9.]+)/);
+      if(mRate){
+        coilValue = parseFloat(mRate[1]);
+        coilEl.textContent = coilValue.toFixed(3);
+      }
     };
   }
 
-  /* ================= LOOP ================= */
+  /* ================= ENGINE STATE ================= */
+
+  let coilValue  = COIL_IDLE;
+  let coilSmooth = COIL_IDLE;
+  let lastPitch  = 1.0;
 
   function tick(){
     coilSmooth += (coilValue - coilSmooth) * COIL_SMOOTH;
 
+    // normalize 0..1
     let x = (coilSmooth - COIL_IDLE) / (COIL_FULL - COIL_IDLE);
-    x = Math.max(0, Math.min(1, x));
+    x = clamp(x,0,1);
 
-    const rate = PITCH_MIN + x * (PITCH_MAX - PITCH_MIN);
-    lastRate = rate;
+    const pitch = PITCH_MIN + x*(PITCH_MAX - PITCH_MIN);
+    pitchEl.textContent = pitch.toFixed(3);
+    lastPitch = pitch;
 
     if(revSrc){
-      revSrc.playbackRate.setTargetAtTime(rate,ctx.currentTime,0.08);
+      revSrc.playbackRate.setTargetAtTime(pitch, ctx.currentTime, 0.08);
     }
 
-    // simple state
-    if(x > 0.03){
-      if(!revSrc){ kill(idleSrc); startRev(); }
+    // state machine
+    if(x > 0.04){
+      if(!revSrc){
+        kill(idleSrc);
+        startRev();
+      }
     }else{
-      if(!idleSrc){ kill(revSrc); startIdle(false,lastRate); }
+      if(!idleSrc){
+        kill(revSrc);
+        startIdle(false,lastPitch);
+      }
     }
 
     requestAnimationFrame(tick);
   }
 
-  prime.onclick = async()=>{
+  /* ================= START ================= */
+
+  primeBtn.onclick = async()=>{
+    primeBtn.disabled = true;
     await ensureAudio();
     connectRelay();
     requestAnimationFrame(tick);
   };
+
 })();
 </script>
 </body>
 </html>
+
