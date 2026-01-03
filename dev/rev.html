@@ -1,286 +1,205 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
-  <title>ADC → idle.wav pitch (WebSocket)</title>
-  <style>
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:12px;background:#0b0f14;color:#e9eef5}
-    .row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-start}
-    .card{background:#121a24;border:1px solid #1f2b3a;border-radius:12px;padding:12px;box-shadow:0 8px 24px rgba(0,0,0,.25)}
-    button{background:#1f6feb;color:#fff;border:0;border-radius:10px;padding:10px 12px;font-weight:650;cursor:pointer}
-    button.secondary{background:#263445}
-    button:disabled{opacity:.55;cursor:not-allowed}
-    label{display:flex;gap:8px;align-items:center;margin:8px 0;color:#c7d2e1}
-    input[type="range"]{width:260px}
-    small{color:#a7b5c8}
-    .kv{display:grid;grid-template-columns:140px 1fr;gap:6px 10px;font-variant-numeric:tabular-nums}
-    .kv div:nth-child(odd){color:#a7b5c8}
-    .pill{display:inline-block;padding:4px 10px;border-radius:999px;background:#1b2635;border:1px solid #2a3a50;color:#c7d2e1;font-size:12px}
-    .ok{color:#8cffb3}
-    .warn{color:#ffcc66}
-    .bad{color:#ff6b6b}
-    #graph{width:min(900px,92vw);height:280px;background:#0a111a;border-radius:12px;border:1px solid #1f2b3a}
-    a{color:#7cc4ff}
-  </style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Engine Throttle (Coil-Driven)</title>
+
+<style>
+:root{color-scheme:dark}
+body{margin:0;font-family:system-ui;background:#0b0f14;color:#e9eef5}
+.wrap{max-width:960px;margin:auto;padding:16px}
+.card{background:#121a24;border:1px solid #1f2b3a;border-radius:14px;padding:16px}
+.muted{color:#9fb0c6;font-size:13px}
+.big{font-size:32px;font-weight:800}
+.kv{display:grid;grid-template-columns:120px 1fr;gap:6px 12px}
+button{margin-top:12px;padding:10px 14px;border-radius:10px;border:0;
+  background:#1f6feb;color:#fff;font-size:15px;font-weight:700;cursor:pointer}
+</style>
 </head>
+
 <body>
-<h2 style="margin:0 0 8px 0;">ESP32 raw ADC → <code>idle.wav</code> pitch</h2>
-
-<div class="row">
-  <div class="card" style="min-width:340px;max-width:560px">
-    <div class="row" style="gap:8px;align-items:center">
-      <button id="btnConn">Connect</button>
-      <button id="btnAudio" class="secondary" disabled>Enable audio</button>
-    </div>
-
-    <div style="margin-top:10px" class="kv">
-      <div>Status</div><div id="st" class="pill">idle</div>
-      <div>Room</div><div><b id="room"></b></div>
-
-      <div>ADC raw</div><div><b id="raw">—</b></div>
-      <div>Norm (0..1)</div><div><b id="norm">—</b></div>
-      <div>PlaybackRate</div><div><b id="pr">—</b></div>
-    </div>
-
-    <div style="margin-top:12px">
-      <label>
-        ADC min (idle)
-        <input id="adcMin" type="range" min="0" max="4095" step="1" value="1885">
-        <span id="adcMinV">1885</span>
-      </label>
-
-      <label>
-        ADC max (full)
-        <input id="adcMax" type="range" min="0" max="4095" step="1" value="2150">
-        <span id="adcMaxV">2150</span>
-      </label>
-
-      <label>
-        Smoothing (0 = instant, 0.9 = smooth)
-        <input id="smooth" type="range" min="0" max="0.95" step="0.01" value="0.15">
-        <span id="smoothV">0.15</span>
-      </label>
-
-      <label>
-        Pitch range (min rate)
-        <input id="pMin" type="range" min="0.25" max="2.0" step="0.01" value="0.85">
-        <span id="pMinV">0.85</span>
-      </label>
-
-      <label>
-        Pitch range (max rate)
-        <input id="pMax" type="range" min="0.25" max="3.0" step="0.01" value="1.85">
-        <span id="pMaxV">1.85</span>
-      </label>
-
-      <small class="warn">
-        Put <b>idle.wav</b> next to this HTML. iOS needs a tap on <b>Enable audio</b>.
-      </small>
-    </div>
-  </div>
-
+<div class="wrap">
   <div class="card">
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
-      <div><b>Raw ADC graph</b> <span class="pill">0..4095</span></div>
-      <small>last ~12 seconds</small>
+    <div class="big">Engine</div>
+    <p class="muted" id="status">idle</p>
+
+    <div class="kv">
+      <div>Raw ADC</div><div><b id="raw">—</b></div>
+      <div>Coil</div><div><b id="coil">—</b></div>
+      <div>Pitch</div><div><b id="pitch">—</b></div>
     </div>
-    <canvas id="graph" width="900" height="280"></canvas>
+
+    <button id="prime">Enable Audio + Connect</button>
   </div>
 </div>
 
 <script>
 (() => {
+
+  /* ================= HELPERS ================= */
   const el = id => document.getElementById(id);
+  const clamp = (v,a,b)=>Math.max(a,Math.min(b,v));
+
+  /* ================= CONFIG ================= */
 
   const RELAY = "recoil-d002.onrender.com";
-  const params = new URLSearchParams(location.search);
-  const room = params.get("room") || "motor";
-  el("room").textContent = room;
+  const ROOM  = "motor";
 
-  const st = el("st");
-  const rawEl = el("raw");
-  const normEl = el("norm");
-  const prEl = el("pr");
+  // these are YOUR measured coil amplitude values
+  const COIL_IDLE = 1.50;
+  const COIL_FULL = 2.10;
 
-  const btnConn = el("btnConn");
-  const btnAudio = el("btnAudio");
+  // engine pitch range
+  const PITCH_MIN = 1.00;
+  const PITCH_MAX = 1.28;
 
-  const adcMin = el("adcMin"), adcMinV = el("adcMinV");
-  const adcMax = el("adcMax"), adcMaxV = el("adcMaxV");
-  const smooth = el("smooth"), smoothV = el("smoothV");
-  const pMin = el("pMin"), pMinV = el("pMinV");
-  const pMax = el("pMax"), pMaxV = el("pMaxV");
+  // smoothing (0..1, lower = smoother)
+  const COIL_SMOOTH = 0.12;
 
-  adcMin.oninput = () => adcMinV.textContent = adcMin.value;
-  adcMax.oninput = () => adcMaxV.textContent = adcMax.value;
-  smooth.oninput = () => smoothV.textContent = (+smooth.value).toFixed(2);
-  pMin.oninput = () => pMinV.textContent = (+pMin.value).toFixed(2);
-  pMax.oninput = () => pMaxV.textContent = (+pMax.value).toFixed(2);
+  /* ================= UI ================= */
 
-  const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
-  const lerp=(a,b,t)=>a+(b-a)*t;
+  const statusEl = el("status");
+  const rawEl    = el("raw");
+  const coilEl   = el("coil");
+  const pitchEl  = el("pitch");
+  const primeBtn = el("prime");
 
-  // ----- graph (raw ADC) -----
-  const canvas = el("graph");
-  const ctx = canvas.getContext("2d");
-  const N = 720;
-  const buf = new Float32Array(N);
-  let n = 0;
+  /* ================= AUDIO ================= */
 
-  function push(v){
-    if(n < N) buf[n++] = v;
-    else { buf.copyWithin(0,1); buf[N-1] = v; }
+  let ctx=null, master=null;
+  let idleBuf=null, revBuf=null;
+  let idleSrc=null, revSrc=null;
+  let idleGain=null, revGain=null;
+
+  function kill(src){
+    if(!src) return;
+    try{ src.stop(); src.disconnect(); }catch(e){}
   }
 
-  function draw(){
-    const w=canvas.width,h=canvas.height;
-    ctx.clearRect(0,0,w,h);
+  async function load(url){
+    const r = await fetch(url);
+    return ctx.decodeAudioData(await r.arrayBuffer());
+  }
 
-    ctx.strokeStyle="rgba(255,255,255,0.08)";
-    ctx.lineWidth=1;
-    for(let i=0;i<=6;i++){
-      const y=(h-20)-i*(h-40)/6;
-      ctx.beginPath(); ctx.moveTo(40,y); ctx.lineTo(w-10,y); ctx.stroke();
+  async function ensureAudio(){
+    if(!ctx){
+      ctx = new AudioContext();
+      master = ctx.createGain();
+      master.gain.value = 0.9;
+      master.connect(ctx.destination);
     }
+    if(ctx.state !== "running") await ctx.resume();
 
-    ctx.fillStyle="rgba(255,255,255,0.65)";
-    ctx.font="12px system-ui";
-    ctx.fillText("ADC", 10, 18);
-
-    const maxV = 4095;
-
-    ctx.fillStyle="rgba(255,255,255,0.5)";
-    for(let i=0;i<=6;i++){
-      const v=(maxV*i/6);
-      const y=(h-20)-i*(h-40)/6;
-      ctx.fillText(v.toFixed(0), 8, y+4);
+    if(!idleBuf){
+      idleBuf = await load("idling.wav");
+      revBuf  = await load("rev.wav");
+      startIdle(true,1.0);
     }
+  }
 
-    if(n<2) return;
-    const x0=40,x1=w-10,y0=h-20,y1=20;
-    ctx.strokeStyle="rgba(124,196,255,0.95)";
-    ctx.lineWidth=2;
-    ctx.beginPath();
-    for(let i=0;i<n;i++){
-      const t=i/(N-1);
-      const x=lerp(x0,x1,t);
-      const v=buf[i];
-      const y=y0-(v/maxV)*(y0-y1);
-      if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  function startIdle(immediate=false,rate=1.0){
+    kill(idleSrc);
+    idleSrc = ctx.createBufferSource();
+    idleGain = ctx.createGain();
+    idleSrc.buffer = idleBuf;
+    idleSrc.loop = true;
+    idleSrc.playbackRate.value = rate;
+    idleGain.gain.value = immediate ? 1 : 0;
+    idleSrc.connect(idleGain).connect(master);
+    idleSrc.start();
+    if(!immediate){
+      idleGain.gain.linearRampToValueAtTime(1, ctx.currentTime + 0.4);
     }
-    ctx.stroke();
-
-    const cur=buf[n-1];
-    ctx.fillStyle="rgba(233,238,245,0.95)";
-    ctx.fillText(`raw: ${cur.toFixed(0)}`, x0+10, y1+14);
   }
 
-  // ----- audio (idle.wav pitch) -----
-  let audioCtx=null;
-  let gain=null;
-  let src=null;
-  let audioOn=false;
-  let currentRate = 1.0;
-
-  async function startIdleLoop(){
-    if(audioCtx) return;
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    gain = audioCtx.createGain();
-    gain.gain.value = 0.0;
-    gain.connect(audioCtx.destination);
-
-    // load idle.wav
-    const res = await fetch("./idle.wav");
-    const arr = await res.arrayBuffer();
-    const buf = await audioCtx.decodeAudioData(arr);
-
-    src = audioCtx.createBufferSource();
-    src.buffer = buf;
-    src.loop = true;
-    src.playbackRate.value = 1.0;
-    src.connect(gain);
-    src.start();
+  function startRev(){
+    kill(revSrc);
+    revSrc = ctx.createBufferSource();
+    revGain = ctx.createGain();
+    revSrc.buffer = revBuf;
+    revSrc.loop = true;
+    revGain.gain.value = 1;
+    revSrc.connect(revGain).connect(master);
+    revSrc.start();
   }
 
-  function setPitchFromNorm(x){
-    if(!audioOn || !src || !audioCtx) return;
-    const rMin = +pMin.value;
-    const rMax = +pMax.value;
-    const target = lerp(rMin, rMax, x);
+  /* ================= RELAY ================= */
 
-    // smooth the playbackRate to avoid zipper noise
-    currentRate = currentRate*0.85 + target*0.15;
-
-    src.playbackRate.setTargetAtTime(currentRate, audioCtx.currentTime, 0.03);
-    gain.gain.setTargetAtTime(0.10, audioCtx.currentTime, 0.08); // audible
-    prEl.textContent = currentRate.toFixed(3);
-  }
-
-  // ----- input mapping -----
-  let raw = 0;
-  let normLP = 0;
-
-  function updateMapping(){
-    rawEl.textContent = String(raw);
-
-    const mn = +adcMin.value;
-    const mx = Math.max(mn+1, +adcMax.value);
-
-    const x = clamp((raw - mn)/(mx - mn), 0, 1);
-
-    const s = +smooth.value;
-    normLP = s*normLP + (1-s)*x;
-
-    normEl.textContent = normLP.toFixed(3);
-    setPitchFromNorm(normLP);
-  }
-
-  // ----- websocket -----
   let ws=null;
 
-  function connect(){
-    //const url = `wss://${RELAY}/ws?room=${encodeURIComponent(room)}&role=client`;
-    const url = `wss://${RELAY}/ws?room=motor&role=client`; //hardcoded room
-
-    st.textContent = "connecting…";
-    st.className = "pill warn";
-
+  function connectRelay(){
+    const url = `wss://${RELAY}/ws?room=${ROOM}&role=client`;
     ws = new WebSocket(url);
 
-    ws.onopen = () => {
-      st.textContent = "connected";
-      st.className = "pill ok";
-      btnAudio.disabled = false;
-    };
-    ws.onclose = () => { st.textContent="closed"; st.className="pill bad"; };
-    ws.onerror = () => { st.textContent="error"; st.className="pill bad"; };
+    ws.onopen  = ()=>statusEl.textContent="connected";
+    ws.onclose = ()=>statusEl.textContent="disconnected";
+    ws.onerror = ()=>statusEl.textContent="error";
 
-    ws.onmessage = (ev) => {
-      const s = (""+ev.data).trim();
-      // Expect: "raw=1893"
-      const m = s.match(/raw=(\d+)/);
-      if(m){
-        raw = parseInt(m[1], 10);
-        push(raw);
-        draw();
-        updateMapping();
+    ws.onmessage = (ev)=>{
+      const s=(""+ev.data).trim();
+
+      const mRaw = s.match(/raw=([0-9]+)/);
+      if(mRaw){
+        rawEl.textContent = mRaw[1];
+      }
+
+      const mRate = s.match(/rate=([0-9.]+)/);
+      if(mRate){
+        coilValue = parseFloat(mRate[1]);
+        coilEl.textContent = coilValue.toFixed(3);
       }
     };
   }
 
-  btnConn.onclick = () => { connect(); btnConn.disabled = true; };
+  /* ================= ENGINE STATE ================= */
 
-  btnAudio.onclick = async () => {
-    await startIdleLoop();
-    if(audioCtx.state === "suspended") await audioCtx.resume();
-    audioOn = !audioOn;
-    btnAudio.textContent = audioOn ? "Sound ON" : "Enable audio";
-    if(!audioOn && gain) gain.gain.value = 0.0;
+  let coilValue  = COIL_IDLE;
+  let coilSmooth = COIL_IDLE;
+  let lastPitch  = 1.0;
+
+  function tick(){
+    coilSmooth += (coilValue - coilSmooth) * COIL_SMOOTH;
+
+    // normalize 0..1
+    let x = (coilSmooth - COIL_IDLE) / (COIL_FULL - COIL_IDLE);
+    x = clamp(x,0,1);
+
+    const pitch = PITCH_MIN + x*(PITCH_MAX - PITCH_MIN);
+    pitchEl.textContent = pitch.toFixed(3);
+    lastPitch = pitch;
+
+    if(revSrc){
+      revSrc.playbackRate.setTargetAtTime(pitch, ctx.currentTime, 0.08);
+    }
+
+    // state machine
+    if(x > 0.04){
+      if(!revSrc){
+        kill(idleSrc);
+        startRev();
+      }
+    }else{
+      if(!idleSrc){
+        kill(revSrc);
+        startIdle(false,lastPitch);
+      }
+    }
+
+    requestAnimationFrame(tick);
+  }
+
+  /* ================= START ================= */
+
+  primeBtn.onclick = async()=>{
+    primeBtn.disabled = true;
+    await ensureAudio();
+    connectRelay();
+    requestAnimationFrame(tick);
   };
 
-  draw();
 })();
 </script>
 </body>
 </html>
+
