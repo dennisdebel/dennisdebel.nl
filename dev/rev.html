@@ -240,7 +240,9 @@
   let ws=null;
 
   function connect(){
-    const url = `wss://${RELAY}/ws?room=${encodeURIComponent(room)}&role=client`;
+    //const url = `wss://${RELAY}/ws?room=${encodeURIComponent(room)}&role=client`;
+    const url = `wss://${RELAY}/ws?room=motor&role=client`; //hardcoded room
+
     st.textContent = "connecting…";
     st.className = "pill warn";
 
