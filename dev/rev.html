@@ -191,7 +191,7 @@
     gain.connect(audioCtx.destination);
 
     // load idle.wav
-    const res = await fetch("./idle.wav");
+    const res = await fetch("./idling.wav");
     const arr = await res.arrayBuffer();
     const buf = await audioCtx.decodeAudioData(arr);
 
