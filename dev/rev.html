@@ -133,6 +133,9 @@
     else { buf.copyWithin(0,1); buf[N-1] = v; }
   }
 
+  let pendingDraw = false;
+  let lastRawForGraph = 0;
+
   function draw(){
     const w=canvas.width,h=canvas.height;
     ctx.clearRect(0,0,w,h);
@@ -212,7 +215,7 @@
     // smooth the playbackRate to avoid zipper noise
     currentRate = currentRate*0.85 + target*0.15;
 
-    src.playbackRate.setTargetAtTime(currentRate, audioCtx.currentTime, 0.03);
+    src.playbackRate.setTargetAtTime(currentRate, audioCtx.currentTime, 0.005);
     gain.gain.setTargetAtTime(0.10, audioCtx.currentTime, 0.08); // audible
     prEl.textContent = currentRate.toFixed(3);
   }
@@ -230,7 +233,13 @@
     const x = clamp((raw - mn)/(mx - mn), 0, 1);
 
     const s = +smooth.value;
-    normLP = s*normLP + (1-s)*x;
+    //normLP = s*normLP + (1-s)*x;
+    // fast attack, slower release (feels immediate on throttle, stable on lift)
+    const up = 0.15;    // smaller = snappier attack? (actually larger weight to new sample)
+    const down = 0.04;  // slower decay
+    const a = (x > normLP) ? up : down;
+    normLP = normLP + a * (x - normLP);
+
 
     normEl.textContent = normLP.toFixed(3);
     setPitchFromNorm(normLP);
@@ -256,15 +265,26 @@
 
     ws.onmessage = (ev) => {
       const s = (""+ev.data).trim();
-      // Expect: "raw=1893"
       const m = s.match(/raw=(\d+)/);
-      if(m){
-        raw = parseInt(m[1], 10);
-        push(raw);
-        draw();
-        updateMapping();
+      if(!m) return;
+
+      raw = parseInt(m[1], 10);
+
+      // 1) AUDIO + MAPPING FIRST (snappy)
+      updateMapping();
+
+      // 2) GRAPH LATER (can be slow on iPhone)
+      lastRawForGraph = raw;
+      if(!pendingDraw){
+        pendingDraw = true;
+        requestAnimationFrame(() => {
+          pendingDraw = false;
+          push(lastRawForGraph);
+          draw();
+        });
       }
     };
+
   }
 
   btnConn.onclick = () => { connect(); btnConn.disabled = true; };
