@@ -1,0 +1,71 @@
+<h1 class="ft-sans ft-3 ft-3__m">10.08.2017——11.08.2017</h1>
+  
+  
+  <h2 class="ft-serif ft-2 ft-2__m ft-bold mg-b--2">EdibleComputing</h2>
+  
+  
+
+  
+  <ul class="d-tb pd-b--1 ft-sans">
+    <li class="d-tbr li-em">10:00-18:00</li>
+    <li class="d-tbr li-em">Mediamatic</li>
+    <li class="d-tbr li-em">w/ Dennis de Bel</li>
+  </ul>
+  
+
+  <section class="mg-t--2">
+    <div class="mw-parser-output">
+<figure class="w--copy mg-b--2 mg-l--3__m"><img alt="Edible0.jpg" class="mg-v--1 shadow" decoding="async" src="https://wiki.hackersanddesigners.nl/images/0/0f/Edible0.jpg"/></figure> 
+<p class="w--copy mg-b--2"><a href="/p/Dennis_de_Bel" title="Dennis de Bel">Dennis de Bel</a> hosted a one and a half day workshop in which the participants created an edible computer network infrastructure and preferably a great soup.
+Besides soldering simple hardware, the participants received an introduction into encoding and modulating data into  various formats suitable for transmission over precarious networks. 
+The workshop got them to master basic techniques and tactics to build and use networks made from organic matter but not limited to edible media and applicable to a wide field of interests, be it sound, music, performance, cooking, life.
+</p>
+<h2 class="ft-sans ft-1 ft-1__m ft-bold mg-v--2 w--copy"><span class="mw-headline" id="Outcome">Outcome</span></h2>
+<p class="w--copy mg-b--2"><b><a class="external text" href="http://bli.hotglue.me" rel="nofollow">Institute for botanical linguistics</a></b> #plants #liguistics #laughingtogetherwithyoursalad
+</p><p class="w--copy mg-b--2"><br/>
+<b>Transmit om sound through 136Hz bodies</b>
+</p><p class="w--copy mg-b--2">sending mantras by building own speaker that resonates on 136Hz? So, if 136.1 Hz is the OM tone, why? Is it based directly on something quantifiable in nature, such as the cosmic background noise, Kepler’s Harmony of the Spheres, or the Schumann Resonances (the constant rumble within the Earth’s ionosphere created by lightning strikes)? Interestingly, while 136.1 Hz is between a C and C# using standard concert pitch (A = 440 Hz), it is precisely a C# when A is tuned to 432 Hz. #spirituality #radio #transmission
+</p><p class="w--copy mg-b--2"><br/>
+<b>Audio/music steganography</b>
+</p><p class="w--copy mg-b--2">Minimodem synth. Now reverse: use minimodem as a synth, to play along with the music. #sound #invertedpurpose 
+</p><p class="w--copy mg-b--2"><br/>
+<b>Train noise</b>
+</p><p class="w--copy mg-b--2">Reacting on certain frequencies and translating into words. #words #meaning #nosense #patatkip
+</p><p class="w--copy mg-b--2"><br/>
+<b>Android camera + flashlight = morse code</b>
+</p><p class="w--copy mg-b--2">messaging #therewillbelight #encyption
+</p><p class="w--copy mg-b--2"><br/>
+<b>Feeding Twitter feed into minimodem</b> #twitter #feedme #alwayshungry
+</p><p class="w--copy mg-b--2"><br/>
+</p>
+<div class="gallery flex-c w--copy mg-v--3">
+<div class="gallery-item">
+<figure class="w--copy mg-b--2 mg-l--3__m"><img alt="Edible2.jpg" class="mg-v--1 shadow" decoding="async" src="https://wiki.hackersanddesigners.nl/images/3/35/Edible2.jpg"/></figure>
+
+
+</div>
+<div class="gallery-item">
+<figure class="w--copy mg-b--2 mg-l--3__m"><img alt="Edible1.jpg" class="mg-v--1 shadow" decoding="async" src="https://wiki.hackersanddesigners.nl/images/d/d9/Edible1.jpg"/></figure>
+
+
+</div>
+<div class="gallery-item">
+<figure class="w--copy mg-b--2 mg-l--3__m"><img alt="Edible3.jpg" class="mg-v--1 shadow" decoding="async" src="https://wiki.hackersanddesigners.nl/images/8/8e/Edible3.jpg"/></figure>
+
+
+</div>
+<div class="gallery-item">
+<figure class="w--copy mg-b--2 mg-l--3__m"><img alt="Edible4.jpg" class="mg-v--1 shadow" decoding="async" src="https://wiki.hackersanddesigners.nl/images/e/e1/Edible4.jpg"/></figure>
+
+
+</div>
+<div class="gallery-item">
+<figure class="w--copy mg-b--2 mg-l--3__m"><img alt="Edible6.jpg" class="mg-v--1 shadow" decoding="async" src="https://wiki.hackersanddesigners.nl/images/6/61/Edible6.jpg"/></figure>
+
+
+</div>
+</div>
+<p class="w--copy mg-b--2">&lt;eplite src="<a class="external free" href="https://etherpad.hackersanddesigners.nl/p/" rel="nofollow">https://etherpad.hackersanddesigners.nl/p/</a>" id="Edible_Computing" height="1000px" width="1000px" /&gt;
+</p>
+
+Thanks to Mediamatic for hosting us during the photoshoot and research. Thanks to George Bakker and Michaela Lakova for their great photographs and videos.

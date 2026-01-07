@@ -1,0 +1,7 @@
+<p>Together with <a href="http://roelof.info">Roel Roscam Abbing</a> I was invited to join the <a href="https://2016.transmediale.de/content/off-the-cloud-zone">Off The Cloud Zone</a>, a gathering of practicioners and researesearchers engaged with different networks during Transmediale 2016. For this event we sat joined a panel and organised another <a href="https://2016.transmediale.de/content/diy-packet-radio-workshop">Packet Radio Workshop</a> like <a href="https://test.roelof.info/log/packet-radio-at-radical-networks-nyu/">the one at Radnets 2015</a>.</p>
+<blockquote>
+<p>The choice to go “off the cloud” stems from current disillusionment with networked connectivity, reaching instead for the potential of emerging user-owned and user-controlled infrastructures. Over the last decade a growing scene of artists, hackers, and network practitioners has been actively working on creating community networks, ad-hoc connectivity, and autonomous systems of sensing and data collecting. But how feasible are the changes these groups want to see?</p>
+</blockquote>
+<blockquote>
+<p>Following last year’s offline networks unite! panel at transmediale and several specially organised workshops, Off-the-Cloud Zone brings together various actors to discuss the challenges, barriers, and possibilities of the field. With open conversation formats and hands-on demonstrations, the event seeks new strategies of joining forces and building common tools to take users beyond the sovereignty of the cloud.</p>
+</blockquote>

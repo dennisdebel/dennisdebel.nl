@@ -1,0 +1,13 @@
+<blockquote>
+<p>Taking inspiration from [<a href="https://test.roelof.info/projects/prettyfly/">Pretty Fly For A Wi-Fi</a>, in this workshop led by
+<a href="/">Roel Roscam Abbing</a> and <a href="http://dennisdebel.nl">Dennis de Bel</a> participants learn to construct their own do-it-yourself Wi-Fi antennas using locally sourced materials.</p>
+<p>During the workshop participants will learn the theory behind the transition of a cheese tin into a Wi-Fi antenna, how this knowledge can be used to make one&rsquo;s own antenna and how to test them for signal strength. The workshop will end with a testing session to determine which antenna designs have the strongest signal.</p>
+<h3 id="material">Material</h3>
+<p>To use the Wi-Fi antenna it is recommended to bring a usb Wi-Fi dongle with detachable antenna (recommended model: TP-Link TL-WN722N) and a N-male to RP-SMA-male cable (this one for example).</p>
+<h3 id="info">Info</h3>
+<p><strong>Location</strong>: STRP office, Torenallee 32/8, 5617 BD Eindhoven.</p>
+<p><strong>Dates</strong>: 27 and 28 October from 1 PM until 5 PM (same workshop different day).</p>
+<p><strong>Tickets</strong>: € 10,- (materials not included).</p>
+</blockquote>
+<p><a href="http://mu.nl/en/about/agenda/cantenna-crafting">http://mu.nl/en/about/agenda/cantenna-crafting</a></p>
+With Roel Roscam Abbing

@@ -1,0 +1,15 @@
+<p>From the 20th to the 25th of August 2015 I participated in <em>Relearn</em> at Zinneke in Bruxelles. Relearn is a format for self-organized summer <del>schools</del> collective learning situations.</p>
+<p>Apart from co-organising the the actual event I also took care of one of the tracks with Dennis de Bel. This track, called <a href="http://relearn.be/2015/etherdump/wirelessness.html">Wirelessness</a>. The track explored Software Defined Radio, which at the time became relatively accessible recently through RTL-SDR. Using SDR, we explored the radio spectrum and related infrastructure in the city of Brussels. For example by heading out on an <a href="http://relearn.be/2015/wirelessness/antenna_safari/">Antenna Safari</a> in the city. By discovering and <a href="http://relearn.be/2015/wirelessness/belgian_pager_multimon_ng_169.6mhz.png">decoding pager signals</a>. And by <a href="http://relearn.be/2015/wirelessness/slim_jim_tuning.jpg">tuning a slim jim antenna</a></p>
+<p>
+<p>For more info have a look at the archive: <a href="http://relearn.be/2015/etherdump/index.html">http://relearn.be/2015/etherdump/index.html</a> or at constant vzw&rsquo;s documentation: <a href="https://constantvzw.org/site/Relearn-2015-2342.html">https://constantvzw.org/site/Relearn-2015-2342.html</a></p>
+<p>Below the description of Relearn 2015:</p>
+<blockquote>
+<p>Relearn is a summerschool which welcomes persons, artists, students, teachers from all backgrounds and disciplines. Participants will gather to learn from and teach to each other, beyond the traditional paradigms of education.</p>
+</blockquote>
+<blockquote>
+<p>Free, Libre and Open Source Software plays a fundamental role at Relearn, as it facilitates a different approach to the tools we commonly use in our practices and lives. For instance, it can allow us to understand the influence that tools themselves exert on the way they are used, or the different social relations and economies that are formed between who creates and uses them. Such a questioning approach to technology feels urgent, in a time in which more and more social, political and personal issues are addressed by solely technological means.</p>
+</blockquote>
+<blockquote>
+<p>In continuation with the previous editions, Relearn will research convivial, experimental and deviant methods and means in the fields of design, computing and education, challenging the normal roles and separations in them (teacher/student, developer/user, art/life&hellip;).</p>
+</blockquote>
+With Roel Roscam Abbing, Photos by Peter Westerberg and Michel Murtaugh

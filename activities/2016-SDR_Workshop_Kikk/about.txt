@@ -1,0 +1,33 @@
+<h2 id="spectrum-scanning--an-introduction-to-software-defined-radio">Spectrum Scanning : an introduction to Software Defined Radio.</h2>
+<p>Workshop was held at the 2016 Kikk festival in Namur, Belgium</p>
+<p><a href="https://www.kikk.be/2016/en/program/workshops/spectrum-scanning-software-defined-radio">https://www.kikk.be/2016/en/program/workshops/spectrum-scanning-software-defined-radio</a></p>
+<blockquote>
+<p>The air that surrounds us is filled with signals ranging from cell phone packets, commercial radio stations, wireless internet modems, airplane tracking signals, satellite broadcasts and many more&hellip; The advent of Software-Defined Radio (SDR) has made it much easier and cheaper to learn how to receive these signals and use them for a variety of projects.</p>
+</blockquote>
+<blockquote>
+<p>This two-day intensive workshop by Dennis de Bel and Roel Roscam Abbing will introduce participants to a relatively new set of open-source tools called SDR. The first day of the workshop will focus on a theoretical introduction into what radio waves and the radio spectrum are and how we can decode and save audio from a specific transmission. During the second day, participants will head outside and scan the spectrum around the festival site, using the required software and SDR receivers, in order to record them. No prior knowledge of radio is necessary to participate. On the contrary, the workshop is aimed at introducing these concepts to new audiences. If you&rsquo;re interested in working with audio, creative coding and new technologies, this is the workshop you need to sign up for!</p>
+</blockquote>
+<blockquote>
+<p>You will be required to bring a laptop and, for those who wish, check out Dennis de Bel and Roel Roscam Abbing&rsquo;s book here: R&amp;D a low end rich media publication, <a href="https://underbelly.nu/product/rd-a-low-end-rich-media-publication/">https://underbelly.nu/product/rd-a-low-end-rich-media-publication/</a></p>
+</blockquote>
+With <a href="https://test.roelof.info/" target="_blank">Roel Roscam Abbing</a>.
+<br><br><br>
+
+<b>Full workshop description for organizers</b><br><br>
+
+At any given moment the air is filled signals ranging from cell phone packets, the chatter of bus drivers, commercial radio stations, wireless internet modems, airplane tracking signals, satellite broadcasts and much much more. Wheras in the past specialized knowledge and equipment would’ve been required to work with these signals, the advent of Software Defined Radio has made it much easier and cheaper to start to learn how to receive these signals and use them for a variety of projects.<br><br>
+
+This two-day intensive workshop will introduce and open up a relatively new set of open-source tools; SDR (Software defined radio) to new audiences. The workshop will thus constitute a practical and theoretical introduction into radio and to these SDR tools. During the first day of the workshop participants will learn:<br><br>
+
+    What radio waves are and how is information written to them.<br>
+    What the radio spectrum is and how it is organized spatially and legally.<br>
+    What the workflow is for receiving a specific transmission.<br>
+    How to decode and save the audio of a specific transmission.<br><br>
+
+The second day of the workshop is focused around heading outside and scanning the spectrum around the festival. Participants will receive help with the installation and use of the required software and use the complimentary SDR receivers included in the workshop to record signals.<br><br>
+
+Participants from diverse backgrounds are encouraged to participate. No prior knowledge of radio is necessary as the workshop is aimed at introducing these concepts to new audiences. The workshop is specifically relevant for those interested in working with audio, creative coding and new technologies.<br><br>
+
+Info Max 10 participants (possibly 15 if Dennis joins) Two day workshop, 4 hours per day. Participants are required to bring a laptop (Windows, OSX, Gnu/Linux) The workshop fee includes the cost of an SDR receiver which the participants get to take home.<br><br>
+
+Worskshop requirements from organisation: A separate workshop space with tables, chairs Wi-fi internet connections, power cords and one projector.

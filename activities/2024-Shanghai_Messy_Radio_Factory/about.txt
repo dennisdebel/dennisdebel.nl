@@ -1,0 +1,4 @@
+Workshop construcing the 636 replica radio (上海636收音机), China's first fomestically produced single transistor radio. Developed during my visting professorship at NYU Shanghai.<br><br>
+
+More info <a href="https://dennisdebel.nl/2017/2023-636_Radio_DIY/">here</a>
+

@@ -1,0 +1,65 @@
+
+	<ul id="indentlist"><li><p>Before there was Internet, there was wireless Internet. Before there was analog radio, there was digital radio. This is the premise of our workshop that covers different (digital) modes of communication for wireless networks using analog radio waves. From Morse, to the FM band, beyond and back again.</p>
+<p>In this (non-CA approved] workshop we will approach radio as a medium for communication, power/control and (artistic) self expression from a non-engineering point of view.</p>
+<p>Amongst the topics covered are the transition from colonial radio [2] to broadcast radio, pirate- and community radio, amateur radio’s contribution’ to the Internet, the ‘great digital switch over’ and how all of this fits in the power structures created by communication infrastructures.<br />
+From there we will look back at ALOHANET [3], AMPRNET [4], the packet radio van [5] and examine how the phenomenon of packet radio contributed to the infrastructure of the Internet as it is still in use today. The workshop will be a hands-on, interactive demonstration of the possibilities of packet radio and its workflow/tool-chain. Participants will explore both historical [6] and contemporary examples [7] and set up a little radio network on the spot.</p>
+<p>In true shanzhai style, participants will learn how to utilize cheap commercial walkie-talkie radios and free software to transmit and receive TCP/IP over HF or UHF radio. In other words, Internet via walkie-talkie. Looking beyond the usual “when the shit hits the fan” and “us versus them” scenarios, we will rather discuss the potentials and shortcomings of these 6km+ range wireless “routers”, the Internet protocol in general and the powers implied by these infrastructures, how it can be relevant today, tomorrow and how it fits and doesn’t fit in the OSI stack.</p>
+<p>Depending on the wishes of the participants we can either do a demo and go through the steps and requirements of setting this up for themselves or help set up participant’s own equipment.</p>
+<p>Participants will get a small publication that is both an introduction into the concept as well as a practical guide on how set up your Internet over walkie talkie. Each participant will get one copy as a reference for when they want to do their own experiments.</p>
+<p>1. “Communications Authority”. Wikipedia. Accessed January 2, 2016. <a href="http://en.wikipedia.org/wiki/Communications_Authority" target="_blank" rel="noopener">en.wikipedia.org/wiki/Communications_Authority</a><br />
+2. “Radio Kootwijk”. Wikipedia. Accessed March 19, 2016. <a href="http://hierradiokootwijk.nl/" target="_blank" rel="noopener">hierradiokootwijk.nl</a><br />
+3. “ALOHANET”. Wikipedia. Accessed March 20, 2016. <a href="http://en.wikipedia.org/wiki/ALOHAnet" target="_blank" rel="noopener">en.wikipedia.org/wiki/ALOHAnet</a><br />
+4. “AMPRNET”. Wikipedia. Accessed March 20, 2016. <a href="http://en.wikipedia.org/wiki/AMPRNet" target="_blank" rel="noopener">en.wikipedia.org/wiki/AMPRNet</a><br />
+5. “Packet Radio Van”. Accessed March 20, 2016. <a href="http://en.wikipedia.org/wiki/Packet_Radio_Van" target="_blank" rel="noopener">en.wikipedia.org/wiki/Packet_Radio_Van</a><br />
+6. “AX.25 Link Access Protocol for Amateur Packet Radio”. Accessed March 19, 2016. <a href="http://tapr.org/pdf/AX25.2.2.pdf" target="_blank" rel="noopener">tapr.org/pdf/AX25.2.2.pdf</a><br />
+7. “Minimodem”. Accessed March 19, 2016. <a href="http://www.whence.com/minimodem" target="_blank" rel="noopener">www.whence.com/minimodem</a></p>
+</li></ul>
+
+	
+
+
+	<u><h3 style="display:inline">Additional Information:</h3></u> 
+	<ul id="indentlist"><li><p><strong>Details on how the participants should prepare and what to bring.</strong></p>
+<p><strong>MINIMAL SETUP</strong><br />
+– a laptop with full (debian) linux install or live cd/usb stick.<br />
+and/or<br />
+– raspberry pi + usb audio card<br />
+!!NO VIRTUAL MACHINES!!<br />
+RPI SETUP<br />
+to be researched, but bring a RPI if you have one anyway.</p>
+<p><strong>STARTER SETUP</strong><br />
+• -Walkie Talkie (suggested model: Baofeng UV-5R)<br />
+• -101 ceramic capacitor<br />
+• -3x 3.5 mm ‘mini-jack’ stereo (3-pole) male<br />
+• -1x 2.5 mm ‘mini-jack’ stereo (3-pole) male</p>
+<p>• -For computers with Combiport audio ports:<br />
+• -1x 3.5mm trrs ‘mini-jack’ (4-pole)<br />
+• -1x 3.5 mm ‘mini-jack’ stereo (3-pole) male<br />
+• -1x 2.5 mm ‘mini-jack’ stereo (3-pole) male<br />
+• -For Apple computers with Combiport audio ports:<br />
+• -1x 3.5mm trrs ‘mini-jack’ (4-pole)<br />
+• 1x 1600 Ohm resistor<br />
+• -1x 3.5 mm ‘mini-jack’ stereo (3-pole) male<br />
+• -1x 2.5 mm ‘mini-jack’ stereo (3-pole) male</p>
+<p><strong>PRO SETUP</strong><br />
+• -Walkie Talkie (suggested model: Baofeng UV-5R)<br />
+• -101 ceramic capacitor<br />
+• -3x 3.5 mm ‘mini-jack’ stereo (3-pole) male<br />
+• -1x 2.5 mm ‘mini-jack’ stereo (3-pole) male<br />
+• -1x FTDI USB to Serial adaptor http://www.aliexpress.com/item/FT232RL-FTDI-USB-to-TTL-Serial-Adapter-Module-for-Arduino-Mini-Port-3-3V-5V/2043815349.html<br />
+• – Transistors: 1x BC557 PNP, 1x BC547 NPN<br />
+• – Resistors: 2x 2.2kOhm</p>
+<p>• &#8211;<strong>For computers with Combiport audio ports:</strong><br />
+• -1x 3.5mm trrs ‘mini-jack’ (4-pole)<br />
+• -1x 3.5 mm ‘mini-jack’ stereo (3-pole) male<br />
+• -1x 2.5 mm ‘mini-jack’ stereo (3-pole) male<br />
+• -For Apple computers with Combiport audio ports:<br />
+• -1x 3.5mm trrs ‘mini-jack’ (4-pole)<br />
+• 1x 1600 Ohm resistor<br />
+• -1x 3.5 mm ‘mini-jack’ stereo (3-pole) male<br />
+• -1x 2.5 mm ‘mini-jack’ stereo (3-pole) male</p>
+<p>Knowledge of the (linux) command-line is a pré!</p>
+</li></ul>
+
+With <a href="https://isea-archives.siggraph.org/person/andre-castro/">Andre Castro</a>
+Temporary image from Wikipedia 

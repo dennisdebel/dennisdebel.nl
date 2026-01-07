@@ -1,0 +1,9 @@
+3D Steganography Presentation at the Libre Graphics Meeting, London, 2016.<br> <br>
+
+Steganography has to do with hiding/embedding somthing inside another. Dennis, taking the perspective of a subversive (and humorous) approach to this, demonstrated how one might clandestinely hide the information about some controversial object,
+
+
+<br><br>
+<a href="https://www.youtube.com/watch?v=rrrFH3tCA4w">video</a>
+<br><br>
+<a href="https://libregraphicsmeeting.org/2016/3d-steganography/">read more...</a>

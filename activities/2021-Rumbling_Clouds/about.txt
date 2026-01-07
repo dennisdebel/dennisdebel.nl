@@ -1,0 +1,28 @@
+#1: EPHEMERAL ENCODINGS <br>
+How can sound contribute to restoring our relationship
+with the material world of computation now that
+(operational) sounds are disappearing? -----------
+----------------------------------------------------<br><br>
+Processes of computer activity such as loading, storing
+and networking used to make certain kinds of sound. Due
+to technological developments, this is currently evolving
+into silence. The mechanical sounds from the fan might
+be one of the last sonic traces left to connect us to the
+material world of computation. -----------------------
+-----------------------------------------------------<br><br>
+This first issue revolves around the topic how sound can
+play a role in the perception of the material properties
+of computation as the latter is often perceived as
+‘immaterial’. The publication consists of 2 booklets and
+an audio cassette. The first part is a collection of stories
+and anecdotes by 18 contributors. For this part, each
+contributor was invited to share a vivid memory or
+almost-forgotten experience of how sound connected
+them to the material world of computation and digital
+networking. To enrich their stories, each contributor
+provided a piece of audio and a (modulated) image with
+their text. The second part is a thesis that discusses the
+topic of the disappearing sound of computer activity
+more in-depth.<br><br>
+
+I contributed an article called 'Rumbling Clouds' on the noise of data centers.

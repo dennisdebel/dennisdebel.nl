@@ -1,0 +1,17 @@
+<p>The 24th and 25th of October <a href="http://dennisdebel.nl">Dennis de Bel</a> and me attended the Radical Networks conference at NYU Polytechnic organised by <a href="https://twitter.com/woolypixel">Sarah Grant</a> These very intensive two days where a gathering moment for a lot of different projects that worked on &lsquo;different&rsquo; networks, in a multitude of ways. To this day I keep discovering super interesting talks on the <a href="http://livestream.com/internetsociety/radicalnetworks">livestream archive</a> that I missed that weekend.  During these two days we hosted a workshop on how to do low-cost packet radio with contemporary devices and gave a talk about other networking projects we did. Below the invitation for the workshop and some images. Make sure to check out the <a href="https://test.roelof.info/projects/packetradio/">zine</a> we made for the workshop.</p>
+<h2 id="packet-radio-workshop">Packet Radio Workshop</h2>
+<blockquote>
+<p>Before there was the internet there was a wireless internet. In this (non-FCC approved) workshop we will look back to ALOHANET, AMPRNET and examine the phenomenon of packet radio. The workshop will be a hands-on, interactive demonstration of the possibilities of packet radio and the workflow/toolchain. We will go into both historical and contemporary examples and try to set up a little network on the spot.</p>
+</blockquote>
+<blockquote>
+<p>Participants will learn how to utilize commercial walkie-talkie radios and free software to transmit and receive TCP/IP over HF or UHF radio. In other words, internet via walkie-talkie, because yes, that&rsquo;s possible. Looking beyond the usual &ldquo;When Shit Hits The Fan Scenario&rsquo;s&rdquo; we will discuss the true potential and shortcomings of these 6km+ range wireless &lsquo;routers&rsquo;. Depending on the wishes of the participants we can either do a demo and go through the steps and requirements of setting this up for themselves or help set up participant&rsquo;s own equipment to create one big offline network.</p>
+</blockquote>
+<blockquote>
+<p>Participants will get a small publication that is both an introduction into the concept as well as a practical guide on how set up your internet over walkie talkie. Each participant will get one copy as a reference etc for when they want to do their own experiments. (from <a href="http://radicalnetworks.org/speakers/roel-roscam-abbing/">here</a>)</p>
+</blockquote>
+<p><a href="http://radicalnetworks.org/program/index.html">Radical Networks page</a></p>
+<p>
+
+    
+        
+With Roel Roscam Abbing, photos by <a href="http://mlakova.org/">Michaela Lakova</a></p>

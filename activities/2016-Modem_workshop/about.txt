@@ -1,0 +1,105 @@
+<h1 class="ft-sans ft-3 ft-3__m">01.08.2016——05.08.2016</h1>
+  
+  
+  <h2 class="ft-serif ft-2 ft-2__m ft-bold mg-b--2">Modem Workshop</h2>
+  
+  
+
+  
+  <ul class="d-tb pd-b--1 ft-sans">
+    <li class="d-tbr li-em">10:00-18:00</li>
+    <li class="d-tbr li-em">Waag Society</li>
+    <li class="d-tbr li-em">w/ Dennis de Bel, Roel Roscam Abbing</li>
+  </ul>
+  
+
+  <section class="mg-t--2">
+    <div class="mw-parser-output">
+<p class="w--copy mg-b--2">Workshop with <a href="/p/Dennis_de_Bel" title="Dennis de Bel">Dennis de Bel</a> and <a href="/p/Roel_Roscam_Abbing" title="Roel Roscam Abbing">Roel Roscam Abbing</a> during <a href="/p/HDSA_2016._If_you_are_so_smart_why_are_you_so_poor" title="HDSA 2016. If you are so smart why are you so poor">HDSA2016</a>
+</p><p class="w--copy mg-b--2"><br/>
+A(n) (im)practical introduction to Hertzian space
+</p><p class="w--copy mg-b--2"><br/>
+</p>
+<figure class="w--copy mg-b--2 mg-l--3__m"><img alt="DSC 2971.jpg" class="mg-v--1 shadow" decoding="async" src="https://wiki.hackersanddesigners.nl/images/1/1a/DSC_2971.jpg"/></figure> 
+<p class="w--copy mg-b--2"><figure class="w--copy mg-b--2 mg-l--3__m" title="Radio_ani.gif"><img alt="Radio_ani.gif" class="mg-v--1 shadow" decoding="async" src="https://wiki.hackersanddesigners.nl/images/4/42/Radio_ani.gif"/></figure>
+</p><p class="w--copy mg-b--2"><br/>
+It is time to descent from your Adobe cloud and descend onto the very physical Hertzian space of crystal oscillators, electromagnetic waves and solder smoke. Unlock the forgotten (im)potential of your $2000 macbook-facebook machines and reclaim the spectrum!
+</p><p class="w--copy mg-b--2"><br/>
+In this (non-AT approved, <a class="external free" href="https://www.agentschaptelecom.nl/" rel="nofollow">https://www.agentschaptelecom.nl/</a>) workshop we will approach radio as a medium for (p2p) communication, power/control and (artistic) self-expression from a non-engineering point of view.
+</p><p class="w--copy mg-b--2"><br/>
+Among the topics covered are the transition from colonial radio to broadcast radio, pirate- and community radio, the utopian promise of the Web, the 'great digital switch over', modulating digital data over analog radio, encoding data into analog sound and how all of this fits in the power structures created by communication infrastructures.
+</p><p class="w--copy mg-b--2"><br/>
+Seizing the curriculum of R&amp;D's low-end rich media publication as means of production, the participants will learn how to utilize cheap electronic components and household materials to create DIY network infrastructures, parallel to the black box modes of communications imposed on us now.
+</p><p class="w--copy mg-b--2"><br/>
+Looking beyond the usual "when the shit hits the fan" and "us versus them" scenarios, we will rather discuss the potentials, relevance and shortcomings of these DIY methodologies and how to apply it to your own practice.
+</p><p class="w--copy mg-b--2"><br/>
+<figure class="w--copy mg-b--2 mg-l--3__m"><img alt="Radio and commons-edinburgh-photo by Suzanne van der Linge.JPG" class="mg-v--1 shadow" decoding="async" src="https://wiki.hackersanddesigners.nl/images/9/9d/Radio_and_commons-edinburgh-photo_by_Suzanne_van_der_Linge.JPG"/></figure>
+</p><p class="w--copy mg-b--2"><br/>
+ASSIGNMENT:
+</p><p class="w--copy mg-b--2"><br/>
+Apply the given technology to your own practice and make it your own, possible directions:
+</p><p class="w--copy mg-b--2"><br/>
+- Fashion (wearable radio, em detection)
+- Photography (radio photography? light==em waves, pcb developing)
+- Apps (interface radio with smartphone as alternative, parallel network)
+- Video art (compress video for transmission over radio waves &gt; see: floppy films, sstv)
+- Architecture / sculpture / fine art (treat the Hertzian space as the physical space it really is, em-blocker)
+- Activism (all of the above ;), public space, debunking the myth of the aether as neutral medium)
+- Graphic design/illustration publication (visualize the invisible, paint by numbers image transfer, PRINTed circuit boards)
+- Food-design (uhf (microwave) cooking)
+</p><p class="w--copy mg-b--2"><br/>
+More directions:
+</p><p class="w--copy mg-b--2"><br/>
+- Software defined radio - hackrf, limerf, rtl-sdr dongles &gt; gain insight on wireless payment system, the police, wifi, ip cameras?
+- Arduino (make a 'stupid-smart' radio)
+- Raspberry pi (make autonomous (smart? stupid?) pirate radio station) interface it with the web.
+</p><p class="w--copy mg-b--2"><br/>
+</p><p class="w--copy mg-b--2">WHAT YOU LEARN
+</p><p class="w--copy mg-b--2">- Leveraging alternative technology to work
+- Electronics basics
+- DIY pcb (printed circuit boards)
+- Wireless communication basics
+- Radio basics
+- Modulation / demodulation
+- Encoding / decoding
+- Publish work in progress/results responsibly (git(lab))
+</p><p class="w--copy mg-b--2"><br/>
+</p><p class="w--copy mg-b--2">TAGS
+</p><p class="w--copy mg-b--2">emile baudot, morse, hertz, utf-8, ascii, base64, ansi, amplitude modulation, frequency modulation, continues wave, printed circuit board, hexadecimal, pbm (portable bitmap), minimodem, steganography, packet radio,  mesh networks, radio amateur, quietnet, sstv, gxrq, gnuradio,emf, em-interference, faraday, faraday cage, emf detector, emf sniffer, field strength meter, electromagnetic interference (EMI), emi, frequency counter, sdr, software defined radio, triangulation, evolved antenna, wave guide antenna, beautification dish, patch antenna, fractal antenna, cantenna, wifi antenna, horn antenna, dipole antenna, discone antenna, salt water antenna, radio telescope, infrasound, ultrasound, binaural sound, binaural beats, echo-location, infrared, ultraviolet, ir-photography, uv-photography, geolocation
+</p><p class="w--copy mg-b--2"><br/>
+<figure class="w--copy mg-b--2 mg-l--3__m"><img alt="Pcb developing-photo by R&amp;D.gif" class="mg-v--1 shadow" decoding="async" src="https://wiki.hackersanddesigners.nl/images/1/1b/Pcb_developing-photo_by_R%26D.gif"/></figure>
+</p><p class="w--copy mg-b--2"><br/>
+</p>
+<h3 class="ft-sans ft-1 ft-1__m ft-bold mg-v--2 w--copy"><span class="mw-headline" id="Projects">Projects</span></h3>
+<p class="w--copy mg-b--2">Light to print guestbook <br/>
+We are sending a message by light. Place a laptop or other device in one corner of the room, send it by light (morse code). On the other side of the room a device will catch the light and will print the message on a paper.<br/><br/>
+</p><p class="w--copy mg-b--2">Automate the encoding of messages within image files then automate the extraction of the message for communication (Beth)<br/><br/>
+</p><p class="w--copy mg-b--2">MORSECODE GUESTBOOK (Joanna, Jennifer, Lucas) <br/>
+A morse code transmitted guestbook. 
+People can type in their message in text &gt; it gets transmitted in morse code by a laser &gt; then its received by a light sensor and translated back into text in the guestbook. 
+<a class="external free" href="http://www.realhamradio.com/_borders/Morse%202.jpg" rel="nofollow">http://www.realhamradio.com/_borders/Morse%202.jpg</a> <br/><br/>
+</p><p class="w--copy mg-b--2">Finn Analog Speech<br/>
+Sending Edgar Walthert's Sonic Waves typeface to an Oscilloscope.<br/><br/>
+</p><p class="w--copy mg-b--2">Micro radio (Oliver)<br/>
+Make a micro radio FM transmitter as proposed by Tetsuo Kogawa’s ‘A Micro Radio Manifesto’ that broadcasts below the legal FM spectrum. Tune multiple receivers (at a low volume) into the ‘station’ at different points inside the exhibition space all of which receive a broadcast of a simple, pre-recorded message: ‘I love you’ at 10 second intervals.<br/><br/>
+</p><p class="w--copy mg-b--2">Future as present (Marcel &amp; Meike)<br/>
+Transmitting the Speed of information into the future as present as a reaction to action on questions and answers into knowledge of space-time-value production.<br/><br/>
+</p><p class="w--copy mg-b--2">Salt water antenna — proof of concept (Marta)<br/>
+The projet is create an antenna for a radio emitter made of a salt water circuit. The water circuit will be created with a hand water pump. <br/>
+A prototype for sailors in case of blackout.<br/><br/>
+</p><p class="w--copy mg-b--2">Radio Fishing - André, Jul, Hannah<br/>
+A fisherperson can visit the fishing pond (printer and radio receiver and laptop) using a fishing rod (phone connected to a radio transmitter). The fishing rod (phone connected to a radio transmitter) is visiting a web page which has a button letting you cast your hook into the pond. What will you catch? Wait and see what comes out of the fishing pond (printer)...<br/><br/>
+</p><p class="w--copy mg-b--2"><br/>
+Notes references and code bits: 
+</p><p class="w--copy mg-b--2">&lt;eplite src="<a class="external free" href="https://etherpad.hackersanddesigners.nl/p/" rel="nofollow">https://etherpad.hackersanddesigners.nl/p/</a>" id="modem" height="800px" width="800px" /&gt;
+</p><p class="w--copy mg-b--2"><br/>
+Dennis &amp; Roels pads (Those pads will probably disappear at some point. Find a copy of these pads above.)
+</p><p class="w--copy mg-b--2">Dennis &amp; Roels pad: 
+</p><p class="w--copy mg-b--2">&lt;eplite src="<a class="external free" href="https://stuff2233.club/padlife/p/" rel="nofollow">https://stuff2233.club/padlife/p/</a>" id="hd_modem" height="800px" width="800px" /&gt;
+</p><p class="w--copy mg-b--2"><br/>
+Dennis &amp; Roels pad day two: 
+</p><p class="w--copy mg-b--2">&lt;eplite src="<a class="external free" href="https://stuff2233.club/padlife/p/" rel="nofollow">https://stuff2233.club/padlife/p/</a>" id="hd_modem_day_two" height="800px width="800px" width="1000px" /&gt;
+</p>
+
+<p>More info <a href="https://hackersanddesigners.nl/p/Modem_Workshop">here</a></p>
+ 

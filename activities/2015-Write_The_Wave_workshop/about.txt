@@ -1,0 +1,30 @@
+<p><em><strong>Create your own data-network by soldering a radio transmitter</strong></em></p>
+<p>The word radio translates from Latin to English as &#8216;I beam/radiate&#8217; and seems to hint at a potential of radio that was never realised. Radio could have been developed in such a way that as many would transmit as would listen, so that we could all be both broadcasters of information as well as listeners, just like the world wide web once was&#8230; In the context of the forthcoming &#8216;digital radio switchover&#8217;, can we make use of the old public AM/FM radio bands, and turn it into a new commons?</p>
+<p>Teacher: Dennis de Bel &amp; Roel Roscam Abbing<br />
+Level: everyone<br />
+Date &amp; time: Thursday 14 &amp; Friday 15 May (timeslots t.b.a.  / expect: 11:00 &#8211; 18:00)<br />
+Location: A Lab<br />
+Costs: students: € 35,- + 5,- materials / professionals: €65,- + 5,- materials</p>
+
+
+<p><strong>What will I learn?</strong><br />
+In this workshop we will move from merely listening to waves to writing data into them, and in the process we will learn about the politics of the radio spectrum. Furthermore you will learn how to solder your own analog radio transmitter and how to transmit and receive data (sound &amp; images).</p>
+<ul>
+<li>About the politics of the radio spectrum (and other media).</li>
+<li>How to build your own analog FM radio transmitter.</li>
+<li>Transmitting and receiving digital data via FM.</li>
+</ul>
+<p><strong>Who is it for?</strong><br />
+Anyone with an interest in the lost potential of radio and who is not afraid of exploring the new boundaries of an old transmission medium.</p>
+<p><strong>What do I need?<br />
+</strong>Any soldering experience is a plus. All materials will be provided at the workshop.</p>
+<p><strong>Who will teach me?</strong><br />
+Dennis de Bel (1984) graduated as an Interactive Media designer (2007) at the Willem de Kooning Academy before completing the Master Media Design (2009) and Communication at the Piet Zwart Institute, both in Rotterdam. De Bel’s exploration of interactivity and utility has led him to make humorous design interventions, manifested word puns, useless software and more recently “noware”. This term describes some of his latest works that are no longer hardware nor software but non-products, unique multiples and mass-produced one-offs that question functionality, inventiveness and innovation.<br />
+<a href="http://www.dennisdebel.nl" target="_blank">http://www.dennisdebel.nl</a></p>
+<p>Roel Roscam Abbing (1990, NL) is an artist and researcher with strong interest for the issues and cultures surrounding networked computation, the internet&#8217;s infrastructure, DIY techniques and wireless community networks. He holds an MA Networked Media from the Piet Zwart Institute in Rotterdam and a Fine Arts BA (Hon) from the Willem De Kooning Academy. Currently he teaches at the Digital Craft department of the Willem de Kooning Academy and is involved in a year long project looking at the possibilities for communication after the death of the WWW.<br />
+<a href="http://www.roelof.info/about/" target="_blank">http://www.roelof.info/about</a></p>
+<p><strong>&gt;&gt; <a href="https://secure.jotformpro.com/form/50734379865973" target="_blank">JOIN THE WORKSHOP</a> &lt;&lt;</strong></p>
+<p>More info:<br />
+<a href="http://roelroscamabbing.nl/post-www/fm-transmitter/" target="_blank">http://roelroscamabbing.nl/post-www/fm-transmitter</a><br />
+<a href="http://www.roelroscamabbing.nl/" target="_blank">http://www.roelroscamabbing.nl</a></p>
+More info <a href="https://2015.fiberfestival.nl/festival/education/workshop-write-the-wave-2-days/">here</a>

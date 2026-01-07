@@ -1,0 +1,54 @@
+<p>Unitary Networking is a speculative approach to communications infrastructure, trying to establish a link between urban technology and communication technology and reflecting on the way they form networks of power.
+</p>
+<p>
+    In practice, the starting point of the project is an electronic messaging system running on a wireless mesh network, composed of both fixed and moving nodes. The messages propagate through the network when the devices come in contact with each other. It is a non-hierarchical network, where every node receives, relays and broadcasts messages. The users of the network can send or receive messages by using the webbrowser of their smartphone or computer. The messages can be received and sent at any time, but are only synchronized when other fixed or moving nodes are encountered.
+</p>
+<p>
+    We propose a three day workshop to install the prototype and discuss together with the participants: The first day will explain the technologies involved and the various elements that we could play with. The participants will be able to make their own nodes for the network and we will think about how these nodes could fit in the public space. On the second day we would like to go outside to set up the network in the streets and/or the public transport of Linz. During the third day we would like to have a public presentation of the concept and progress, and open the use of the network to eventual experiments.
+</p>
+<p>
+    The project breaks down into a series of elements that will be part of the worksessions:
+</p>
+<p>
+    the installation of the devices that connect in the mesh network, which will be flashed with free open-source software the exploration of the urban space as a platform to deploy the network the preparation of camouflaged devices as self-sufficient nodes, by connecting it to solar panels or by parasiting vulnerable sources of energy the construction of antennas to bridge longer distances
+</p>
+<p>
+    We count on public participation and interaction for making this proof of concept and the existing prototypes into a meaningful collective situation.
+</p>
+<p>
+    The workshop is open to public with different backgrounds and skills, as the different tasks in the project can be shared according to the capabilities and interests of the participants.
+</p>
+
+
+<b>Date</b><br>
+29-31.05.2014<br>
+
+<b>Location</b><br>
+/dev/lol - Hacklab Linz<br>
+
+<b>Format</b><br>
+Workshop<br>
+
+<b>Max. Participants</b><br>
+8<br>
+<b>Target group</b><br>
+Intermediate<br>
+
+
+<b>Prerequisites</b><br>
+
+If the participants would like to create a node of their own they should
+bring an Open-WRT compatible router. For a list of compatible hardware
+see(http://wiki.openwrt.org/toh/start). We recommend the TP-Link
+TL-MR3020 and TP-Link TL-WR703N for their small size and low power
+requirements. We will bring between 5 and 10 routers ourselves, to be
+used as nodes.
+<br><br>
+
+
+<p>
+With roel Roscam Abbing and Martino Morandi 
+</p>
+<p>
+More info: <a href="http://radical-openness.org/en/programm/2014/unitary-networking">here</a>
+<p>

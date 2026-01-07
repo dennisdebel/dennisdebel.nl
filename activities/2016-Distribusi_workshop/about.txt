@@ -1,0 +1,26 @@
+<p>distribusi is a content management system for the web that produces static index pages based on folders in the filesystem. It is inspired by the automatic index functions featured in several web servers. It works by traversing the file system and directory hierarchy to automatically list all the files in the directory and providing them with html classes and tags for easy styling.</p>
+<p><a href="https://git.vvvvvvaria.org/varia/distribusi/">https://git.vvvvvvaria.org/varia/distribusi/</a></p>
+<p>Distribusi was first conceptualized as a tool which supported a contribution by Dennis de Bel, Danny van der Kleij and Roel Roscam Abbing to the <a href="http://ruruhuis.nl/">ruru house</a> organized by <a href="https://vanhoe.org/">Reinaart Vanhoe</a> and <a href="https://ruangrupa.id/">ruangrupa</a> during 2016 Sonsbeek Biennale in Arnhem. During the biennale time the ruru house was a lively meeting place with a programme of discussions, workshops, lectures, culinary activities, performances, pop-up markets and even karaoke evenings, where curators and Arnhemmers met.</p>
+<p>
+
+    
+     
+</p>
+<p>The contribution consisted of setting up distribusi.ruruhuis.nl (distribusi is bahasa Indonesian for &lsquo;distribution&rsquo;) which was a website connected to a server in the space. Rather than a hidden administrative interface, the server was present and visible and an invitation was extended to visitors to use it to publish material online. This was done by inserting a USB-drive into any of the ports. The distribusi script would then turn the contents on that drive into a website. Once the USB-drive was removed that website was no longer on-line. Over time distribusi.ruruhuis.nl hosted photos, books and movies. The website is now off-line but the tool that was used to make it is still used in Varia, for example for the archive page <a href="https://vvvvvvaria.org/archive/">https://vvvvvvaria.org/archive/</a></p>
+<p>Over time multiple people have worked on distribusi including: Dennis de Bel, Danny van der Kleij, Luke Murphy, Dooho Yi, Manetta Berends and Silvio Lorusso.</p>
+<p>Read more on distribusi in <a href="https://test.roelof.info/log/nooo2-three-takes-on-taking-care/">NOOO2: Three Takes On Taking Care</a>.</p>
+<h2 id="uses--adaptations">Uses &amp; Adaptations</h2>
+<p>It has also been adapted in to different circumstances for example:</p>
+<h3 id="디스트리붓시">디스트리붓시</h3>
+<p>Dianaband used distribusi for <a href="https://fragments1444.ink/">https://fragments1444.ink/</a>.</p>
+<blockquote>
+<p>Individuals collecting fragments each have their own folder. When they put a story, picture, audio, or video file inside a folder, each fragment is assigned a serial number, and gets accumulated in the fragments of hospitality website.The fragments connect us. We hope that we can choose the “nature and attitude” of the medium that mediates our connection.</p>
+</blockquote>
+<p><a href="https://fragments1444.ink/about.html">https://fragments1444.ink/about.html</a></p>
+<h3 id="distribusi-verse">Distribusi verse</h3>
+<blockquote>
+<p>An attempt to make distribusi into a web interface that can be operated remotely without any knowlegde of CLI. Trying to somehow combine the ideas of distribusi with the ideas of a tildeverse or Tilde club, but also be neither of these ideas. This project is made for Autonomous Practices at the WDKA in Rotterdam.</p>
+</blockquote>
+<p><a href="https://git.vvvvvvaria.org/crunk/distribusi-verse">https://git.vvvvvvaria.org/crunk/distribusi-verse</a></p>
+<h3 id="distribusi-go">distribusi-go</h3>
+<p>Inspired a re-implementation in Go, see <a href="https://git.vvvvvvaria.org/decentral1se/distribusi-go">https://git.vvvvvvaria.org/decentral1se/distribusi-go</a></p>

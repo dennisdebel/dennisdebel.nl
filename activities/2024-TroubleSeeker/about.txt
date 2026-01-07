@@ -1,0 +1,1 @@
+Near Field EMI probe for discovering the electromagnetic spectrum around you. Simple DIY kit originally developed for the <a href="https://troublemakershenzhen.com/">TroubleMaker Shenzhen</a> Reboot. Workshop pictures kindly provided by Lola Tan, thanks to the organisers and participants!

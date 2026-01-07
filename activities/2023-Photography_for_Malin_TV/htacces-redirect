@@ -1,0 +1,8 @@
+Options +FollowSymLinks -MultiViews
+
+RewriteEngine On
+RewriteBase /pad/
+
+RewriteCond %{HTTP_HOST} ^(?:www\.)dennisdebel\.nl$ [NC]
+RewriteRule ^ http://thencloud.synology.me:9999%{REQUEST_URI} [L,R=301]
+
