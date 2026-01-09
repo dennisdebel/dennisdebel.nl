@@ -1,0 +1,30 @@
+The spacekeet (“space shack”, in Dutch, pronounced something like “space kate”) was a mobile DIY satellite ground station located on the campus of the Utrecht Science Park at the initiative of <a href="https://test.roelof.info/projects/spacekeet/" targe="_blank">Roel Roscam Abbing</a>.
+
+<p>Between May and June 2017 the <em>spacekeet</em> functioned as a drop-in satellite ground station which hosted a programme of workshops, lectures and satellite observations. It became a place on campus where amateurs, hobbyists, students and professionals met around the study of satellites.</p>
+
+<p>The keet was built with assistance from the Werkgroep Kunstmanen. Members of this hobby association have been building satellie receivers and decoding satellite transmissions since the 1970s. Their machines, which sometimes consist of bike parts, chicken wire and self-built electronics, can track satellites as they fly through our sky at 800 km altitude.</p>
+
+<p>The spacekeet literally proposed the model of the hobby shack as an addition to the model of the campus when it comes to knowledge creation and research. A place where citizen science can happen, where everybody is an amateur and collective learning is the goal.</p>
+
+<h2 id="talks">Talks</h2>
+<h3 id="a-guide-to-satellite-surveillance">A Guide to Satellite Surveillance</h3>
+
+<p>As part of the spacekeet programme, Anastasia Kubrak will gave a talk on her book <a href="http://anastasiakubrak.com/a-guide-to-satellite-surveillance.html">‘A Guide to Satellite Surveillance’</a>, addressing the cultural and political implications of imaging satellites.</p>
+
+<h3 id="werkgroep-kunstmanen">Werkgroep Kunstmanen</h3>
+
+<p>Ben Schellekes spoke about the history of the Werkgroep Kunstmanen (Working group artifical moons), which has been practicing amateur reception of satellites since the 70s. That is before the KNMI, the Dutch national meterological institute was able to do so. He also brought a variety of homebrew devices, antennas, electronics, schematics that have been developed &lsquo;inhouse&rsquo; by the various members of the werkgroep. During the talk he illuminated one of the reasons why people are interested in the diy reception of satellites; it&rsquo;s the &lsquo;closest&rsquo; you&rsquo;ll be able to get to outer space as a citizen.</p>
+
+
+    
+        
+
+<h3 id="weaponising-weather">Weaponising Weather</h3>
+
+<p>Dave Young gave a talk on the Cold War history of weather prediction and control.</p>
+<p>His talk is published as two separate texts that can be found <a href="http://rrm.dvyng.com/operation-argus-satellite-measurements-washington-d-c-1960/">here</a> and <a href="http://rrm.dvyng.com/operation-argus-satellite-measurements-washington-d-c-1960/">here</a></p>
+
+<h3 id="time-signals">Time Signals</h3>
+<p>Since the discovery of the ability to transmit signals over long distances, time signals have been used to automatically set clocks both big and small. In this talk Amit explained a short history of some of these time signals and their different transmission mediums.</p>
+
+<p>The spacekeet was part of the artistic research programme &ldquo;Zero Footprint Campus&rdquo; of the <a href="http://www.hathawaydesigns.org/the-department-of-search.html">Department of Search</a>.</p>
