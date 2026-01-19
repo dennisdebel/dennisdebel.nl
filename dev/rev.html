@@ -53,8 +53,9 @@ function applyMatrix(m){ phoneEl.style.transform=`matrix3d(${m.join(",")}`; }
 
 /* ---------- throttle + LPF + deadzone ---------- */
 let angleLP=0, angleZero=0;
-const smoothing=0.07;   // smaller=smoother
-const deadzone=1;       // degrees
+let currentRawBeta=0;
+const smoothing=0.07;  // smaller = smoother
+const deadzone=1;      // degrees
 function smoothAngle(x){
   const delta=x-angleLP;
   if(Math.abs(delta)<deadzone) return angleLP;
@@ -90,9 +91,9 @@ async function initAudio(){
   if(audioCtx) return;
   audioCtx=new AudioContext();
 
-  bufIdle=await loadSample("idle.wav");       // base idle hum
-  bufRev=await loadSample("rev.wav");         // throttle overlay
-  bufRevDown=await loadSample("revdown.wav"); // near zero
+  bufIdle=await loadSample("idle.wav");
+  bufRev=await loadSample("rev.wav");
+  bufRevDown=await loadSample("revdown.wav");
 
   srcIdle=audioCtx.createBufferSource();
   srcRev=audioCtx.createBufferSource();
@@ -108,7 +109,7 @@ async function initAudio(){
   srcRev.connect(gainRev); gainRev.connect(audioCtx.destination);
   srcRevDown.connect(gainRevDown); gainRevDown.connect(audioCtx.destination);
 
-  gainIdle.gain.value=0.08;   // idle hum base
+  gainIdle.gain.value=0.08;  // idle base
   gainRev.gain.value=0;
   gainRevDown.gain.value=0;
 
@@ -130,7 +131,7 @@ function setEngine(norm){
   }
   gainRevDown.gain.setTargetAtTime(revdownTarget,audioCtx.currentTime,0.3);
 
-  // --- throttle rev ---
+  // --- throttle rev overlay ---
   const rate=0.6 + norm*1.6;
   srcRev.playbackRate.setTargetAtTime(rate,audioCtx.currentTime,0.03);
   gainRev.gain.setTargetAtTime(0.25*norm,audioCtx.currentTime,0.08);
@@ -147,17 +148,20 @@ document.getElementById("btnSensors").onclick=async()=>{
   }
   window.addEventListener("deviceorientation", e=>{
     if(e.beta==null) return;
-    const alpha=e.alpha||0;
-    const beta=-e.beta;
-    const gamma=e.gamma||0;
+
+    const alpha = e.alpha || 0;
+    const beta  = e.beta;       // RAW beta
+    const gamma = e.gamma || 0;
+
+    currentRawBeta = beta;      // for calibration
 
     applyMatrix(orientationMatrix(alpha,beta,gamma));
 
-    const angle=smoothAngle(beta-angleZero);
-    document.getElementById("angle").textContent=angle.toFixed(1);
+    const angle = smoothAngle(beta - angleZero);
+    document.getElementById("angle").textContent = angle.toFixed(1);
 
-    // throttle from angle
-    const throttle=clamp(((-angle)+30)/60,0,1);
+    // forward tilt = positive throttle
+    const throttle = clamp(angle/45,0,1); // adjust sensitivity
 
     // GPS mixing
     let mix=0;
@@ -172,7 +176,7 @@ document.getElementById("btnSensors").onclick=async()=>{
 };
 
 /* ---------- calibration ---------- */
-document.getElementById("btnCal").onclick=()=>{ angleZero=angleLP; };
+document.getElementById("btnCal").onclick=()=>{ angleZero=currentRawBeta; };
 
 /* ---------- audio toggle ---------- */
 document.getElementById("btnAudio").onclick=async()=>{
