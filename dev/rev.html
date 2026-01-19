@@ -1,3 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Phone Throttle Engine</title>
+
+<style>
+body {
+  margin: 0;
+  background: #0b0f14;
+  color: #e9eef5;
+  font-family: system-ui, sans-serif;
+  text-align: center;
+}
+#scene {
+  width: 260px;
+  height: 260px;
+  margin: 20px auto;
+  perspective: 900px;
+}
+#phone {
+  width: 120px;
+  height: 220px;
+  margin: auto;
+  background: linear-gradient(#111, #222);
+  border-radius: 14px;
+  border: 2px solid #4af;
+  transform-style: preserve-3d;
+}
+button {
+  margin: 6px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: none;
+  background: #1f6feb;
+  color: white;
+  font-weight: 600;
+}
+#info {
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+</style>
+</head>
+
+<body>
+
+<h3>Phone Throttle Debug ssl error</h3>
+
+<div id="scene">
+  <div id="phone"></div>
+</div>
+
+<button id="btnSensors">Enable sensors</button>
+<button id="btnCal">Calibrate idle</button>
+<button id="btnAudio">Enable audio</button>
+
+<div id="info">
+angle: <span id="angle">0</span>°<br>
+gps: <span id="gps">0</span> km/h<br>
+mix: <span id="mix">0</span><br>
+</div>
+
 <script>
 /* ---------- throttle / sensors ---------- */
 let angleLP = 0;
@@ -81,3 +145,6 @@ document.getElementById("btnCal").onclick = ()=>{
   angleZero = angleLP;
 };
 </script>
+
+</body>
+</html>
