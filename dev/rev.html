@@ -179,7 +179,7 @@ document.getElementById("btnSensors").onclick = async ()=>{
     const angle = smoothAngle(beta - angleZero);
     document.getElementById("angle").textContent = angle.toFixed(1);
 
-    const throttle = clamp((angle + 30)/60, 0, 1);
+    const throttle = clamp(((-angle) + 30) / 60, 0, 1);
 
     let mix = 0;
     if(gpsSpeed > 5){
