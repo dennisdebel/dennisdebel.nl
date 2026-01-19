@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Throttle Phone Engine</title>
+<title>Phone Throttle Debug</title>
 
 <style>
 body{
@@ -16,9 +16,10 @@ body{
   position:fixed;
   top:10px; left:10px;
   background:#121a24;
-  padding:10px 12px;
-  border-radius:10px;
+  padding:12px;
+  border-radius:12px;
   font-size:14px;
+  z-index:10;
 }
 button{
   padding:8px 12px;
@@ -28,35 +29,37 @@ button{
   color:white;
   font-weight:600;
 }
-canvas{ display:block }
+.row{margin-top:6px}
+canvas{display:block}
 </style>
 </head>
 
 <body>
-<canvas id="gl"></canvas>
+<canvas id="c"></canvas>
 
 <div id="ui">
-  <button id="btn">Enable sensors + sound</button>
-  <div>Angle: <span id="ang">0</span>°</div>
-  <div>Throttle: <span id="thr">0</span></div>
-  <div>Speed: <span id="spd">0</span> km/h</div>
+  <button id="start">Enable sensors + sound</button>
+  <div class="row">Motion: <b id="mstat">off</b></div>
+  <div class="row">GPS: <b id="gstat">off</b></div>
+  <div class="row">Angle: <b id="angle">—</b>°</div>
+  <div class="row">Throttle: <b id="thr">—</b></div>
+  <div class="row">Speed: <b id="spd">—</b> km/h</div>
 </div>
 
 <script>
-/* =======================
-   BASIC STATE
-======================= */
+/* ================= STATE ================= */
 let angleLP = 0;
 let throttle = 0;
 let speedKmh = 0;
 
-const angEl = document.getElementById("ang");
+/* ================= UI ================= */
+const angleEl = document.getElementById("angle");
 const thrEl = document.getElementById("thr");
 const spdEl = document.getElementById("spd");
+const mstat = document.getElementById("mstat");
+const gstat = document.getElementById("gstat");
 
-/* =======================
-   AUDIO
-======================= */
+/* ================= AUDIO ================= */
 let audioCtx, osc, gain;
 
 function initAudio(){
@@ -64,9 +67,9 @@ function initAudio(){
   osc = audioCtx.createOscillator();
   gain = audioCtx.createGain();
 
-  osc.type = "sine";
+  osc.type = "sawtooth";
   osc.frequency.value = 80;
-  gain.gain.value = 0.0;
+  gain.gain.value = 0;
 
   osc.connect(gain);
   gain.connect(audioCtx.destination);
@@ -74,63 +77,61 @@ function initAudio(){
 }
 
 function updateSound(){
-  const base = 80;
-  const max = 420;
+  if(!audioCtx) return;
+
+  const base = 70;
+  const max = 500;
 
   const gpsFactor = speedKmh > 5
-    ? Math.min(speedKmh / 50, 1)
-    : 0.3;
+    ? Math.min(speedKmh / 60, 1)
+    : 0.25;
 
   const freq = base + throttle * max * gpsFactor;
-  osc.frequency.setTargetAtTime(freq, audioCtx.currentTime, 0.02);
-  gain.gain.setTargetAtTime(0.08, audioCtx.currentTime, 0.05);
+  osc.frequency.setTargetAtTime(freq, audioCtx.currentTime, 0.03);
+  gain.gain.setTargetAtTime(0.08, audioCtx.currentTime, 0.06);
 }
 
-/* =======================
-   ACCELEROMETER
-======================= */
-function handleMotion(e){
+/* ================= MOTION ================= */
+function onMotion(e){
   const g = e.accelerationIncludingGravity;
   if(!g) return;
 
-  // phone mounted face-up, rotating forward/back
-  const angleRad = Math.atan2(g.y, g.z);
-  const angleDeg = angleRad * 180 / Math.PI;
+  // forward/back tilt (phone face up, clamped to throttle)
+  const ang = Math.atan2(g.y, g.z) * 180/Math.PI;
 
-  // LOW-PASS FILTER (reject vibration)
-  const alpha = 0.12;
-  angleLP = angleLP * (1-alpha) + angleDeg * alpha;
+  // LOW-PASS FILTER (kills bumps)
+  angleLP = angleLP * 0.85 + ang * 0.15;
 
-  // clamp usable throttle range
-  const minAng = -20;
-  const maxAng = 35;
+  // map to throttle
+  const minA = -20;
+  const maxA = 35;
+  throttle = Math.max(0, Math.min(1, (angleLP-minA)/(maxA-minA)));
 
-  let x = (angleLP - minAng) / (maxAng - minAng);
-  x = Math.max(0, Math.min(1, x));
-
-  throttle = x;
-
-  angEl.textContent = angleLP.toFixed(1);
+  angleEl.textContent = angleLP.toFixed(1);
   thrEl.textContent = throttle.toFixed(2);
 
   updateSound();
 }
 
-/* =======================
-   GPS
-======================= */
-navigator.geolocation.watchPosition(p=>{
-  const v = p.coords.speed; // m/s
-  if(v != null){
-    speedKmh = v * 3.6;
-    spdEl.textContent = speedKmh.toFixed(1);
-  }
-},{ enableHighAccuracy:true });
+/* ================= GPS (FIXED) ================= */
+function startGPS(){
+  navigator.geolocation.watchPosition(
+    pos=>{
+      if(pos.coords.speed != null){
+        speedKmh = pos.coords.speed * 3.6;
+        spdEl.textContent = speedKmh.toFixed(1);
+        gstat.textContent = "on";
+      }
+    },
+    err=>{
+      gstat.textContent = "error";
+    },
+    { enableHighAccuracy:true }
+  );
+}
 
-/* =======================
-   3D VISUALIZATION (MINIMAL)
-======================= */
-const canvas = document.getElementById("gl");
+/* ================= 3D DEBUG VIS ================= */
+const canvas = document.getElementById("c");
 const ctx = canvas.getContext("2d");
 
 function resize(){
@@ -145,26 +146,32 @@ function draw(){
 
   ctx.save();
   ctx.translate(canvas.width/2, canvas.height/2);
-  ctx.rotate(angleLP * Math.PI/180);
 
-  ctx.fillStyle="#7cc4ff";
-  ctx.fillRect(-80,-140,160,280);
+  // fake 3D: rotate rectangle in perspective
+  const r = angleLP * Math.PI/180;
+  const w = 160;
+  const h = 280;
+
+  ctx.transform(1, Math.sin(r)*0.8, 0, Math.cos(r), 0, 0);
+  ctx.fillStyle = "#7cc4ff";
+  ctx.fillRect(-w/2, -h/2, w, h);
 
   ctx.restore();
-
   requestAnimationFrame(draw);
 }
 draw();
 
-/* =======================
-   PERMISSION BUTTON
-======================= */
-document.getElementById("btn").onclick = async ()=>{
+/* ================= START BUTTON ================= */
+document.getElementById("start").onclick = async ()=>{
   if(DeviceMotionEvent.requestPermission){
-    await DeviceMotionEvent.requestPermission();
+    const p = await DeviceMotionEvent.requestPermission();
+    if(p !== "granted") return;
   }
+
   initAudio();
-  window.addEventListener("devicemotion", handleMotion, {frequency:60});
+  window.addEventListener("devicemotion", onMotion, {frequency:60});
+  mstat.textContent = "on";
+  startGPS();
 };
 </script>
 </body>
