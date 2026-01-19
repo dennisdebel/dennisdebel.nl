@@ -126,26 +126,34 @@ document.addEventListener("DOMContentLoaded",()=>{
     srcRevDown.start();
   }
 
-  function setEngine(norm){
-    if(!audioOn) return;
+function setEngine(norm){
+  if(!audioOn) return;
 
-    // --- revdown only near zero ---
-    if(Math.abs(angleLP)<zeroThreshold){
-      gainRevDown.gain.setTargetAtTime(0.18, audioCtx.currentTime,0.08);
-      gainRev.gain.setTargetAtTime(0, audioCtx.currentTime,0.08);
-      prevNorm=0;
-      return;
-    } else {
-      gainRevDown.gain.setTargetAtTime(0, audioCtx.currentTime,0.08);
-    }
-
-    // --- throttle rev ---
-    const rate=0.6 + norm*1.6;
-    srcRev.playbackRate.setTargetAtTime(rate, audioCtx.currentTime,0.03);
-    gainRev.gain.setTargetAtTime(0.25*norm, audioCtx.currentTime,0.08); // scale by throttle
-
-    prevNorm=norm;
+  // --- revdown logic ---
+  const absAngle = Math.abs(angleLP);
+  let revdownTarget = 0;
+  const revdownMax = 4; // deg, more liberate
+  if(absAngle <= revdownMax){
+    // volume scales from 0-4 deg: 0 deg = full, 4 deg = 0
+    revdownTarget = clamp(1 - absAngle / revdownMax, 0, 1) * 0.18;
   }
+  // smooth fade: 0.3s attack/release
+  gainRevDown.gain.setTargetAtTime(revdownTarget, audioCtx.currentTime, 0.3);
+
+  // --- throttle rev overlay ---
+  const rate = 0.6 + norm * 1.6;
+  srcRev.playbackRate.setTargetAtTime(rate, audioCtx.currentTime, 0.03);
+  gainRev.gain.setTargetAtTime(0.25 * norm, audioCtx.currentTime, 0.08);
+
+  // --- GPS smoothing for crossfade ---
+  // smooth the gpsNorm to avoid steppy jumps
+  if(gpsLP === undefined) gpsLP = 0; // first time init
+  gpsLP += 0.05 * (norm - gpsLP);   // LPF
+  gainIdle.gain.setTargetAtTime(0.08 + 0.12 * gpsLP, audioCtx.currentTime, 0.2);
+
+  prevNorm = norm;
+}
+
 
   /* ---------- device orientation ---------- */
   document.getElementById("btnSensors").onclick=async()=>{
