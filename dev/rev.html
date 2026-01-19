@@ -5,19 +5,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Phone Throttle Engine</title>
 <style>
-body {
-  margin: 0;
-  background: #0b0f14;
-  color: #e9eef5;
-  font-family: system-ui, sans-serif;
-  text-align: center;
-}
-#scene { width: 260px; height: 260px; margin: 20px auto; perspective: 900px; }
-#phone { width: 120px; height: 220px; margin: auto; background: linear-gradient(#111,#222);
-  border-radius: 14px; border: 2px solid #4af; transform-style: preserve-3d; }
-button { margin:6px; padding:10px 16px; border-radius:10px; border:none;
-  background:#1f6feb; color:white; font-weight:600; }
-#info { font-size:14px; font-variant-numeric: tabular-nums; }
+body { margin:0; background:#0b0f14; color:#e9eef5; font-family:system-ui,sans-serif; text-align:center; }
+#scene { width:260px; height:260px; margin:20px auto; perspective:900px; }
+#phone { width:120px; height:220px; margin:auto; background:linear-gradient(#111,#222);
+  border-radius:14px; border:2px solid #4af; transform-style:preserve-3d; }
+button { margin:6px; padding:10px 16px; border-radius:10px; border:none; background:#1f6feb; color:white; font-weight:600; }
+#info { font-size:14px; font-variant-numeric:tabular-nums; }
 </style>
 </head>
 <body>
@@ -37,165 +30,157 @@ mix: <span id="mix">0</span><br>
 <script>
 document.addEventListener("DOMContentLoaded",()=>{
 
-  /* ---------- utils ---------- */
-  const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
-  const lerp=(a,b,t)=>a+(b-a)*t;
-  const deg2rad=d=>d*Math.PI/180;
+/* ---------- utils ---------- */
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const deg2rad=d=>d*Math.PI/180;
 
-  /* ---------- 3D visual ---------- */
-  const phoneEl=document.getElementById("phone");
-  function orientationMatrix(a,b,g){
-    const x=deg2rad(b),y=deg2rad(g),z=deg2rad(a);
-    const cx=Math.cos(x), sx=Math.sin(x);
-    const cy=Math.cos(y), sy=Math.sin(y);
-    const cz=Math.cos(z), sz=Math.sin(z);
-    return [
-      cz*cy - sz*sx*sy, -cx*sz, cz*sy + cy*sz*sx,0,
-      cy*sz + cz*sx*sy,  cx*cz, sz*sy - cz*cy*sx,0,
-      -cx*sy, sx, cx*cy,0,
-      0,0,0,1
-    ];
-  }
-  function applyMatrix(m){ phoneEl.style.transform=`matrix3d(${m.join(",")})`; }
+/* ---------- 3D visual ---------- */
+const phoneEl=document.getElementById("phone");
+function orientationMatrix(a,b,g){
+  const x=deg2rad(b),y=deg2rad(g),z=deg2rad(a);
+  const cx=Math.cos(x), sx=Math.sin(x);
+  const cy=Math.cos(y), sy=Math.sin(y);
+  const cz=Math.cos(z), sz=Math.sin(z);
+  return [
+    cz*cy - sz*sx*sy, -cx*sz, cz*sy + cy*sz*sx,0,
+    cy*sz + cz*sx*sy,  cx*cz, sz*sy - cz*cy*sx,0,
+    -cx*sy, sx, cx*cy,0,
+    0,0,0,1
+  ];
+}
+function applyMatrix(m){ phoneEl.style.transform=`matrix3d(${m.join(",")}`; }
 
-  /* ---------- throttle + LPF + deadzone ---------- */
-  let angleLP=0, angleZero=0;
-  const smoothing=0.07;   // smaller=smoother
-  const deadzone=1;       // degrees
-  const zeroThreshold=1;  // degrees for revdown trigger
+/* ---------- throttle + LPF + deadzone ---------- */
+let angleLP=0, angleZero=0;
+const smoothing=0.07;   // smaller=smoother
+const deadzone=1;       // degrees
+function smoothAngle(x){
+  const delta=x-angleLP;
+  if(Math.abs(delta)<deadzone) return angleLP;
+  angleLP += smoothing*delta;
+  return angleLP;
+}
 
-  function smoothAngle(x){
-    const delta=x-angleLP;
-    if(Math.abs(delta)<deadzone) return angleLP;
-    angleLP += smoothing*delta;
-    return angleLP;
-  }
+/* ---------- GPS ---------- */
+let gpsSpeed=0, gpsLP=0;
+const gpsSmoothing=0.05;
+navigator.geolocation.watchPosition(
+  p=>{
+    gpsSpeed=(p.coords.speed||0)*3.6;
+    document.getElementById("gps").textContent=gpsSpeed.toFixed(1);
+  },
+  ()=>{}, {enableHighAccuracy:true, maximumAge:500}
+);
 
-  /* ---------- GPS ---------- */
-  let gpsSpeed=0;
-  navigator.geolocation.watchPosition(
-    p=>{
-      gpsSpeed=(p.coords.speed||0)*3.6;
-      document.getElementById("gps").textContent=gpsSpeed.toFixed(1);
-    },
-    ()=>{}, {enableHighAccuracy:true, maximumAge:500}
-  );
+/* ---------- audio ---------- */
+let audioCtx;
+let bufIdle, bufRev, bufRevDown;
+let srcIdle, srcRev, srcRevDown;
+let gainIdle, gainRev, gainRevDown;
+let audioOn=false;
 
-  /* ---------- audio ---------- */
-  let audioCtx;
-  let bufIdle, bufRev, bufRevDown;
-  let srcIdle, srcRev, srcRevDown;
-  let gainIdle, gainRev, gainRevDown;
-  let audioOn=false;
-  let prevNorm=0;
+async function loadSample(url){
+  const r=await fetch(url);
+  const b=await r.arrayBuffer();
+  return await audioCtx.decodeAudioData(b);
+}
 
-  async function loadSample(url){
-    const r=await fetch(url);
-    const b=await r.arrayBuffer();
-    return await audioCtx.decodeAudioData(b);
-  }
+async function initAudio(){
+  if(audioCtx) return;
+  audioCtx=new AudioContext();
 
-  async function initAudio(){
-    if(audioCtx) return;
-    audioCtx=new AudioContext();
+  bufIdle=await loadSample("idle.wav");       // base idle hum
+  bufRev=await loadSample("rev.wav");         // throttle overlay
+  bufRevDown=await loadSample("revdown.wav"); // near zero
 
-    bufIdle=await loadSample("idle.wav");       // base idle hum
-    bufRev=await loadSample("rev.wav");         // throttle overlay
-    bufRevDown=await loadSample("revdown.wav"); // near zero
+  srcIdle=audioCtx.createBufferSource();
+  srcRev=audioCtx.createBufferSource();
+  srcRevDown=audioCtx.createBufferSource();
+  gainIdle=audioCtx.createGain();
+  gainRev=audioCtx.createGain();
+  gainRevDown=audioCtx.createGain();
 
-    srcIdle=audioCtx.createBufferSource();
-    srcRev=audioCtx.createBufferSource();
-    srcRevDown=audioCtx.createBufferSource();
-    gainIdle=audioCtx.createGain();
-    gainRev=audioCtx.createGain();
-    gainRevDown=audioCtx.createGain();
+  srcIdle.buffer=bufIdle; srcRev.buffer=bufRev; srcRevDown.buffer=bufRevDown;
+  srcIdle.loop=srcRev.loop=srcRevDown.loop=true;
 
-    srcIdle.buffer=bufIdle; srcRev.buffer=bufRev; srcRevDown.buffer=bufRevDown;
-    srcIdle.loop=srcRev.loop=srcRevDown.loop=true;
+  srcIdle.connect(gainIdle); gainIdle.connect(audioCtx.destination);
+  srcRev.connect(gainRev); gainRev.connect(audioCtx.destination);
+  srcRevDown.connect(gainRevDown); gainRevDown.connect(audioCtx.destination);
 
-    srcIdle.connect(gainIdle); gainIdle.connect(audioCtx.destination);
-    srcRev.connect(gainRev); gainRev.connect(audioCtx.destination);
-    srcRevDown.connect(gainRevDown); gainRevDown.connect(audioCtx.destination);
+  gainIdle.gain.value=0.08;   // idle hum base
+  gainRev.gain.value=0;
+  gainRevDown.gain.value=0;
 
-    gainIdle.gain.value=0.08;   // idle hum base
-    gainRev.gain.value=0;
-    gainRevDown.gain.value=0;
+  srcIdle.start();
+  srcRev.start();
+  srcRevDown.start();
+}
 
-    srcIdle.start();
-    srcRev.start();
-    srcRevDown.start();
-  }
-
+/* ---------- engine audio ---------- */
 function setEngine(norm){
   if(!audioOn) return;
 
-  // --- revdown logic ---
-  const absAngle = Math.abs(angleLP);
-  let revdownTarget = 0;
-  const revdownMax = 4; // deg, more liberate
-  if(absAngle <= revdownMax){
-    // volume scales from 0-4 deg: 0 deg = full, 4 deg = 0
-    revdownTarget = clamp(1 - absAngle / revdownMax, 0, 1) * 0.18;
+  // --- revdown logic (0-4°) ---
+  const absAngle=Math.abs(angleLP);
+  let revdownTarget=0;
+  const revdownMax=4;
+  if(absAngle<=revdownMax){
+    revdownTarget=clamp(1 - absAngle/revdownMax,0,1)*0.18;
   }
-  // smooth fade: 0.3s attack/release
-  gainRevDown.gain.setTargetAtTime(revdownTarget, audioCtx.currentTime, 0.3);
+  gainRevDown.gain.setTargetAtTime(revdownTarget,audioCtx.currentTime,0.3);
 
-  // --- throttle rev overlay ---
-  const rate = 0.6 + norm * 1.6;
-  srcRev.playbackRate.setTargetAtTime(rate, audioCtx.currentTime, 0.03);
-  gainRev.gain.setTargetAtTime(0.25 * norm, audioCtx.currentTime, 0.08);
+  // --- throttle rev ---
+  const rate=0.6 + norm*1.6;
+  srcRev.playbackRate.setTargetAtTime(rate,audioCtx.currentTime,0.03);
+  gainRev.gain.setTargetAtTime(0.25*norm,audioCtx.currentTime,0.08);
 
-  // --- GPS smoothing for crossfade ---
-  // smooth the gpsNorm to avoid steppy jumps
-  if(gpsLP === undefined) gpsLP = 0; // first time init
-  gpsLP += 0.05 * (norm - gpsLP);   // LPF
-  gainIdle.gain.setTargetAtTime(0.08 + 0.12 * gpsLP, audioCtx.currentTime, 0.2);
-
-  prevNorm = norm;
+  // --- GPS smoothing / crossfade ---
+  gpsLP += gpsSmoothing*(norm-gpsLP);
+  gainIdle.gain.setTargetAtTime(0.08 + 0.12*gpsLP,audioCtx.currentTime,0.2);
 }
 
+/* ---------- device orientation ---------- */
+document.getElementById("btnSensors").onclick=async()=>{
+  if(DeviceOrientationEvent.requestPermission){
+    await DeviceOrientationEvent.requestPermission();
+  }
+  window.addEventListener("deviceorientation", e=>{
+    if(e.beta==null) return;
+    const alpha=e.alpha||0;
+    const beta=-e.beta;
+    const gamma=e.gamma||0;
 
-  /* ---------- device orientation ---------- */
-  document.getElementById("btnSensors").onclick=async()=>{
-    if(DeviceOrientationEvent.requestPermission){
-      await DeviceOrientationEvent.requestPermission();
-    }
-    window.addEventListener("deviceorientation", e=>{
-      if(e.beta==null) return;
-      const alpha=e.alpha||0;
-      const beta=-e.beta;
-      const gamma=e.gamma||0;
+    applyMatrix(orientationMatrix(alpha,beta,gamma));
 
-      applyMatrix(orientationMatrix(alpha,beta,gamma));
+    const angle=smoothAngle(beta-angleZero);
+    document.getElementById("angle").textContent=angle.toFixed(1);
 
-      const angle=smoothAngle(beta-angleZero);
-      document.getElementById("angle").textContent=angle.toFixed(1);
+    // throttle from angle
+    const throttle=clamp(((-angle)+30)/60,0,1);
 
-      // throttle from angle
-      const throttle=clamp(((-angle)+30)/60,0,1);
+    // GPS mixing
+    let mix=0;
+    if(gpsSpeed>5) mix=clamp((gpsSpeed-5)/10,0,1);
+    document.getElementById("mix").textContent=mix.toFixed(2);
 
-      // GPS mixing
-      let mix=0;
-      if(gpsSpeed>5) mix=clamp((gpsSpeed-5)/10,0,1);
-      document.getElementById("mix").textContent=mix.toFixed(2);
+    const gpsNorm=clamp(gpsSpeed/40,0,1);
+    const norm=lerp(throttle,gpsNorm,mix);
 
-      const gpsNorm=clamp(gpsSpeed/40,0,1);
-      const norm=lerp(throttle,gpsNorm,mix);
+    setEngine(norm);
+  });
+};
 
-      setEngine(norm);
-    });
-  };
+/* ---------- calibration ---------- */
+document.getElementById("btnCal").onclick=()=>{ angleZero=angleLP; };
 
-  /* ---------- calibration ---------- */
-  document.getElementById("btnCal").onclick=()=>{ angleZero=angleLP; };
-
-  /* ---------- audio toggle ---------- */
-  document.getElementById("btnAudio").onclick=async()=>{
-    await initAudio();
-    if(audioCtx.state==="suspended") await audioCtx.resume();
-    audioOn=!audioOn;
-    if(!audioOn){ gainRev.gain.value=0; gainRevDown.gain.value=0; }
-  };
+/* ---------- audio toggle ---------- */
+document.getElementById("btnAudio").onclick=async()=>{
+  await initAudio();
+  if(audioCtx.state==="suspended") await audioCtx.resume();
+  audioOn=!audioOn;
+  if(!audioOn){ gainRev.gain.value=0; gainRevDown.gain.value=0; }
+};
 
 });
 </script>
