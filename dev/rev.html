@@ -9,8 +9,9 @@ body { margin:0; background:#0b0f14; color:#e9eef5; font-family:system-ui,sans-s
 #scene { width:260px; height:260px; margin:20px auto; perspective:900px; }
 #phone { width:120px; height:220px; margin:auto; background:linear-gradient(#111,#222);
   border-radius:14px; border:2px solid #4af; transform-style:preserve-3d; }
-button { margin:6px; padding:10px 16px; border-radius:10px; border:none; background:#1f6feb; color:white; font-weight:600; }
+button, input { margin:6px; padding:8px 14px; border-radius:10px; border:none; background:#1f6feb; color:white; font-weight:600; }
 #info { font-size:14px; font-variant-numeric:tabular-nums; }
+label { font-weight:400; margin-left:6px; }
 </style>
 </head>
 <body>
@@ -20,6 +21,12 @@ button { margin:6px; padding:10px 16px; border-radius:10px; border:none; backgro
 <button id="btnSensors">Enable sensors</button>
 <button id="btnCal">Calibrate idle</button>
 <button id="btnAudio">Enable audio</button>
+
+<div>
+  <label>Revdown trigger drop:</label>
+  <input type="range" id="revDropSlider" min="2" max="20" value="10">
+  <span id="revDropVal">10°</span>
+</div>
 
 <div id="info">
 angle: <span id="angle">0</span>°<br>
@@ -52,12 +59,11 @@ function orientationMatrix(a,b,g){
 function applyMatrix(m){ phoneEl.style.transform=`matrix3d(${m.join(",")}`; }
 
 /* ---------- throttle + LPF + deadzone ---------- */
-let angleLP=0, angleZero=0;
-let currentRawBeta=0;
-const smoothing=0.07;  // smaller = smoother
+let angleLP=0, angleZero=0, currentRawBeta=0;
+const smoothing=0.07;  // smaller=smoother
 const deadzone=1;      // degrees
 function smoothAngle(x){
-  const delta=x-angleLP;
+  const delta = x-angleLP;
   if(Math.abs(delta)<deadzone) return angleLP;
   angleLP += smoothing*delta;
   return angleLP;
@@ -118,27 +124,45 @@ async function initAudio(){
   srcRevDown.start();
 }
 
+/* ---------- revdown trigger ---------- */
+let prevAngleLP=0;
+let revDownTriggered=false;
+let revDownThreshold=4;
+let revDownStart=10;  // can be changed via slider
+const revDownFade=0.3; // seconds
+
+document.getElementById("revDropSlider").oninput=(e)=>{
+  revDownStart=parseFloat(e.target.value);
+  document.getElementById("revDropVal").textContent=`${revDownStart}°`;
+};
+
+function updateRevDown(){
+  if(!revDownTriggered && prevAngleLP>revDownStart && angleLP<revDownThreshold){
+    revDownTriggered=true;
+    gainRevDown.gain.setTargetAtTime(0.18,audioCtx.currentTime,revDownFade);
+    setTimeout(()=>{
+      gainRevDown.gain.setTargetAtTime(0,audioCtx.currentTime,revDownFade);
+      revDownTriggered=false;
+    }, Math.min(500, bufRevDown ? bufRevDown.duration*1000 : 500));
+  }
+  prevAngleLP=angleLP;
+}
+
 /* ---------- engine audio ---------- */
 function setEngine(norm){
   if(!audioOn) return;
-
-  // --- revdown logic (0-4°) ---
-  const absAngle=Math.abs(angleLP);
-  let revdownTarget=0;
-  const revdownMax=4;
-  if(absAngle<=revdownMax){
-    revdownTarget=clamp(1 - absAngle/revdownMax,0,1)*0.18;
-  }
-  gainRevDown.gain.setTargetAtTime(revdownTarget,audioCtx.currentTime,0.3);
 
   // --- throttle rev overlay ---
   const rate=0.6 + norm*1.6;
   srcRev.playbackRate.setTargetAtTime(rate,audioCtx.currentTime,0.03);
   gainRev.gain.setTargetAtTime(0.25*norm,audioCtx.currentTime,0.08);
 
-  // --- GPS smoothing / crossfade ---
+  // --- GPS smoothing / crossfade idle ---
   gpsLP += gpsSmoothing*(norm-gpsLP);
   gainIdle.gain.setTargetAtTime(0.08 + 0.12*gpsLP,audioCtx.currentTime,0.2);
+
+  // --- revdown once trigger ---
+  updateRevDown();
 }
 
 /* ---------- device orientation ---------- */
@@ -149,21 +173,18 @@ document.getElementById("btnSensors").onclick=async()=>{
   window.addEventListener("deviceorientation", e=>{
     if(e.beta==null) return;
 
-    const alpha = e.alpha || 0;
-    const beta  = e.beta;       // RAW beta
+    const alpha=e.alpha || 0;
+    const beta  = e.beta;       // raw beta
     const gamma = e.gamma || 0;
 
-    currentRawBeta = beta;      // for calibration
+    currentRawBeta = beta;
 
     applyMatrix(orientationMatrix(alpha,beta,gamma));
 
     const angle = smoothAngle(beta - angleZero);
     document.getElementById("angle").textContent = angle.toFixed(1);
 
-    // forward tilt = positive throttle
-    const throttle = clamp(angle/45,0,1); // adjust sensitivity
-
-    // GPS mixing
+    const throttle = clamp(angle/45,0,1); // forward tilt
     let mix=0;
     if(gpsSpeed>5) mix=clamp((gpsSpeed-5)/10,0,1);
     document.getElementById("mix").textContent=mix.toFixed(2);
