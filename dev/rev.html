@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Throttle Phone Sensor</title>
+<title>Phone Throttle Engine</title>
 
 <style>
 body {
@@ -13,14 +13,12 @@ body {
   font-family: system-ui, sans-serif;
   text-align: center;
 }
-
 #scene {
   width: 260px;
   height: 260px;
   margin: 20px auto;
   perspective: 900px;
 }
-
 #phone {
   width: 120px;
   height: 220px;
@@ -30,9 +28,8 @@ body {
   border: 2px solid #4af;
   transform-style: preserve-3d;
 }
-
 button {
-  margin: 8px;
+  margin: 6px;
   padding: 10px 16px;
   border-radius: 10px;
   border: none;
@@ -41,47 +38,44 @@ button {
   font-weight: 600;
 }
 #info {
-  font-variant-numeric: tabular-nums;
   font-size: 14px;
+  font-variant-numeric: tabular-nums;
 }
 </style>
 </head>
 
 <body>
 
-<h3>Phone-Throttle Debug</h3>
+<h3>Phone Throttle Debug</h3>
 
 <div id="scene">
   <div id="phone"></div>
 </div>
 
 <button id="btnSensors">Enable sensors</button>
+<button id="btnCal">Calibrate idle</button>
 <button id="btnAudio">Enable audio</button>
 
 <div id="info">
-  angle: <span id="angle">0</span>°<br>
-  gps: <span id="gps">0</span> km/h<br>
-  pitch: <span id="pitch">0</span>
+angle: <span id="angle">0</span>°<br>
+gps: <span id="gps">0</span> km/h<br>
+mix: <span id="mix">0</span><br>
 </div>
 
 <script>
-/* ------------------ utilities ------------------ */
-const deg2rad = d => d * Math.PI / 180;
+/* ---------- utilities ---------- */
 const clamp = (x,a,b)=>Math.max(a,Math.min(b,x));
-const lerp = (a,b,t)=>a+(b-a)*t;
+const lerp  = (a,b,t)=>a+(b-a)*t;
+const deg2rad = d => d*Math.PI/180;
 
-/* ------------------ 3D rotation ------------------ */
+/* ---------- 3D visual ---------- */
 const phoneEl = document.getElementById("phone");
 
-function orientationMatrix(alpha, beta, gamma){
-  const x = deg2rad(beta);
-  const y = deg2rad(gamma);
-  const z = deg2rad(alpha);
-
+function orientationMatrix(a,b,g){
+  const x=deg2rad(b), y=deg2rad(g), z=deg2rad(a);
   const cx=Math.cos(x), sx=Math.sin(x);
   const cy=Math.cos(y), sy=Math.sin(y);
   const cz=Math.cos(z), sz=Math.sin(z);
-
   return [
     cz*cy - sz*sx*sy, -cx*sz, cz*sy + cy*sz*sx, 0,
     cy*sz + cz*sx*sy,  cx*cz, sz*sy - cz*cy*sx, 0,
@@ -89,20 +83,19 @@ function orientationMatrix(alpha, beta, gamma){
     0,0,0,1
   ];
 }
-
 function applyMatrix(m){
   phoneEl.style.transform = `matrix3d(${m.join(",")})`;
 }
 
-/* ------------------ throttle angle ------------------ */
+/* ---------- throttle ---------- */
 let angleLP = 0;
+let angleZero = 0;
 function smoothAngle(x){
-  const k = 0.15;
-  angleLP += k * (x - angleLP);
+  angleLP += 0.15 * (x - angleLP);
   return angleLP;
 }
 
-/* ------------------ GPS ------------------ */
+/* ---------- GPS ---------- */
 let gpsSpeed = 0;
 navigator.geolocation.watchPosition(
   p=>{
@@ -113,65 +106,107 @@ navigator.geolocation.watchPosition(
   { enableHighAccuracy:true, maximumAge:500 }
 );
 
-/* ------------------ audio ------------------ */
-let audioCtx, osc, gain;
+/* ---------- audio ---------- */
+let audioCtx;
+let revBuf, revDownBuf;
+let srcUp, srcDown;
+let gainUp, gainDown;
 let audioOn = false;
+let prevNorm = 0;
 
-function startAudio(){
+async function loadSample(url){
+  const r = await fetch(url);
+  const b = await r.arrayBuffer();
+  return await audioCtx.decodeAudioData(b);
+}
+
+async function initAudio(){
   if(audioCtx) return;
   audioCtx = new AudioContext();
-  osc = audioCtx.createOscillator();
-  gain = audioCtx.createGain();
-  osc.type = "sawtooth";
-  osc.connect(gain);
-  gain.connect(audioCtx.destination);
-  gain.gain.value = 0;
-  osc.start();
+
+  revBuf = await loadSample("rev.wav");
+  revDownBuf = await loadSample("revdown.wav");
+
+  srcUp = audioCtx.createBufferSource();
+  srcDown = audioCtx.createBufferSource();
+  gainUp = audioCtx.createGain();
+  gainDown = audioCtx.createGain();
+
+  srcUp.buffer = revBuf;
+  srcDown.buffer = revDownBuf;
+  srcUp.loop = srcDown.loop = true;
+
+  srcUp.connect(gainUp);
+  srcDown.connect(gainDown);
+  gainUp.connect(audioCtx.destination);
+  gainDown.connect(audioCtx.destination);
+
+  gainUp.gain.value = 0;
+  gainDown.gain.value = 0;
+
+  srcUp.start();
+  srcDown.start();
 }
 
-function setPitch(norm){
+function setEngine(norm){
   if(!audioOn) return;
-  const freq = 80 + norm * 320;
-  osc.frequency.setTargetAtTime(freq, audioCtx.currentTime, 0.02);
-  gain.gain.setTargetAtTime(0.12, audioCtx.currentTime, 0.08);
-  document.getElementById("pitch").textContent = freq.toFixed(0);
+
+  const rate = 0.6 + norm * 1.6;
+  srcUp.playbackRate.setTargetAtTime(rate, audioCtx.currentTime, 0.03);
+  srcDown.playbackRate.setTargetAtTime(rate, audioCtx.currentTime, 0.03);
+
+  const rising = norm > prevNorm;
+  gainUp.gain.setTargetAtTime(rising ? 0.25 : 0, audioCtx.currentTime, 0.06);
+  gainDown.gain.setTargetAtTime(rising ? 0 : 0.18, audioCtx.currentTime, 0.08);
+
+  prevNorm = norm;
 }
 
-/* ------------------ sensor handling ------------------ */
+/* ---------- sensors ---------- */
 document.getElementById("btnSensors").onclick = async ()=>{
   if(DeviceOrientationEvent.requestPermission){
     await DeviceOrientationEvent.requestPermission();
   }
-
   window.addEventListener("deviceorientation", e=>{
-    if(e.beta===null) return;
+    if(e.beta==null) return;
 
-    const alpha = e.alpha || 0;
-    const beta  = -e.beta;   // ← FIXED AXIS
-    const gamma = e.gamma || 0;
+    const alpha=e.alpha||0;
+    const beta = -e.beta;
+    const gamma=e.gamma||0;
 
-    const m = orientationMatrix(alpha, beta, gamma);
-    applyMatrix(m);
+    applyMatrix(orientationMatrix(alpha,beta,gamma));
 
-    const angle = smoothAngle(beta);
+    const angle = smoothAngle(beta - angleZero);
     document.getElementById("angle").textContent = angle.toFixed(1);
 
-    /* ---- blend throttle & GPS ---- */
-    const throttleNorm = clamp(((-angle) + 30) / 60, 0, 1);
-    const gpsNorm = clamp(gpsSpeed / 40, 0, 1);
-    const mix = clamp(gpsSpeed / 5, 0, 1); // >5km/h → GPS dominates
-    const norm = lerp(throttleNorm, gpsNorm, mix);
+    const throttle = clamp((angle + 30)/60, 0, 1);
 
-    setPitch(norm);
+    let mix = 0;
+    if(gpsSpeed > 5){
+      mix = clamp((gpsSpeed - 5) / 10, 0, 1);
+    }
+    document.getElementById("mix").textContent = mix.toFixed(2);
+
+    const gpsNorm = clamp(gpsSpeed / 40, 0, 1);
+    const norm = lerp(throttle, gpsNorm, mix);
+
+    setEngine(norm);
   });
 };
 
-/* ------------------ audio button ------------------ */
+/* ---------- buttons ---------- */
+document.getElementById("btnCal").onclick = ()=>{
+  angleZero = angleLP;
+};
+
 document.getElementById("btnAudio").onclick = async ()=>{
-  startAudio();
+  await initAudio();
   if(audioCtx.state==="suspended") await audioCtx.resume();
   audioOn = !audioOn;
-  if(!audioOn) gain.gain.value = 0;
+  if(!audioOn){
+    gainUp.gain.value = 0;
+    gainDown.gain.value = 0;
+  }
 };
 </script>
 </body>
