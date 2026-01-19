@@ -157,7 +157,7 @@ document.getElementById("btnSensors").onclick = async ()=>{
     document.getElementById("angle").textContent = angle.toFixed(1);
 
     /* ---- blend throttle & GPS ---- */
-    const throttleNorm = clamp((angle + 30)/60, 0, 1);
+    const throttleNorm = clamp(((-angle) + 30) / 60, 0, 1);
     const gpsNorm = clamp(gpsSpeed / 40, 0, 1);
     const mix = clamp(gpsSpeed / 5, 0, 1); // >5km/h → GPS dominates
     const norm = lerp(throttleNorm, gpsNorm, mix);
