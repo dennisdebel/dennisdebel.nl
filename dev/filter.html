@@ -142,11 +142,16 @@ for (var i = 0; i < segments.length; i++) {
 			segment.playButton.classList.remove('pause');
 		});
 
-		segment.playButton.addEventListener('click',  async function{
+		segment.playButton.addEventListener('click',   function(e){
 
 		
 			if (Pizzicato.context.state !== "running") {
-        		await Pizzicato.context.resume();
+        		 Pizzicato.context.resume().then(function() {
+		            log("AudioContext resumed");
+		        }).catch(function(err) {
+		            log("Resume error");
+		        });
+
     		}
 				segment.audio.play();
 		});
