@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Phone Throttle Engine</title>
+<style>
+body { margin:0; background:#0b0f14; color:#e9eef5; font-family:system-ui,sans-serif; text-align:center; }
+#scene { width:260px; height:260px; margin:20px auto; perspective:900px; }
+#phone { width:120px; height:220px; margin:auto; background:linear-gradient(#111,#222);
+  border-radius:14px; border:2px solid #4af; transform-style:preserve-3d; }
+button, input { margin:6px; padding:8px 14px; border-radius:10px; border:none; background:#1f6feb; color:white; font-weight:600; }
+#info { font-size:14px; font-variant-numeric:tabular-nums; }
+label { font-weight:400; margin-left:6px; }
+</style>
+
+<script src="./Pizzicato.min.js"></script>
+</head>
+<body>
+
+ <div class="slider-group">
+                    <div class="slider">
+                        <label for="volume-synth">Volume</label>
+                        <input type="range" min="0" max="1" step="0.01" value="1" id="volume-synth" />
+                        <div class="slider-value">1</div>
+                    </div>
+                    <div class="slider">
+                        <label for="low-pass-filter-frequency">Frequency</label>
+                        <input type="range" min="10" max="22050" step="1" value="400" id="low-pass-filter-frequency" />
+                        <div class="slider-value">400</div>
+                    </div>
+                    <div class="slider">
+                        <label for="low-pass-filter-peak">Peak</label>
+                        <input type="range" min="0.0001" max="20" step="0.0001" value="10" id="low-pass-filter-peak" />
+                        <div class="slider-value">10</div>
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <button id="stop-synth" class="stop action"></button>
+                    <button id="play-synth" class="play action"></button>
+                </div>
+
+
+<script>
+
+
+	var synth = new Pz.Sound({ 
+	source: 'file', 
+	options: { 
+		path: './slengteng-loop.wav', 
+		loop: true 
+	}
+}, function() { synth.addEffect(lowPassFilter); });
+
+
+var lowPassFilter = new Pizzicato.Effects.LowPassFilter({
+	frequency: 400,
+	peak: 10
+});
+
+var segments = [
+	
+	{
+		audio: synth,
+		playButton: document.getElementById('play-synth'),
+		stopButton: document.getElementById('stop-synth'),
+		volumeSlider: document.getElementById('volume-synth'),
+		effects: [
+			{
+				instance: lowPassFilter,
+				parameters: {
+					frequency: document.getElementById('low-pass-filter-frequency'),
+					peak: document.getElementById('low-pass-filter-peak')
+				}
+			}
+		]
+	},
+	
+	
+
+]
+
+for (var i = 0; i < segments.length; i++) {
+	(function(segment) {
+
+		segment.audio.on('play', function() {
+			segment.playButton.classList.add('pause');
+		});
+
+		segment.audio.on('stop', function() {
+			segment.playButton.classList.remove('pause');
+		});
+
+		segment.audio.on('pause', function() {
+			segment.playButton.classList.remove('pause');
+		});
+
+		segment.playButton.addEventListener('click', function(e) {
+			if (segment.playButton.classList.contains('pause'))
+				segment.audio.pause();
+			else
+				segment.audio.play();
+		});
+
+		segment.stopButton.addEventListener('click', function(e) {
+			segment.audio.stop();
+		});
+
+		segment.volumeSlider.addEventListener('input', function(e) {
+			var volumeDisplay = segment.volumeSlider.parentNode.getElementsByClassName('slider-value')[0];
+			volumeDisplay.innerHTML = segment.audio.volume = e.target.valueAsNumber;
+		});
+
+		if (segment.releaseSlider) {
+			segment.releaseSlider.addEventListener('input', function(e) {
+				var releaseDisplay = segment.releaseSlider.parentNode.getElementsByClassName('slider-value')[0];
+				releaseDisplay.innerHTML = segment.audio.release = e.target.valueAsNumber;
+			});
+		}
+
+		if (segment.attackSlider) {
+			segment.attackSlider.addEventListener('input', function(e) {
+				var attackDisplay = segment.attackSlider.parentNode.getElementsByClassName('slider-value')[0];
+				attackDisplay.innerHTML = segment.audio.attack = e.target.valueAsNumber;
+			});
+		}
+
+		if (!segment.effects || !segment.effects.length)
+			return;
+
+		for (var i = 0; i < segment.effects.length; i++) {
+			var effect = segment.effects[i];
+
+			for (var key in effect.parameters) {
+				(function(key, slider, instance){
+
+					var display = slider.parentNode.getElementsByClassName('slider-value')[0];
+
+					slider.addEventListener('input', function(e) {
+						display.innerHTML = instance[key] = e.target.valueAsNumber;
+					});
+
+				})(key, effect.parameters[key], effect.instance);	
+			}
+		}
+
+	})(segments[i]);
+} 
+</script>
+</body>
+</html>
