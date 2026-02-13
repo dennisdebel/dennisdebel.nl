@@ -142,7 +142,7 @@ for (var i = 0; i < segments.length; i++) {
 			segment.playButton.classList.remove('pause');
 		});
 
-		segment.playButton.addEventListener('click',   function(e){
+		segment.playButton.addEventListener('click',  async function{
 
 		
 			if (Pizzicato.context.state !== "running") {
