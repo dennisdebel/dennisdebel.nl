@@ -7,75 +7,49 @@
 <style>
 body { margin:0; background:#0b0f14; color:#e9eef5; font-family:system-ui,sans-serif; text-align:center; }
 #scene { width:260px; height:260px; margin:20px auto; perspective:900px; }
-#phone { width:120px; height:220px; margin:auto; background:linear-gradient(#111,#222);
-  border-radius:14px; border:2px solid #4af; transform-style:preserve-3d; }
+#phone { width:120px; height:220px; margin:auto; background:linear-gradient(#111,#222); border-radius:14px; border:2px solid #4af; transform-style:preserve-3d; }
 button, input { margin:6px; padding:8px 14px; border-radius:10px; border:none; background:#1f6feb; color:white; font-weight:600; }
 #info { font-size:14px; font-variant-numeric:tabular-nums; }
 label { font-weight:400; margin-left:6px; }
 </style>
-
 <script src="./Pizzicato.min.js"></script>
 </head>
 <body>
 
- <div class="slider-group">
-                    <div class="slider">
-                        <label for="volume-synth">Volume</label>
-                        <input type="range" min="0" max="1" step="0.01" value="1" id="volume-synth" />
-                        <div class="slider-value">1</div>
-                    </div>
-                    <div class="slider">
-                        <label for="low-pass-filter-frequency">Frequency</label>
-                        <input type="range" min="10" max="22050" step="1" value="400" id="low-pass-filter-frequency" />
-                        <div class="slider-value">400</div>
-                    </div>
-                    <div class="slider">
-                        <label for="low-pass-filter-peak">Peak</label>
-                        <input type="range" min="0.0001" max="20" step="0.0001" value="10" id="low-pass-filter-peak" />
-                        <div class="slider-value">10</div>
-                    </div>
-                </div>
-
-                <div class="controls">
-                    <button id="stop-synth" class="stop action">Stop</button>
-                    <button id="play-synth" class="play action">Play</button>
-                </div>
-
-<div id="debug" style="
-position:fixed;
-bottom:10px;
-left:10px;
-background:#000a;
-padding:10px;
-font-size:12px;
-text-align:left;
-border-radius:8px;
-">
-Audio: <span id="audioState">?</span><br>
-Playing: <span id="playState">?</span><br>
-WS: <span id="wsState">?</span><br>
-Roll: <span id="rollVal">?</span><br>
-Last Msg: <span id="msgAge">?</span> ms
+<div class="slider-group">
+    <div class="slider">
+        <label for="volume-synth">Volume</label>
+        <input type="range" min="0" max="1" step="0.01" value="1" id="volume-synth" />
+        <div class="slider-value">1</div>
+    </div>
+    <div class="slider">
+        <label for="low-pass-filter-frequency">Frequency</label>
+        <input type="range" min="10" max="22050" step="1" value="400" id="low-pass-filter-frequency" />
+        <div class="slider-value">400</div>
+    </div>
+    <div class="slider">
+        <label for="low-pass-filter-peak">Peak</label>
+        <input type="range" min="0.0001" max="20" step="0.0001" value="10" id="low-pass-filter-peak" />
+        <div class="slider-value">10</div>
+    </div>
 </div>
 
-<div id="log" style="
-position:fixed;
-top:10px;
-right:10px;
-width:220px;
-max-height:200px;
-overflow:auto;
-background:#000c;
-color:#0f0;
-font-size:11px;
-padding:8px;
-border-radius:8px;
-text-align:left;
-font-family:monospace;
-"></div>
+<div class="controls">
+    <button id="stop-synth" class="stop action">Stop</button>
+    <button id="play-synth" class="play action">Play</button>
+</div>
+
+<div id="debug" style="position:fixed; bottom:10px; left:10px; background:#000a; padding:10px; font-size:12px; text-align:left; border-radius:8px;">
+    Audio: <span id="audioState">?</span><br>
+    Playing: <span id="playState">?</span><br>
+    WS: <span id="wsState">?</span><br>
+    Roll: <span id="rollVal">?</span><br>
+    Last Msg: <span id="msgAge">?</span> ms
+</div>
+
+<div id="log" style="position:fixed; top:10px; right:10px; width:220px; max-height:200px; overflow:auto; background:#000c; color:#0f0; font-size:11px; padding:8px; border-radius:8px; text-align:left; font-family:monospace;"></div>
 
 <script>
-
 function log(msg) {
     const el = document.getElementById("log");
     const line = document.createElement("div");
@@ -85,145 +59,78 @@ function log(msg) {
 }
 
 var lowPassFilter = new Pizzicato.Effects.LowPassFilter({
-	frequency: 400,
-	peak: 10
+    frequency: 400,
+    peak: 10
 });
 
-
-
-
-	var synth = new Pizzicato.Sound({ 
-	source: 'file', 
-	options: { 
-		path: './slengteng-loop.wav', 
-		loop: true 
-	}
-}, function() { 
-	log("Sound loaded");
-	synth.addEffect(lowPassFilter); 
+var synth = new Pizzicato.Sound({
+    source: 'file',
+    options: {
+        path: './slengteng-loop.wav',
+        loop: true
+    }
+}, function() {
+    log("Sound loaded");
+    synth.addEffect(lowPassFilter);
 });
-
-
 
 var segments = [
-	
-	{
-		audio: synth,
-		playButton: document.getElementById('play-synth'),
-		stopButton: document.getElementById('stop-synth'),
-		volumeSlider: document.getElementById('volume-synth'),
-		effects: [
-			{
-				instance: lowPassFilter,
-				parameters: {
-					frequency: document.getElementById('low-pass-filter-frequency'),
-					peak: document.getElementById('low-pass-filter-peak')
-				}
-			}
-		]
-	},
-	
-	
-
-]
+    {
+        audio: synth,
+        playButton: document.getElementById('play-synth'),
+        stopButton: document.getElementById('stop-synth'),
+        volumeSlider: document.getElementById('volume-synth'),
+        effects: [
+            {
+                instance: lowPassFilter,
+                parameters: {
+                    frequency: document.getElementById('low-pass-filter-frequency'),
+                    peak: document.getElementById('low-pass-filter-peak')
+                }
+            }
+        ]
+    }
+];
 
 for (var i = 0; i < segments.length; i++) {
-	(function(segment) {
+    (function(segment) {
+        segment.audio.on('play', function() { segment.playButton.classList.add('pause'); });
+        segment.audio.on('stop', function() { segment.playButton.classList.remove('pause'); });
+        segment.audio.on('pause', function() { segment.playButton.classList.remove('pause'); });
 
-		segment.audio.on('play', function() {
-			segment.playButton.classList.add('pause');
-		});
+        segment.playButton.addEventListener('click', function(e) {
+            if (Pizzicato.context.state !== "running") {
+                Pizzicato.context.resume().then(function() { log("AudioContext resumed"); }).catch(function(err) { log("Resume error"); });
+            }
+            segment.audio.play();
+        });
 
-		segment.audio.on('stop', function() {
-			segment.playButton.classList.remove('pause');
-		});
+        segment.stopButton.addEventListener('click', function(e) { segment.audio.stop(); });
 
-		segment.audio.on('pause', function() {
-			segment.playButton.classList.remove('pause');
-		});
+        segment.volumeSlider.addEventListener('input', function(e) {
+            var volumeDisplay = segment.volumeSlider.parentNode.getElementsByClassName('slider-value')[0];
+            volumeDisplay.innerHTML = segment.audio.volume = e.target.valueAsNumber;
+        });
 
-		segment.playButton.addEventListener('click',   function(e){
+        if (!segment.effects || !segment.effects.length) return;
 
-		
-			if (Pizzicato.context.state !== "running") {
-        		 Pizzicato.context.resume().then(function() {
-		            log("AudioContext resumed");
-		        }).catch(function(err) {
-		            log("Resume error");
-		        });
-
-    		}
-				segment.audio.play();
-		});
-
-		segment.stopButton.addEventListener('click', function(e) {
-			segment.audio.stop();
-		});
-
-		segment.volumeSlider.addEventListener('input', function(e) {
-			var volumeDisplay = segment.volumeSlider.parentNode.getElementsByClassName('slider-value')[0];
-			volumeDisplay.innerHTML = segment.audio.volume = e.target.valueAsNumber;
-		});
-
-		if (segment.releaseSlider) {
-			segment.releaseSlider.addEventListener('input', function(e) {
-				var releaseDisplay = segment.releaseSlider.parentNode.getElementsByClassName('slider-value')[0];
-				releaseDisplay.innerHTML = segment.audio.release = e.target.valueAsNumber;
-			});
-		}
-
-		if (segment.attackSlider) {
-			segment.attackSlider.addEventListener('input', function(e) {
-				var attackDisplay = segment.attackSlider.parentNode.getElementsByClassName('slider-value')[0];
-				attackDisplay.innerHTML = segment.audio.attack = e.target.valueAsNumber;
-			});
-		}
-
-		if (!segment.effects || !segment.effects.length)
-			return;
-
-		for (var i = 0; i < segment.effects.length; i++) {
-			var effect = segment.effects[i];
-
-			for (var key in effect.parameters) {
-				(function(key, slider, instance){
-
-					var display = slider.parentNode.getElementsByClassName('slider-value')[0];
-
-					slider.addEventListener('input', function(e) {
-						display.innerHTML = instance[key] = e.target.valueAsNumber;
-					});
-
-				})(key, effect.parameters[key], effect.instance);	
-			}
-		}
-
-	})(segments[i]);
-} 
+        for (var j = 0; j < segment.effects.length; j++) {
+            var effect = segment.effects[j];
+            for (var key in effect.parameters) {
+                (function(key, slider, instance){
+                    var display = slider.parentNode.getElementsByClassName('slider-value')[0];
+                    slider.addEventListener('input', function(e) {
+                        display.innerHTML = instance[key] = e.target.valueAsNumber;
+                    });
+                })(key, effect.parameters[key], effect.instance);
+            }
+        }
+    })(segments[i]);
+}
 
 let smoothed = 400;
 
 const ws = new WebSocket("wss://recoil-d002.onrender.com/ws?room=engine&role=client");
-
-
-ws.onmessage = function(event) {
-    const roll = parseFloat(event.data);
-    if (isNaN(roll)) return;
-
-    const clamped = Math.max(-30, Math.min(30, roll));
-    const normalized = (clamped + 30) / 60;
-    const target = 200 + normalized * 3800;
-
-    // Low-pass smoothing
-    smoothed = smoothed * 0.9 + target * 0.1;
-
-    lowPassFilter.frequency = smoothed;
-    console.log(roll);
-};
-
-ws.onopen = () => console.log("WS connected");
-ws.onclose = () => console.log("WS disconnected");
-
 
 const audioStateEl = document.getElementById("audioState");
 const playStateEl = document.getElementById("playState");
@@ -233,36 +140,47 @@ const msgAgeEl = document.getElementById("msgAge");
 
 let lastMsgTime = 0;
 
+// Single WebSocket handler for both frequency and debug
+ws.onmessage = function(event) {
+    lastMsgTime = performance.now();
+
+    const roll = parseFloat(event.data);
+    if (isNaN(roll)) return;
+
+    // Update debug display
+    rollValEl.innerText = roll.toFixed(2);
+
+    // Clamp and normalize roll for frequency mapping
+    const clamped = Math.max(-30, Math.min(30, roll));
+    const normalized = (clamped + 30) / 60;
+    const target = 200 + normalized * 3800;
+
+    // Low-pass smoothing
+    smoothed = smoothed * 0.9 + target * 0.1;
+
+    // Update Pizzicato filter
+    lowPassFilter.frequency = smoothed;
+
+    console.log("Roll:", roll, " -> Frequency:", smoothed.toFixed(2));
+};
+
+ws.onopen = () => wsStateEl.innerText = "CONNECTED";
+ws.onclose = () => wsStateEl.innerText = "DISCONNECTED";
+ws.onerror = () => wsStateEl.innerText = "ERROR";
+
 // Track AudioContext state
-setInterval(() => {
-    audioStateEl.innerText = Pizzicato.context.state;
-}, 500);
+setInterval(() => { audioStateEl.innerText = Pizzicato.context.state; }, 500);
 
 // Track play state
 synth.on('play', () => playStateEl.innerText = "YES");
 synth.on('pause', () => playStateEl.innerText = "NO");
 synth.on('stop', () => playStateEl.innerText = "NO");
 
-// WebSocket status
-ws.onopen = () => wsStateEl.innerText = "CONNECTED";
-ws.onclose = () => wsStateEl.innerText = "DISCONNECTED";
-ws.onerror = () => wsStateEl.innerText = "ERROR";
-
-// Message tracking
-ws.onmessage = function(event) {
-    lastMsgTime = performance.now();
-
-    const roll = parseFloat(event.data);
-    rollValEl.innerText = roll.toFixed(2);
-
-    // your filter logic here
-};
-
+// Message age
 setInterval(() => {
     if (!lastMsgTime) return;
     msgAgeEl.innerText = Math.round(performance.now() - lastMsgTime);
 }, 200);
-
 </script>
 </body>
 </html>
