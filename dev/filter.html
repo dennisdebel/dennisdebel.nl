@@ -37,8 +37,8 @@ label { font-weight:400; margin-left:6px; }
                 </div>
 
                 <div class="controls">
-                    <button id="stop-synth" class="stop action"></button>
-                    <button id="play-synth" class="play action"></button>
+                    <button id="stop-synth" class="stop action">Stop</button>
+                    <button id="play-synth" class="play action">Play</button>
                 </div>
 
 
@@ -151,6 +151,29 @@ for (var i = 0; i < segments.length; i++) {
 
 	})(segments[i]);
 } 
+
+let smoothed = 400;
+
+const ws = new WebSocket("wss://recoil-d002.onrender.com/ws?room=engine&role=client");
+
+
+ws.onmessage = function(event) {
+    const roll = parseFloat(event.data);
+    if (isNaN(roll)) return;
+
+    const clamped = Math.max(-30, Math.min(30, roll));
+    const normalized = (clamped + 30) / 60;
+    const target = 200 + normalized * 3800;
+
+    // Low-pass smoothing
+    smoothed = smoothed * 0.9 + target * 0.1;
+
+    lowPassFilter.frequency = smoothed;
+};
+
+ws.onopen = () => console.log("WS connected");
+ws.onclose = () => console.log("WS disconnected");
+
 </script>
 </body>
 </html>
