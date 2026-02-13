@@ -169,6 +169,7 @@ ws.onmessage = function(event) {
     smoothed = smoothed * 0.9 + target * 0.1;
 
     lowPassFilter.frequency = smoothed;
+    console.log(roll);
 };
 
 ws.onopen = () => console.log("WS connected");
