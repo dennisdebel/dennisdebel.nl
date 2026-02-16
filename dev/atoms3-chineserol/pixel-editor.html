@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>AtomS3 Sprite Studio</title>
+<style>
+body { background:#111; color:white; font-family:sans-serif; }
+canvas { border:1px solid white; image-rendering: pixelated; cursor: crosshair; }
+button, select { margin:4px; }
+pre { max-height:300px; overflow:auto; background:#000; padding:10px; }
+</style>
+</head>
+<body>
+
+<h2>AtomS3 Sprite Studio</h2>
+
+<canvas id="grid"></canvas>
+<br>
+
+<button onclick="clearFrame()">Clear</button>
+<button onclick="addFrame()">Add Frame</button>
+<button onclick="prevFrame()">Prev</button>
+<button onclick="nextFrame()">Next</button>
+<button onclick="togglePlay()">Play</button>
+
+<select id="modeSelect">
+  <option value="bw">1-bit</option>
+  <option value="gray">Grayscale</option>
+</select>
+
+<input type="file" id="imgLoader">
+<button onclick="exportPacked()">Export Packed PROGMEM</button>
+
+<br>
+<pre id="output"></pre>
+
+<script>
+const width = 128;
+const height = 128;
+const scale = 4;
+
+let mode = "bw";
+let playing = false;
+let frameIndex = 0;
+
+let frames = [new Uint8Array(width * height)];
+let currentFrame = 0;
+
+const canvas = document.getElementById("grid");
+canvas.width = width * scale;
+canvas.height = height * scale;
+const ctx = canvas.getContext("2d");
+
+document.getElementById("modeSelect").onchange = e=>{
+  mode = e.target.value;
+};
+
+canvas.addEventListener("click", e=>{
+  const rect = canvas.getBoundingClientRect();
+  const x = Math.floor((e.clientX - rect.left)/scale);
+  const y = Math.floor((e.clientY - rect.top)/scale);
+  const idx = y*width + x;
+
+  if(mode==="bw"){
+    frames[currentFrame][idx] ^= 1;
+  } else {
+    frames[currentFrame][idx] = (frames[currentFrame][idx]+64)%256;
+  }
+  draw();
+});
+
+function draw(){
+  ctx.fillStyle="black";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  // Onion skin
+  if(frames.length>1){
+    let prev = (currentFrame-1+frames.length)%frames.length;
+    ctx.globalAlpha = 0.2;
+    drawFrame(frames[prev]);
+    ctx.globalAlpha = 1.0;
+  }
+
+  drawFrame(frames[currentFrame]);
+}
+
+function drawFrame(frame){
+  for(let y=0;y<height;y++){
+    for(let x=0;x<width;x++){
+      let v = frame[y*width+x];
+      if(mode==="bw"){
+        if(v){
+          ctx.fillStyle="white";
+          ctx.fillRect(x*scale,y*scale,scale,scale);
+        }
+      } else {
+        ctx.fillStyle=`rgb(${v},${v},${v})`;
+        ctx.fillRect(x*scale,y*scale,scale,scale);
+      }
+    }
+  }
+}
+
+function clearFrame(){
+  frames[currentFrame].fill(0);
+  draw();
+}
+
+function addFrame(){
+  frames.push(new Uint8Array(width*height));
+  currentFrame = frames.length-1;
+  draw();
+}
+
+function prevFrame(){
+  currentFrame = (currentFrame-1+frames.length)%frames.length;
+  draw();
+}
+
+function nextFrame(){
+  currentFrame = (currentFrame+1)%frames.length;
+  draw();
+}
+
+function togglePlay(){
+  playing = !playing;
+  if(playing) animate();
+}
+
+function animate(){
+  if(!playing) return;
+  currentFrame = (currentFrame+1)%frames.length;
+  draw();
+  setTimeout(animate, 100);
+}
+
+function exportPacked(){
+  let output="";
+
+  frames.forEach((frame,f)=>{
+    output += `const uint8_t frame${f}[] PROGMEM = {\n`;
+    for(let y=0;y<height;y++){
+      for(let x=0;x<width;x+=8){
+        let byte=0;
+        for(let b=0;b<8;b++){
+          let val = frame[y*width + x + b];
+          if(mode==="gray") val = val>127?1:0;
+          byte |= (val?1:0)<<(7-b);
+        }
+        output += "0x"+byte.toString(16).padStart(2,"0")+", ";
+      }
+      output+="\n";
+    }
+    output+="};\n\n";
+  });
+
+  document.getElementById("output").textContent = output;
+}
+
+// Image import with dithering
+document.getElementById("imgLoader").addEventListener("change", function(e){
+  const reader = new FileReader();
+  reader.onload = function(event){
+    const img = new Image();
+    img.onload = function(){
+      const temp = document.createElement("canvas");
+      temp.width=width;
+      temp.height=height;
+      const tctx=temp.getContext("2d");
+      tctx.drawImage(img,0,0,width,height);
+      let imgData = tctx.getImageData(0,0,width,height);
+      let data = imgData.data;
+
+      for(let y=0;y<height;y++){
+        for(let x=0;x<width;x++){
+          let i = (y*width+x)*4;
+          let gray = 0.299*data[i]+0.587*data[i+1]+0.114*data[i+2];
+
+          if(mode==="bw"){
+            let newVal = gray>127?255:0;
+            let err = gray-newVal;
+            frames[currentFrame][y*width+x]=newVal?1:0;
+
+            distributeError(data,x,y,err);
+          } else {
+            frames[currentFrame][y*width+x]=gray;
+          }
+        }
+      }
+      draw();
+    };
+    img.src=event.target.result;
+  };
+  reader.readAsDataURL(e.target.files[0]);
+});
+
+function distributeError(data,x,y,err){
+  function add(px,py,f){
+    if(px>=0&&px<width&&py>=0&&py<height){
+      let idx=(py*width+px)*4;
+      data[idx]+=err*f;
+      data[idx+1]+=err*f;
+      data[idx+2]+=err*f;
+    }
+  }
+  add(x+1,y,7/16);
+  add(x-1,y+1,3/16);
+  add(x,y+1,5/16);
+  add(x+1,y+1,1/16);
+}
+
+draw();
+</script>
+</body>
+</html>
