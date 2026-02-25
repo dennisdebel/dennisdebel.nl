@@ -156,7 +156,7 @@ ws.onmessage = function(event) {
     const target = 200 + normalized * 3800;
 
     // Low-pass smoothing
-    smoothed = smoothed * 0.9 + target * 0.1;
+    smoothed = smoothed * 0.6 + target * 0.4;
 
     // Update Pizzicato filter
     lowPassFilter.frequency = smoothed;
