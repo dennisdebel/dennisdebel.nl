@@ -150,7 +150,7 @@ ws.onmessage = function(event) {
     // Update debug display
     rollValEl.innerText = roll.toFixed(2);
 
-    // Clamp and normalize roll for frequency mapping
+    // Clamp and normalize roll for frequency mapping 
     const clamped = Math.max(-30, Math.min(30, roll));
     const normalized = (clamped + 30) / 60;
     const target = 200 + normalized * 3800;
