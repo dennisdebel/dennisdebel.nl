@@ -2,7 +2,7 @@ Pana Wave Laboratory (PWL) is a pseudo scientific tool to make electromagnetic w
 
 Box contains 1x M3 screwdriver, 1x M1.5 Hex key, 1x Assembled Pana Wave Laboratory, 1x Manual. 9V Battery not included. <br><br>
 
-Download the manual <a href="./pwl-manual.pdf" target="_blank">here</a><br><br><br><br>
+Download the manual <a href="/projects/2025-Pana_Wave_Laboratory/pwl-manual.pdf" target="_blank">here</a><br><br><br><br>
 
 <b>Features</b> <br><br>
 
