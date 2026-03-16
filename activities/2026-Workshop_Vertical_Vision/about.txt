@@ -1,1 +1,49 @@
-T.B.A
+The Workshop Vertical Vision: How Satellites Sense the Earth offers a comprehensive hands-on guide to receiving, processing and interpreting real-time weather satellite images.
+<br><br>
+Weather satellites convert the planet into continuous streams of data. From low Earth orbit, clouds, oceans, ice, land, and atmosphere are sensed through electromagnetic signals and rendered as images that shape how weather, climate, navigation, and risk are understood. These processes, however, are usually encountered only through interfaces and infrastructures that present satellite images as neutral, objective, and self-evident.
+<br><br>
+Vertical Vision is a hands-on workshop that invites participants to engage directly with weather satellites orbiting the Earth. Rather than treating satellite images as transparent representations, the workshop approaches them as practices and processes: signals intercepted, decoded, rendered, and interpreted by a largely invisible low-Earth-orbit stack of technologies, standards, and spatial regimes.
+<br><br>
+By building and tuning antennas, tracking satellites in real time and decoding live data streams, participants will learn how satellite images come into being and how their meanings are shaped by interference, computation and atmospheric conditions. In doing so, the workshop opens satellite sensing to critical, creative, and physical engagement. Weather satellites serve as an entry point to reflect on vertical perspectives that have historically shaped navigation, orientation, and the governance of space and knowledge, while emphasizing that technologies are not monolithic and can be repurposed and reused.
+<br><br>
+Weather is a global phenomenon: it does not recognize borders, sovereignty, or airspace. By working directly with raw satellite data, participants are invited to question how satellite images acquire authority, how environmental data becomes knowledge and how infrastructures of sensing can be critically, creatively, and non-hegemonically engaged during the workshop and beyond.
+<br><br>
+Participants will gain practical experience with:<br>
+
+• Radio fundamentals, propagation and the electromagnetic spectrum<br>
+
+• Constructing, tuning, and measuring antennas<br>
+
+• Software-defined radio (SDR) basics<br>
+
+• Satellite orbits, tracking, and timing<br>
+
+• Principles of remote sensing and weather imaging<br>
+
+• Receiving and decoding satellite signals using open-source software<br>
+
+• Interpreting satellite images as data, representations, and cultural artifacts<br><br>
+
+This workshop was co-hosted by Fotografiska Shanghai in the context of their Space exhibition.
+
+一份关于接收实时卫星图像的综合指南<br><br>
+
+气象卫星将整个星球转化为持续不断的数据流。从近地轨道出发，云层、海洋、冰层、陆地与大气通过电磁信号被感知，并被转译为图像，塑造了我们对天气、气候、导航与风险的理解。然而，这些过程通常只通过各类界面与基础设施被接触到，而这些系统往往将卫星图像呈现为中立、客观且不言自明的结果。<br><br>
+
+“垂直视角”是一场实践型工作坊，邀请参与者直接与环绕地球运行的气象卫星发生互动。工作坊并不将卫星图像视为透明的再现，而是将其理解为一系列实践与过程：信号被截获、被解码、被渲染，并在一整套高度不可见的近地轨道技术堆栈、标准体系与空间规制中被阐释。
+<br><br>
+通过搭建与调试天线、实时追踪卫星并解码实时数据流，参与者将学习卫星图像是如何生成的，以及它们的意义如何由信号干扰、计算过程与大气条件共同塑造。在这一过程中，工作坊为卫星感知打开了批判性、创造性与身体性的参与路径；以气象卫星作为切入点，引导我们反思垂直视角在历史上如何塑造导航、定向以及空间与知识的治理，同时强调技术并非单一整体，而是可以被重新用途与再利用的。<br><br>
+
+气象传真（简称 WeFax）是一种通过高频无线电传输的地面服务，使用普通的无线电接收设备即可较为容易地接收。这里展示的是一份来自日本东京的气象报告，图像左侧可见用于校准的测试数据。<br><br>
+
+天气是一种跨越了国界、主权或空域的全球性现象。通过直接处理原始卫星数据，参与者被邀请去质疑卫星图像如何获得权威性，环境数据如何转化为知识，以及如何在工作坊期间及之后，以批判性、创造性和非霸权的方式参与到感知基础设施中。<br><br>
+
+参与者将获得以下方面的实践经验<br><br>
+
+• 无线电基础、信号传播与电磁频谱<br>
+• 天线的制作、调试与测量<br>
+• 软件无线电（SDR）的基础知识<br>
+• 卫星轨道、追踪与时间同步<br>
+• 遥感与气象成像的基本原理<br>
+• 使用开源软件接收并解码卫星信号<br>
+• 将卫星图像理解为数据、再现形式与文化产物<br>
