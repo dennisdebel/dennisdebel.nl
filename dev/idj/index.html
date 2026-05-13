@@ -183,13 +183,15 @@ function startMotion() {
 
         // AUDIO SPEED
         targetRate =
-            1 + (smoothedAlpha * 0.02);
+            1 + (smoothedAlpha * 0.2);
 
         // clamp
-        targetRate = Math.max(
-            0.5,
-            Math.min(2.0, targetRate)
-        );
+        targetRate =
+            1 + (
+                Math.sign(smoothedAlpha) *
+                Math.pow(Math.abs(smoothedAlpha), 1.5) *
+                0.1
+            );
 
     });
 
