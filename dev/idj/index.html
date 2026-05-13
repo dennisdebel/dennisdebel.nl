@@ -1,95 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Phone Spin Mirror</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spin DJ</title>
 
 <style>
     html, body {
         margin: 0;
-        padding: 0;
         width: 100%;
         height: 100%;
         overflow: hidden;
-        background: #111;
+        background: white;
+        color: black;
+        font-family: sans-serif;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-family: sans-serif;
-        touch-action: none;
     }
 
-    #container {
+    #ui {
         text-align: center;
-        color: white;
     }
 
-    #spinner {
-        width: 220px;
-        height: 220px;
-        object-fit: contain;
-        user-select: none;
-        pointer-events: none;
-        transition: transform 0.02s linear;
+    #disc {
+        width: 260px;
+        height: 260px;
+        border-radius: 50%;
+        object-fit: cover;
+        box-shadow: 0 0 40px rgba(255,255,255,0.15);
+        margin-bottom: 20px;
     }
 
-    #info {
-        margin-top: 20px;
-        opacity: 0.7;
-        font-size: 14px;
-    }
-
-    button {
-        margin-top: 20px;
-        padding: 12px 20px;
+    button, input {
+        margin-top: 10px;
         font-size: 16px;
-        border: none;
-        border-radius: 10px;
-        background: white;
-        cursor: pointer;
+    }
+
+    #stats {
+        margin-top: 20px;
+        opacity: 0.8;
+        line-height: 1.5;
     }
 </style>
 </head>
-
 <body>
 
-<div id="container">
-    <!-- Replace with your own image -->
-    <img id="spinner" src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Shaki_waterfall.jpg">
+<div id="ui">
 
-    <div id="info">
-        Lay phone flat on table and spin it.
+    <img id="disc"
+        src="./record.webp">
+
+    <br>
+
+    <input type="file" id="fileInput" accept="audio/*">
+
+    <br>
+
+    <button id="startBtn">Enable Motion + Play</button>
+
+    <div id="stats">
+        speed: 1.00x<br>
+        spin velocity: 0
     </div>
 
-    <button id="startBtn">Enable Motion</button>
 </div>
 
 <script>
-const spinner = document.getElementById("spinner");
+
+const disc = document.getElementById("disc");
 const startBtn = document.getElementById("startBtn");
+const fileInput = document.getElementById("fileInput");
+const stats = document.getElementById("stats");
 
-let rotation = 0;
-let velocity = 0;
+let audio = new Audio();
+audio.loop = true;
 
-// smoothing
-const damping = 0.98;
+let discRotation = 0;
+let discVelocity = 0;
 
-// main animation loop
-function animate() {
-    rotation += velocity;
-    velocity *= damping;
+let playbackRate = 1.0;
 
-    spinner.style.transform = `rotate(${rotation}deg)`;
+let smoothedAlpha = 0;
 
-    requestAnimationFrame(animate);
-}
+const maxRate = 1.5;
+const minRate = 0.5;
 
-animate();
+fileInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (file) {
+        audio.src = URL.createObjectURL(file);
+    }
+});
 
-// motion permission for iPhone
 startBtn.addEventListener("click", async () => {
 
+    // iPhone permission
     if (
         typeof DeviceMotionEvent !== "undefined" &&
         typeof DeviceMotionEvent.requestPermission === "function"
@@ -103,11 +109,15 @@ startBtn.addEventListener("click", async () => {
             }
         } catch (e) {
             console.error(e);
-            return;
         }
     }
 
     startMotion();
+
+    if (audio.src) {
+        audio.play();
+    }
+
     startBtn.style.display = "none";
 });
 
@@ -115,17 +125,55 @@ function startMotion() {
 
     window.addEventListener("devicemotion", (event) => {
 
-        // rotationRate.alpha = spinning around vertical axis
-        // perfect for phone spinning flat on table
-        const alpha = event.rotationRate?.alpha || 0;
+        let alpha = event.rotationRate?.alpha || 0;
 
-        // add motion to spin velocity
-        velocity += alpha * 0.02;
+        // smooth sensor
+        smoothedAlpha = smoothedAlpha * 0.8 + alpha * 0.2;
 
-        // clamp excessive speed
-        velocity = Math.max(Math.min(velocity, 50), -50);
+        // visual spinning
+        discVelocity += smoothedAlpha * 0.03;
+
+        // clamp visual speed
+        discVelocity = Math.max(Math.min(discVelocity, 60), -60);
+
+        // AUDIO CONTROL
+        //
+        // clockwise -> faster
+        // counterclockwise -> slower
+
+        // convert spin speed into playback %
+        let targetRate = 1 + (smoothedAlpha * 0.003);
+
+        // clamp
+        targetRate = Math.max(minRate, Math.min(maxRate, targetRate));
+
+        // smooth audio rate
+        playbackRate += (targetRate - playbackRate) * 0.2;
+
+        audio.playbackRate = playbackRate;
+
     });
 }
+
+function animate() {
+
+    discRotation += discVelocity;
+
+    // friction
+    discVelocity *= 0.985;
+
+    disc.style.transform = `rotate(${discRotation}deg)`;
+
+    stats.innerHTML = `
+        speed: ${playbackRate.toFixed(2)}x<br>
+        spin velocity: ${discVelocity.toFixed(1)}
+    `;
+
+    requestAnimationFrame(animate);
+}
+
+animate();
+
 </script>
 
 </body>
