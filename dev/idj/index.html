@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Phone Spin Mirror</title>
+
+<style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #111;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: sans-serif;
+        touch-action: none;
+    }
+
+    #container {
+        text-align: center;
+        color: white;
+    }
+
+    #spinner {
+        width: 220px;
+        height: 220px;
+        object-fit: contain;
+        user-select: none;
+        pointer-events: none;
+        transition: transform 0.02s linear;
+    }
+
+    #info {
+        margin-top: 20px;
+        opacity: 0.7;
+        font-size: 14px;
+    }
+
+    button {
+        margin-top: 20px;
+        padding: 12px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 10px;
+        background: white;
+        cursor: pointer;
+    }
+</style>
+</head>
+
+<body>
+
+<div id="container">
+    <!-- Replace with your own image -->
+    <img id="spinner" src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Shaki_waterfall.jpg">
+
+    <div id="info">
+        Lay phone flat on table and spin it.
+    </div>
+
+    <button id="startBtn">Enable Motion</button>
+</div>
+
+<script>
+const spinner = document.getElementById("spinner");
+const startBtn = document.getElementById("startBtn");
+
+let rotation = 0;
+let velocity = 0;
+
+// smoothing
+const damping = 0.98;
+
+// main animation loop
+function animate() {
+    rotation += velocity;
+    velocity *= damping;
+
+    spinner.style.transform = `rotate(${rotation}deg)`;
+
+    requestAnimationFrame(animate);
+}
+
+animate();
+
+// motion permission for iPhone
+startBtn.addEventListener("click", async () => {
+
+    if (
+        typeof DeviceMotionEvent !== "undefined" &&
+        typeof DeviceMotionEvent.requestPermission === "function"
+    ) {
+        try {
+            const permission = await DeviceMotionEvent.requestPermission();
+
+            if (permission !== "granted") {
+                alert("Motion permission denied");
+                return;
+            }
+        } catch (e) {
+            console.error(e);
+            return;
+        }
+    }
+
+    startMotion();
+    startBtn.style.display = "none";
+});
+
+function startMotion() {
+
+    window.addEventListener("devicemotion", (event) => {
+
+        // rotationRate.alpha = spinning around vertical axis
+        // perfect for phone spinning flat on table
+        const alpha = event.rotationRate?.alpha || 0;
+
+        // add motion to spin velocity
+        velocity += alpha * 0.02;
+
+        // clamp excessive speed
+        velocity = Math.max(Math.min(velocity, 50), -50);
+    });
+}
+</script>
+
+</body>
+</html>
