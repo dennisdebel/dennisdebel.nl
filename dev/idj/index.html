@@ -72,38 +72,41 @@ const startBtn = document.getElementById("startBtn");
 const fileInput = document.getElementById("fileInput");
 const stats = document.getElementById("stats");
 
-// AUDIO
-const audio = new Audio();
+// WEB AUDIO
+let audioContext;
+let sourceNode;
+let audioBuffer;
 
-audio.loop = true;
-audio.preload = "auto";
-audio.playsInline = true;
-
-let audioStarted = false;
-
-// DISC VISUALS
+// DISC
 let discRotation = 0;
 let discVelocity = 0;
-
-// AUDIO SPEED
-let playbackRate = 1.0;
-let targetRate = 1.0;
 
 // SENSOR
 let smoothedAlpha = 0;
 
-// LOAD FILE
-fileInput.addEventListener("change", (e) => {
+// PLAYBACK
+let playbackRate = 1.0;
+let targetRate = 1.0;
+
+// FILE LOAD
+fileInput.addEventListener("change", async (e) => {
 
     const file = e.target.files[0];
 
     if (!file) return;
 
-    audio.src = URL.createObjectURL(file);
+    const arrayBuffer = await file.arrayBuffer();
 
-    audio.load();
+    if (!audioContext) {
+        audioContext =
+            new (window.AudioContext ||
+             window.webkitAudioContext)();
+    }
 
-    console.log("loaded:", file.name);
+    audioBuffer =
+        await audioContext.decodeAudioData(arrayBuffer);
+
+    console.log("audio loaded");
 });
 
 // START
@@ -114,7 +117,6 @@ startBtn.addEventListener("click", async () => {
         typeof DeviceMotionEvent !== "undefined" &&
         typeof DeviceMotionEvent.requestPermission === "function"
     ) {
-
         try {
 
             const permission =
@@ -130,35 +132,32 @@ startBtn.addEventListener("click", async () => {
         }
     }
 
-    if (!audio.src) {
+    if (!audioBuffer) {
         alert("Load audio first");
         return;
     }
 
-    try {
+    // resume audio context
+    await audioContext.resume();
 
-        await audio.play();
+    // CREATE SOURCE
+    sourceNode =
+        audioContext.createBufferSource();
 
-        audioStarted = true;
+    sourceNode.buffer = audioBuffer;
 
-        console.log("audio playing");
+    sourceNode.loop = true;
 
-    } catch (e) {
+    sourceNode.playbackRate.value = 1.0;
 
-        console.error(e);
+    sourceNode.connect(audioContext.destination);
 
-        alert("Playback failed");
+    sourceNode.start();
 
-        return;
-    }
-
-    // IMPORTANT:
-    // delay motion start slightly
-    setTimeout(() => {
-        startMotion();
-    }, 1000);
+    startMotion();
 
     startBtn.style.display = "none";
+
 });
 
 // MOTION
@@ -166,60 +165,46 @@ function startMotion() {
 
     window.addEventListener("devicemotion", (event) => {
 
-        let alpha = event.rotationRate?.alpha || 0;
+        let alpha =
+            event.rotationRate?.alpha || 0;
 
-        // smooth
+        // smooth sensor
         smoothedAlpha =
             smoothedAlpha * 0.9 +
             alpha * 0.1;
 
         // VISUAL DISC
-        discVelocity += smoothedAlpha * 0.02;
+        discVelocity += smoothedAlpha * 0.03;
 
         discVelocity = Math.max(
-            Math.min(discVelocity, 40),
-            -40
+            Math.min(discVelocity, 50),
+            -50
         );
 
-        // AUDIO TARGET RATE
-        //
-        // keep VERY subtle for Safari
-
+        // AUDIO SPEED
         targetRate =
-            1 + (smoothedAlpha * 0.001);
+            1 + (smoothedAlpha * 0.002);
 
+        // clamp
         targetRate = Math.max(
-            0.92,
-            Math.min(1.08, targetRate)
+            0.8,
+            Math.min(1.2, targetRate)
         );
 
     });
 
 }
 
-// SAFARI-SAFE UPDATE LOOP
+// AUDIO UPDATE LOOP
 function updateAudio() {
 
-    if (audioStarted) {
+    if (sourceNode) {
 
-        // slow interpolation
         playbackRate +=
-            (targetRate - playbackRate) * 0.05;
+            (targetRate - playbackRate) * 0.08;
 
-        // only update if meaningful
-        if (
-            Math.abs(audio.playbackRate - playbackRate) > 0.002
-        ) {
-            audio.playbackRate = playbackRate;
-        }
-
-        // KEEP ALIVE HACK
-        //
-        // Safari sometimes pauses silently
-
-        if (audio.paused) {
-            audio.play().catch(() => {});
-        }
+        sourceNode.playbackRate.value =
+            playbackRate;
 
     }
 
