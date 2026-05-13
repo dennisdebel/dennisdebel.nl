@@ -183,12 +183,12 @@ function startMotion() {
 
         // AUDIO SPEED
         targetRate =
-            1 + (smoothedAlpha * 0.002);
+            1 + (smoothedAlpha * 0.02);
 
         // clamp
         targetRate = Math.max(
-            0.8,
-            Math.min(1.2, targetRate)
+            0.5,
+            Math.min(2.0, targetRate)
         );
 
     });
@@ -225,7 +225,9 @@ function animate() {
 
     stats.innerHTML = `
         speed: ${playbackRate.toFixed(3)}x<br>
-        spin: ${discVelocity.toFixed(1)}
+        spin: ${discVelocity.toFixed(1)}x<br>
+        alpha: ${smoothedAlpha.toFixed(2)}<br>
+        speed: ${playbackRate.toFixed(2)}x
     `;
 
     requestAnimationFrame(animate);
