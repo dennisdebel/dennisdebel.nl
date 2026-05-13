@@ -73,52 +73,40 @@ const fileInput = document.getElementById("fileInput");
 const stats = document.getElementById("stats");
 
 // AUDIO
-let audio = new Audio();
+const audio = new Audio();
 
 audio.loop = true;
 audio.preload = "auto";
 audio.playsInline = true;
 
-// VISUAL DISC
+let audioStarted = false;
+
+// DISC VISUALS
 let discRotation = 0;
 let discVelocity = 0;
 
 // AUDIO SPEED
 let playbackRate = 1.0;
+let targetRate = 1.0;
 
-// SENSOR SMOOTHING
+// SENSOR
 let smoothedAlpha = 0;
 
-// SPEED LIMITS
-const maxRate = 1.2;
-const minRate = 0.8;
-
-// LOAD AUDIO FILE
+// LOAD FILE
 fileInput.addEventListener("change", (e) => {
 
     const file = e.target.files[0];
 
     if (!file) return;
 
-    console.log("loading:", file.name);
-
-    const url = URL.createObjectURL(file);
-
-    audio.src = url;
+    audio.src = URL.createObjectURL(file);
 
     audio.load();
 
-    audio.oncanplaythrough = () => {
-        console.log("audio ready");
-    };
-
-    audio.onerror = (err) => {
-        console.error("audio error", err);
-        alert("Could not load audio file");
-    };
+    console.log("loaded:", file.name);
 });
 
-// START BUTTON
+// START
 startBtn.addEventListener("click", async () => {
 
     // iPhone motion permission
@@ -126,6 +114,7 @@ startBtn.addEventListener("click", async () => {
         typeof DeviceMotionEvent !== "undefined" &&
         typeof DeviceMotionEvent.requestPermission === "function"
     ) {
+
         try {
 
             const permission =
@@ -141,94 +130,117 @@ startBtn.addEventListener("click", async () => {
         }
     }
 
-    // make sure audio exists
     if (!audio.src) {
-        alert("Please load an audio file first");
+        alert("Load audio first");
         return;
     }
 
     try {
 
-        // IMPORTANT:
-        // must happen directly in user gesture
-
         await audio.play();
 
-        console.log("audio started");
+        audioStarted = true;
+
+        console.log("audio playing");
 
     } catch (e) {
 
-        console.error("play failed:", e);
+        console.error(e);
 
-        alert("Audio playback failed");
+        alert("Playback failed");
 
         return;
     }
 
-    startMotion();
+    // IMPORTANT:
+    // delay motion start slightly
+    setTimeout(() => {
+        startMotion();
+    }, 1000);
 
     startBtn.style.display = "none";
 });
 
-// MOTION CONTROL
+// MOTION
 function startMotion() {
 
     window.addEventListener("devicemotion", (event) => {
 
-        // spinning around vertical axis
         let alpha = event.rotationRate?.alpha || 0;
 
-        // smooth sensor
+        // smooth
         smoothedAlpha =
-            smoothedAlpha * 0.8 +
-            alpha * 0.2;
+            smoothedAlpha * 0.9 +
+            alpha * 0.1;
 
-        // VISUAL DISC ROTATION
-        discVelocity += smoothedAlpha * 0.03;
+        // VISUAL DISC
+        discVelocity += smoothedAlpha * 0.02;
 
-        // clamp visual speed
         discVelocity = Math.max(
-            Math.min(discVelocity, 60),
-            -60
+            Math.min(discVelocity, 40),
+            -40
         );
 
-        // AUDIO SPEED CONTROL
+        // AUDIO TARGET RATE
         //
-        // clockwise -> faster
-        // counterclockwise -> slower
+        // keep VERY subtle for Safari
 
-        let targetRate =
-            1 + (smoothedAlpha * 0.002);
+        targetRate =
+            1 + (smoothedAlpha * 0.001);
 
-        // clamp speed
         targetRate = Math.max(
-            minRate,
-            Math.min(maxRate, targetRate)
+            0.92,
+            Math.min(1.08, targetRate)
         );
-
-        // smooth playback changes
-        playbackRate +=
-            (targetRate - playbackRate) * 0.15;
-
-        audio.playbackRate = playbackRate;
 
     });
+
 }
 
-// ANIMATION LOOP
+// SAFARI-SAFE UPDATE LOOP
+function updateAudio() {
+
+    if (audioStarted) {
+
+        // slow interpolation
+        playbackRate +=
+            (targetRate - playbackRate) * 0.05;
+
+        // only update if meaningful
+        if (
+            Math.abs(audio.playbackRate - playbackRate) > 0.002
+        ) {
+            audio.playbackRate = playbackRate;
+        }
+
+        // KEEP ALIVE HACK
+        //
+        // Safari sometimes pauses silently
+
+        if (audio.paused) {
+            audio.play().catch(() => {});
+        }
+
+    }
+
+    requestAnimationFrame(updateAudio);
+}
+
+updateAudio();
+
+// VISUAL LOOP
 function animate() {
 
     discRotation += discVelocity;
 
-    // friction
     discVelocity *= 0.985;
 
     disc.style.transform =
         `rotate(${discRotation}deg)`;
 
     stats.innerHTML = `
-        speed: ${playbackRate.toFixed(2)}x<br>
-        spin velocity: ${discVelocity.toFixed(1)}
+        speed: ${playbackRate.toFixed(3)}x<br>
+        spin: ${discVelocity.toFixed(1)}
     `;
 
     requestAnimationFrame(animate);
