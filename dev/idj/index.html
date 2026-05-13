@@ -67,94 +67,155 @@
 </div>
 
 <script>
-
 const disc = document.getElementById("disc");
 const startBtn = document.getElementById("startBtn");
 const fileInput = document.getElementById("fileInput");
 const stats = document.getElementById("stats");
 
+// AUDIO
 let audio = new Audio();
-audio.loop = true;
 
+audio.loop = true;
+audio.preload = "auto";
+audio.playsInline = true;
+
+// VISUAL DISC
 let discRotation = 0;
 let discVelocity = 0;
 
+// AUDIO SPEED
 let playbackRate = 1.0;
 
+// SENSOR SMOOTHING
 let smoothedAlpha = 0;
 
-const maxRate = 1.5;
-const minRate = 0.5;
+// SPEED LIMITS
+const maxRate = 1.2;
+const minRate = 0.8;
 
+// LOAD AUDIO FILE
 fileInput.addEventListener("change", (e) => {
+
     const file = e.target.files[0];
-    if (file) {
-        audio.src = URL.createObjectURL(file);
-    }
+
+    if (!file) return;
+
+    console.log("loading:", file.name);
+
+    const url = URL.createObjectURL(file);
+
+    audio.src = url;
+
+    audio.load();
+
+    audio.oncanplaythrough = () => {
+        console.log("audio ready");
+    };
+
+    audio.onerror = (err) => {
+        console.error("audio error", err);
+        alert("Could not load audio file");
+    };
 });
 
+// START BUTTON
 startBtn.addEventListener("click", async () => {
 
-    // iPhone permission
+    // iPhone motion permission
     if (
         typeof DeviceMotionEvent !== "undefined" &&
         typeof DeviceMotionEvent.requestPermission === "function"
     ) {
         try {
-            const permission = await DeviceMotionEvent.requestPermission();
+
+            const permission =
+                await DeviceMotionEvent.requestPermission();
 
             if (permission !== "granted") {
                 alert("Motion permission denied");
                 return;
             }
+
         } catch (e) {
             console.error(e);
         }
     }
 
-    startMotion();
-
-    if (audio.src) {
-        audio.play();
+    // make sure audio exists
+    if (!audio.src) {
+        alert("Please load an audio file first");
+        return;
     }
+
+    try {
+
+        // IMPORTANT:
+        // must happen directly in user gesture
+
+        await audio.play();
+
+        console.log("audio started");
+
+    } catch (e) {
+
+        console.error("play failed:", e);
+
+        alert("Audio playback failed");
+
+        return;
+    }
+
+    startMotion();
 
     startBtn.style.display = "none";
 });
 
+// MOTION CONTROL
 function startMotion() {
 
     window.addEventListener("devicemotion", (event) => {
 
+        // spinning around vertical axis
         let alpha = event.rotationRate?.alpha || 0;
 
         // smooth sensor
-        smoothedAlpha = smoothedAlpha * 0.8 + alpha * 0.2;
+        smoothedAlpha =
+            smoothedAlpha * 0.8 +
+            alpha * 0.2;
 
-        // visual spinning
+        // VISUAL DISC ROTATION
         discVelocity += smoothedAlpha * 0.03;
 
         // clamp visual speed
-        discVelocity = Math.max(Math.min(discVelocity, 60), -60);
+        discVelocity = Math.max(
+            Math.min(discVelocity, 60),
+            -60
+        );
 
-        // AUDIO CONTROL
+        // AUDIO SPEED CONTROL
         //
         // clockwise -> faster
         // counterclockwise -> slower
 
-        // convert spin speed into playback %
-        let targetRate = 1 + (smoothedAlpha * 0.003);
+        let targetRate =
+            1 + (smoothedAlpha * 0.002);
 
-        // clamp
-        targetRate = Math.max(minRate, Math.min(maxRate, targetRate));
+        // clamp speed
+        targetRate = Math.max(
+            minRate,
+            Math.min(maxRate, targetRate)
+        );
 
-        // smooth audio rate
-        playbackRate += (targetRate - playbackRate) * 0.2;
+        // smooth playback changes
+        playbackRate +=
+            (targetRate - playbackRate) * 0.15;
 
         audio.playbackRate = playbackRate;
 
     });
 }
 
+// ANIMATION LOOP
 function animate() {
 
     discRotation += discVelocity;
@@ -162,7 +223,8 @@ function animate() {
     // friction
     discVelocity *= 0.985;
 
-    disc.style.transform = `rotate(${discRotation}deg)`;
+    disc.style.transform =
+        `rotate(${discRotation}deg)`;
 
     stats.innerHTML = `
         speed: ${playbackRate.toFixed(2)}x<br>
