@@ -238,6 +238,15 @@ L.esri.Vector.vectorBasemapLayer(basemapEnum, { //add nice 'Streets' version to 
                             <img src='images/factory10.jpg' style='width:40%;'>")
                 .bindTooltip("Shanghai Radio Factory No. 10");
 
+        var item11 = L.circleMarker([31.213143, 121.427448],{weight:2,radius:20,fillColor: "#a83246", fillOpacity: 1}).setStyle({color: '#f7f6d8'}).addTo(map)
+                .bindPopup("<b>Shanghai Radio Factory No. 11</b><br><br> \
+                            <b>Description: </b> Address unfindable, but among the embassies and other colonial structures emerges a vast red brick factory complex now a xiaohongshu / influencer shopping area.<br> \
+                            <b>Address (en): </b>No. 174 Wuyi Road<a href='http://maps.apple.com/?daddr=31.23604, 121.55627'> Directions</a> (Apple maps)<br> \
+                            <b>Address (cn): </b><a href='https://maps.baidu.com/search/%E4%B8%8A%E6%B5%B7%E5%B8%82%E6%B5%A6%E4%B8%9C%E6%96%B0%E5%8C%BA%E6%9D%A8%E9%AB%98%E4%B8%AD%E8%B7%AF1900%E5%8F%B7/@13532897.125,3641527,19z?querytype=s&da_src=shareurl&wd=%E4%B8%8A%E6%B5%B7%E5%B8%82%E6%B5%A6%E4%B8%9C%E6%96%B0%E5%8C%BA%E6%9D%A8%E9%AB%98%E4%B8%AD%E8%B7%AF1900%E5%8F%B7&c=289&src=0&pn=0&sug=0&l=14&b=(13526319.274461443,3638055.158463892;13538809.204388006,3645857.85626071)&from=webmap&biz_forward=%7B%22scaler%22:2,%22styles%22:%22pl%22%7D&device_ratio=2'>上海市浦东新区杨高中路1900号</a><br> \
+                            <b>Reference</b>: <a href='http://www.studyofnet.com/717614483.html'>link</a><br><br> \
+                            <img src='images/factory11.jpg' style='width:40%;'>")
+                .bindTooltip("Shanghai Radio Factory No. 11");
+
         var item12 = L.circleMarker([31.23617, 121.48539],{weight:2,radius:20,fillColor: "#a83246", fillOpacity: 1}).setStyle({color: '#f7f6d8'}).addTo(map)
                 .bindPopup("<b>Shanghai Radio Factory No. 12</b><br><br> \
                             <b>Description: </b>Demolished. Could not find address, but only numbers 59,60 and 43. 60 is an empty lot as pictured. This is the location indicated by baidu maps as being number 50 as well. The lot sits right behind the Shanghai Telecom Museum. <br> \
