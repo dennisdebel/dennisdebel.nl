@@ -9,18 +9,18 @@ Language:English
 In the early 1970s, University of Hawai’i ffaced an unusual problem. Its campuses were spread across several islands, yet students and researchers needed access to a central computer located on Oʻahu. Given the distances involved, laying cables between the islands would have been extremely expensive and difficult to maintain. Instead, they developed a radio-based communication system that allowed computers on different islands to exchange data wirelessly using self-developed hardware and software. The resulting network, known as ALOHAnet, became the world's first operational wireless computer network.
 Beyond solving a technical issue, ALOHAnet inspired new ideas about how computers could communicate. These ideas would later influence Ethernet, Wi-Fi, and many other forms of networking, including mesh networks.
 <br><br>
-<b>What is a mesh network?</b>
+<b>What is a mesh network?</b><br>
 Nowadays, your laptop usually connects to a Wi-Fi network. The router then connects to an Internet Service Provider (ISP), which forwards your data to its destination.<br>
 A mesh network works differently. Instead of relying on a single place that routes your calls to their destination, each device in the network can communicate with nearby devices and help relay messages on behalf of others. Every participant becomes both a user of the network and part of its infrastructure.<br>
 Imagine a group of people forming a line. The two people at opposite ends cannot hear each other directly, but a message can be passed from person to person until it reaches its destination. Mesh networks operate in a similar way: information travels through multiple "hops" across the network, much like the Telephone Game.<br>
 <br>
-<br>Why a Mesh Network?</b>
+<b>Why a Mesh Network?</b><br>
 One of the main motivations behind mesh networking is resilience. In conventional networks, a failure at a central point can disconnect many users at once. In contrast, mesh networks are often described as self-healing. If one path becomes unavailable, messages may be able to find an alternative route through other devices.<br>
 This comes at a cost. Without a central controller coordinating traffic, devices must negotiate access to the communication channel. When many devices attempt to communicate simultaneously, congestion can occur. Like in the Telephone Game, if everyone speaks at once, nobody can understand one another.<br>
 These limitations mean mesh networks are not suitable for every application, but they do offer an alternative way of thinking about communication, cooperation, and infrastructure. Because devices cooperate to carry messages, a mesh network can potentially cover larger distances than any individual device could achieve alone. As more nodes join the network, it can expand and adapt without requiring a central coordinator or switchboard.
 <br><br>
 
-<b>What we will explore</b>
+<b>What we will explore</b><br>
 During the workshop we will explore various mesh networking technologies, implementations, and their limitations. Participants will gain hands-on experience with DIY hardware while constructing and experimenting with different network topologies.<br>
 While technical, we will be focussing on how issues such as latency, packet loss, bandwidth constraints and unreliable connectivity can inspire new perspectives on communication and infrastructure. As such, this workshop emphasizes artistic exploration over technical jargon.
 <br><br>
