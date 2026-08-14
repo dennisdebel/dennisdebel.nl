@@ -1,0 +1,77 @@
+<html>
+<meta charset="UTF-8">
+<head>
+	<style>
+	* {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+		    width: 100%;
+		    /* dvh (dynamic viewport height) handles the collapsing Safari address bar */
+		    height: 100dvh; 
+		    margin: 0;
+		    padding: 0;
+		    overflow: hidden;
+        }
+
+        body {
+            /* Set image as background */
+            background-image: url('bg.PNG');
+            background-position: center;
+            background-repeat: no-repeat;
+            
+            /* Cover fills the screen while keeping aspect ratio. 
+               Use "100% 100%" if you want it forced to exact viewport edges. */
+            background-size: cover; 
+            
+            /* Flex layout to help position SVG elements over the background if needed */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        svg{
+        	margin-top:-430px;
+        }
+	</style>
+	<script src="./JsBarcode.all.min.js"></script>
+
+</head>
+<body>
+
+	<svg id="code128"></svg>
+
+<body>
+<script>
+
+
+
+var repeat4 = function(){
+
+	var rand0 = Math.floor(Math.random() * (99 - 00 + 1)) + 00;
+	rand0 = rand0.toString().padStart(2.2, '0');
+
+	var rand1 = Math.floor(Math.random() * (9999 - 0000 + 1)) + 0000;
+	rand1 = rand1.toString().padStart(4, '0');
+
+	var rand2 = Math.floor(Math.random() * (9999 - 0000 + 1)) + 0000;
+	rand2 = rand2.toString().padStart(4, '0');
+
+	var rand3 = (Math.floor(Math.random() * (9999 - 0000 + 1)) + 0000);
+	rand3 = rand3.toString().padStart(4, '0');
+
+	JsBarcode("#code128", rand0 +" "+ rand1 +" "+ rand2 +" "+ rand3, {
+		width:2.2,
+  		height:140,
+  		displayValue: false
+  		});
+	};
+			
+	setInterval(repeat4,100);
+	repeat4();
+
+</script>
+</html>
