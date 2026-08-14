@@ -1,11 +1,12 @@
 <html>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <head>
 	<style>
-	* {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+		* {
+         margin: 0;
+         padding: 0;
+         box-sizing: border-box;
         }
 
         html, body {
@@ -34,7 +35,13 @@
             align-items: center;
         }
         svg{
-        	margin-top:-430px;
+        		/* Width scales relative to screen width, capped at max size */
+            width: 75vw;
+            max-width: 350px;
+            height: auto;
+
+            /* Use percentage or vh offset instead of hardcoded -430px */
+            margin-top: -30vh;
         }
 	</style>
 	<script src="./JsBarcode.all.min.js"></script>
