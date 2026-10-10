@@ -30,3 +30,35 @@ Download the manual <a href="/projects/2025-Pana_Wave_Laboratory/pwl-manual.pdf"
 - Distance to body changes the capacity and thus the frequency response and range of the receiver, try using your hand as if playing a Theremin.<br>
 - If your unit sounds like a 8 bit toy rocket falling from the sky, it is time to change the battery.<br>
 - Use the external antenna SMA pads as touch interface.<br>
+
+
+Pana Wave Laboratory (PWL) 是一款能将电磁波转化为可听声音的伪科学（实验性）工具。尽管外形小巧，但得益于定制的 JM666 芯片，它在频率范围和性价比方面均优于同类设计。PWL 不仅局限于探测厘米级的近距离信号，还能捕捉数米外的信号源。其默认配置下的带宽覆盖范围极广（至少涵盖 50Hz 至 7GHz），使用户能够收听从市电频率到手机 GSM 信号、WiFi 及 5G 信号等各种频段的信号。此外，板载的 SMA 焊盘支持连接外置天线。包装内含：M3 螺丝刀 1 把、M1.
+
+<br><br>
+(包装内含：M3 螺丝刀 1 把、M1.5 六角扳手 1 把、已组装好的 Pana Wave Laboratory 1 台、说明书 1 份。（不含 9V 电池）)
+<br><br>
+
+<b>主要特性</b><br>
+
+-扩展带宽：至少 50Hz 至 7GHz。可监测 GSM、Wi-Fi、蓝牙及 5G 信号；甚至能捕捉手机输入密码时的信号，也可尝试监测 HDMI、以太网等接口信号。<br>
+-对交流电（AC）和静电高度敏感（甚至能听到脚步声……即身体放电时的声音）。灵敏度是普通 EMF 探测器（如 Trouble Seeker、Electroslouch、Bitsniffer、Soma Ether）的 100 倍。<br>
+-探测范围是普通 EMF 探测器的 100 倍：支持近场和远场电磁（EM）检测（探测距离约 200 厘米，具体取决于信号源）。<br>
+-音量大！无需前置放大器。<br>
+-配备用于远场检测的全向天线。<br>
+-体积小巧，无需大型（环形）天线即可实现超长探测距离。<br>
+-多功能音量旋钮（集音量调节与滤波功能于一体）。<br>
+-能抑制音频频率信号（如扬声器线圈干扰），且相比其他探测器，麦克风效应（microphonics）更低。<br>
+-预留 SMA 焊盘，支持连接外置天线（通过跳线进行隔离）。<br>
+-您的身体也是电路中的一个有源元件，会影响设备的工作表现。更多详情请参阅下方的“温馨提示与使用技巧”部分。<br>
+
+<br>
+<b>温馨提示</b><br><br>
+
+-建议使用配备 3.5mm 立体声插头的优质耳机，推荐规格为 32 欧姆驱动单元及 1.5 米长的线缆。<br>
+-在 WiFi、GSM、4G 或 5G 网络下的传入信息到达设备之前，你就能听到相应的信号声。<br>
+-你可以听到手机屏幕（产生的电磁干扰）的声音。你自身就是天线的一部分；使用该探测器时，你的每一个动作都会产生可听见的反馈。<br>
+-不妨试着走动或触摸金属物体。<br>
+-这是一个极具实验性质的项目，欢迎尝试更换线圈、电容器和天线。尽管输出为单声道，你仍能听到左右声道中不同的信号特征。<br>
+-人体与设备的距离会改变电容值，进而影响接收器的频率响应和探测范围；试着像演奏特雷门琴（Theremin）那样用手在设备附近移动。<br>
+-如果设备发出的声音听起来像是一枚 8-bit 风格的玩具火箭正从空中坠落，那就该更换电池了。<br>
+-可以将外部天线的 SMA 焊盘用作触摸感应接口。<br>

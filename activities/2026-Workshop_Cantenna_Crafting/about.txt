@@ -1,0 +1,42 @@
+We use Wi-Fi every day, yet rarely think about its physical existence. How do invisible signals travel through walls, buildings, and urban spaces? Why can moving just a few steps change the quality of a connection? As wireless networks become an everyday service we take for granted, we seem to have lost touch with the material conditions that make them possible.<br><br>
+
+From a media archaeological perspective, rebuilding a seemingly outdated Wi-Fi antenna offers a way to rediscover the physical infrastructure behind our contemporary networks.
+
+<br><br>
+
+In the early 2000s, when Wi-Fi was far less widespread, people got creative, building their own antennas from tin cans and other everyday materials to extend their wireless range, sometimes even to “borrow” Wi-Fi from a neighbour or a shop down the road. One such invention was the Cantenna, a directional antenna made from a metal can that concentrates radio signals in a specific direction. These seemingly simple DIY devices were part of an inventive early internet culture, giving ordinary people the chance to experiment with and modify their own communication infrastructure.
+<br><br>
+
+Nowadays, almost everyone has 5G and Wi-Fi at home. If all you want is a stronger signal, buying a Wi-Fi extender is certainly easier. But what if you want to understand how wireless signals actually travel, how the shape and direction of an antenna affect their range, or even how to reach a friend hundreds of meters away?
+
+<br><br>
+
+What if a network could be more than a service we buy and use, but something we can build, experiment with, and play around with ourselves? With a simple directional antenna made from everyday materials, it may be possible to extend a wireless connection to 100–1000 meters, or even further under favourable conditions.
+
+<br><br>
+
+This workshop is the final session of CAC’s summer workshop series, Fragile Infrastructures, co-organized with GEA. This time, we’re heading into GEA’s workshop to turn tin cans and other everyday materials into playful, personalized Wi-Fi antennas. Then we’ll take them outside and put them to the test! Can we send a signal across a park, between buildings, or even reach a friend hundreds of meters away? How might the shape, direction, and surroundings of an antenna change the results?
+
+<br><br>
+
+Throughout the summer, we’ve been experimenting with ways to build our own small-scale networks beyond conventional internet infrastructure. We started by hosting websites on solar-powered servers, explored how devices can communicate through offline mesh networks, and brought our own little corner of the web into the park with WebRing. Now, for our final experiment, we’re taking things a little further. Literally!
+
+<br><br>
+
+Through this series of low-cost, hackable, and adaptable technological experiments, we hope to explore how to build autonomous, off-the-grid, and resilient networks, reflect on contemporary narratives surrounding energy-intensive cloud computing and artificial intelligence, and rethink the relationship between computation and its environmental and planetary conditions.
+
+<br><br>
+
+What we will explore:<br><br>
+
+-Learn the basics of Wi-Fi and antennas, exploring how wireless signals travel and how antennas affect their direction and range.<br>
+-Build their own unique Wi-Fi antennas using tin cans and other everyday materials.<br>
+-Learn how to use their homemade antennas to establish long-distance wireless connections.<br>
+-Take their antennas outside for a field test (weather permitting) and discover just how far their networks can reach!<br>
+
+<br><br>
+
+2026.9.29 TUE,  14:00-17:00<br>
+Language: Mainly in English<br>
+Capacity: Limited to 8 participants<br>
+Venue: GEA Station, Building 4, No. 876 Jiangsu Road, Changning District, Shanghai, China<br>
