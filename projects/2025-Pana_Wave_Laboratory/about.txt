@@ -30,7 +30,7 @@ Download the manual <a href="/projects/2025-Pana_Wave_Laboratory/pwl-manual.pdf"
 - Distance to body changes the capacity and thus the frequency response and range of the receiver, try using your hand as if playing a Theremin.<br>
 - If your unit sounds like a 8 bit toy rocket falling from the sky, it is time to change the battery.<br>
 - Use the external antenna SMA pads as touch interface.<br>
-
+<br><br><br><br>
 
 Pana Wave Laboratory (PWL) 是一款能将电磁波转化为可听声音的伪科学（实验性）工具。尽管外形小巧，但得益于定制的 JM666 芯片，它在频率范围和性价比方面均优于同类设计。PWL 不仅局限于探测厘米级的近距离信号，还能捕捉数米外的信号源。其默认配置下的带宽覆盖范围极广（至少涵盖 50Hz 至 7GHz），使用户能够收听从市电频率到手机 GSM 信号、WiFi 及 5G 信号等各种频段的信号。此外，板载的 SMA 焊盘支持连接外置天线。包装内含：M3 螺丝刀 1 把、M1.
 
