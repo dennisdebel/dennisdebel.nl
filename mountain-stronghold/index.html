@@ -1,0 +1,296 @@
+<!--
+
+	TODO
+
+		x parsing json in the graphs
+		x catch expections if no data is there for each chart etc
+		x navigation (load random json datacenter)
+		x make mobile friendly/ipad friendly
+		-legend english/chinese
+		x prettyfi layout
+		x prettyfi code
+		x the elevation graph is to wide causing it to overflow to a new line (made the div wider)
+
+
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=0.5" />
+<meta charset="UTF-8">
+<style>
+	html, body{
+    	height: 100%;
+	}
+	body{
+		background-color: black;
+		font-family: monospace;
+	}
+	div#container{
+		width: 100%;
+    	height: 100%;
+    	margin: 0 auto;
+    	text-align: center;
+	}
+	div#title{
+		position: relative;
+		width:530px;
+		height:130px;
+		color: white;
+		top: 0;
+		margin: 0 auto;
+		word-wrap: break-word;
+		white-space: pre-wrap;
+		word-break: break-word;
+		margin-bottom: 0px; //give some space at the bottom
+		float: left;
+	}
+	div#header{
+		margin: 0 auto; //center
+		position: relative;
+		width:530px;
+		height:30px;
+		color:white;
+	}
+	div#desc{
+		position: relative;
+		width:530px;
+		height:170px;
+		color: white;
+		top: 0;
+		margin: 0 auto;
+		word-wrap: break-word;
+		white-space: pre-wrap;
+		word-break: break-word;
+		//margin-bottom: 10px; //give some space at the bottom
+		float: left;
+	}
+	p#name{
+		font-size: 50pt;
+		font-family: Helvetica;
+		font-weight: 600;
+		float: left;
+		text-align: left
+	}
+	p#descSmall{
+		display: block;
+		text-align: left;
+		color:#ababab;
+	}
+	#descCont{
+		color:white;
+	}
+	div#map{
+		display: inline-block; //center
+		text-align: left; //center
+		width:530px;
+		height:450px;
+		padding: 0;
+		margin: 0 auto;
+		color: white;
+		width:100%;
+	}
+	div#elevation{
+		position: relative;
+		border:1px dashed white;
+		width:590px;
+		height:190px;
+		color: white;
+		top: 0;
+		margin: 0 auto;
+		word-wrap: break-word;
+		white-space: pre-wrap;
+		word-break: break-word;
+		margin-bottom: 40px; //give some space at the bottom
+	}
+	div#elevationLegend{
+		padding:10px;
+		margin: 0;
+		top:0;
+		position: absolute;
+		width: 95%;
+		text-align:left;
+		
+	}
+	div#elevation hr{
+		position: relative;
+		color: blue;
+		top: 75px;
+	}
+	div#chart {
+		position: relative;
+		border:1px dashed white;
+		width:590px;
+		height:400px;
+		color: white;
+		top: 0;
+		margin: 0 auto;
+		word-wrap: break-word;
+		white-space: pre-wrap;
+		word-break: break-word;
+		margin-bottom: 10px;
+		letter-spacing: 0.5em;
+	}
+	div#chartLegend{
+		padding:10px;
+		margin: 0;
+		top:0;
+		position: absolute;
+		width: 95%;
+		text-align:left;
+		
+	}
+	div#navi{
+		color:white;
+		cursor:pointer;
+		font-size: 20pt;
+		font-family: Helvetica;
+		font-weight: 600;
+	}
+	</style>
+	<script type="text/javascript" src="http://livejs.com/live.js"></script> <!-- live reload -->
+	<script type="text/javascript" src="database.json"></script> <!-- database -->
+	<title>Mountain Stronghold Datacenter Database</title>
+</head>
+
+<body>
+<div id="container">
+	<div id="header"></div>
+	<div id="title"></div>
+	<div id="map"></div>
+	<div id="desc"></div>
+	<div id="elevation">
+		<div id="elevationLegend">ELEVATION / 海拔</div>
+		<hr>
+	</div>
+
+	<div id="chart">
+		<div id="chartLegend"></div>
+	</div>
+
+	<div id="navi">
+		<p onmousedown="window.location.reload();">Next / 下页</p>
+	</div>
+</div>	
+</body>
+
+<script>
+	//load database
+	var numEntries = 63//define number of entries in the database
+ 	var data = JSON.parse(data);
+ 	var random = Math.floor(Math.random() * numEntries);  
+ 	
+ 	//header index number
+ 	document.getElementById('header').innerHTML += "<p style='float:left'>"+ random.toString().padStart(4, '0') +" of "+ numEntries.toString().padStart(4, '0')+"</p>";
+ 	//header location
+ 	document.getElementById('header').innerHTML += "<p style='float:right'>Location: "+ data[random].city+", "+data[random].country;+"</p>";
+ 
+
+ 	
+
+ 	console.log(data[random].latlong);
+ 	//world map
+ 	const latlong = data[random].latlong.split(",", 2); //split lat,long sting into seperate latitude and longitude
+
+
+	if (latlong.length < 2) { //check if array is set or not
+		document.getElementById('map').innerHTML += "<p style='padding:10px;'>no location data found / 未找到 </p>"; //message if no data is found
+		//var color="white"; // hack
+		//var lat = 10; //hack
+		//var lon = 10; //hack
+
+	} else {
+		var color="yellow";
+		var lat = parseFloat(latlong[0]); //parse latitude string as float
+		var lon = parseFloat(latlong[1]); //parse longitude string as float
+	}
+
+//description
+	document.getElementById('title').innerHTML += "<p id='name'>"+data[random].name+"</p>";
+ 	if(data[random].company){document.getElementById('desc').innerHTML += "<p id='descSmall'>COMPANY <span id='descCont'>"+data[random].company+"</span></p>";}
+ 	if(data[random].geology){ document.getElementById('desc').innerHTML += "<p id='descSmall'>GEOLOGY <span id='descCont'>"+data[random].geology+"</span></p>";}
+ 	if(data[random].former_use){ document.getElementById('desc').innerHTML += "<p id='descSmall'>FORMER USE <span id='descCont'>"+data[random].former_use+"</span></p>";}
+ 	if(data[random].pue){ document.getElementById('desc').innerHTML += "<p id='descSmall'>POWER EFFECTIVENESS (PUE) <span id='descCont'>"+data[random].pue+"</span></p>";}
+ 	if(data[random].features){ document.getElementById('desc').innerHTML += "<p id='descSmall'>FEATURES <span id='descCont'>"+data[random].features+"</span></p>";}
+	document.getElementById('desc').innerHTML += "<p id='descSmall'>LAT,LONG <span id='descCont'>"+ data[random].latlong+"</span></p>";
+
+	//elevation 
+	let text = "";
+	var x = 0; //datastorage
+
+	if (!data[random].elevation.length) { // elevation data is not found
+		var elevation = data[random].elevation;
+		document.getElementById('elevation').innerHTML += "<p style='padding:10px;'"+text+"</p>"; //drawing
+		document.getElementById('elevation').innerHTML += "<p style='padding:0px;color:blue;'>SEALEVEL / 海平面</p>"; //draw elevation
+		document.getElementById('elevationLegend').innerHTML += "<span style='float:right;'>NO DATA / 未找到</span>"; //draw elevation
+	} else {
+		var elevation = data[random].elevation;
+		for (let i = 0; i < 72; i++) {
+			x = Math.sin(i/-23) * elevation/10;
+  			text += "<span style='position:relative;top:"+x+"px'>_</span>";
+		} 
+		//draw graph
+		document.getElementById('elevation').innerHTML += "<p style='padding:10px;'"+text+"</p>"; //drawing
+		document.getElementById('elevation').innerHTML += "<p style='padding:0px;color:blue;'>SEALEVEL / 海平面</p>"; //draw elevation
+		document.getElementById('elevationLegend').innerHTML += "<span style='float:right;'>"+elevation+" m</span>"; //draw elevation
+	}
+
+	//PUE
+	if (!data[random].pue) { 
+		document.getElementById('chartLegend').innerHTML += "<span style='float:right;'>NO DATA / 未找到</span>"; //draw elevation
+
+
+	} else {
+		//draw pie chart
+		val = 1 - parseFloat(data[random].pue);
+		valInv = val*-1;
+		document.getElementById('chartLegend').innerHTML += "<span style='float:left;'>PUE</span>"; //draw PUE
+		document.getElementById('chartLegend').innerHTML += "<span style='float:right;'>"+data[random].pue+"</span>"; //draw PUE
+		document.getElementById('chart').innerHTML += "<p style='text-align:center;'>"+pieChart(valInv)+"</p>";
+	}
+
+
+
+
+
+
+
+
+
+
+
+	function pieChart(val) {
+		var v = [val-0.01, 0.0, 0.0, 1]; //values, with some offsets
+		var k = ["#", "#",  "#",  "."]; //ascii symbols to use
+		var r = 10; // radius of the chart
+		d=r*2;
+		M=Math;
+		R=M.round;
+		p=[];
+		for(y=0;y<d;y++){
+			p[y]=[];
+			for(x=0;x<d;x++)
+				p[y][x]=" "
+		}
+		t=0;
+		i=-1;
+		for(f=0;f<1;f+=1/(r*20))
+			{if(f>t)
+				t+=v[++i];
+				a=M.PI*2*f;
+				for(j=0;j<r;j++)
+					p[R(M.sin(a)*j)+r][R(M.cos(a)*j)+r]=k[i]}s="";
+				for(y=0;y<d;y++){	
+					for(x=0;x<d;x++)
+						s+=p[y][x];
+						s+="\n";
+				}
+		return s; //return chart 
+	}
+
+
+	//webpacked ascii worldmap via npm by Henry Seed
+		(()=>{"use strict";var t,e={173:(t,e,i)=>{function n(t,e,i){return e in t?Object.defineProperty(t,e,{value:i,enumerable:!0,configurable:!0,writable:!0}):t[e]=i,t}i.r(e),i.d(e,{MAX_LATITUDE:()=>y,WebMercatorViewport:()=>q,addMetersToLngLat:()=>S,altitudeToFovy:()=>O,default:()=>q,fitBounds:()=>E,flyToViewport:()=>R,fovyToAltitude:()=>D,getBounds:()=>C,getDistanceScales:()=>z,getFlyToDuration:()=>Y,getMeterZoom:()=>L,getProjectionMatrix:()=>Z,getProjectionParameters:()=>A,getViewMatrix:()=>T,lngLatToWorld:()=>N,normalizeViewportProps:()=>V,pixelsToWorld:()=>B,scaleToZoom:()=>F,worldToLngLat:()=>$,worldToPixels:()=>U,zoomToScale:()=>j});var a,r=1e-6,o="undefined"!=typeof Float32Array?Float32Array:Array;function s(t,e){const i=function(t,e,i){var n=e[0],a=e[1],r=e[2],o=e[3];return t[0]=i[0]*n+i[4]*a+i[8]*r+i[12]*o,t[1]=i[1]*n+i[5]*a+i[9]*r+i[13]*o,t[2]=i[2]*n+i[6]*a+i[10]*r+i[14]*o,t[3]=i[3]*n+i[7]*a+i[11]*r+i[15]*o,t}([],e,t);return function(t,e,i){t[0]=e[0]*i,t[1]=e[1]*i,t[2]=e[2]*i,t[3]=e[3]*i}(i,i,1/i[3]),i}function h(t,e){const i=t%e;return i<0?e+i:i}function u(t,e,i){return t<e?e:t>i?i:t}Math.random,Math.PI,Math.hypot||(Math.hypot=function(){for(var t=0,e=arguments.length;e--;)t+=arguments[e]*arguments[e];return Math.sqrt(t)}),a=new o(4),o!=Float32Array&&(a[0]=0,a[1]=0,a[2]=0,a[3]=0);const c=Math.log2||function(t){return Math.log(t)*Math.LOG2E};function l(t,e,i){var n=e[0],a=e[1],r=e[2],o=e[3],s=e[4],h=e[5],u=e[6],c=e[7],l=e[8],M=e[9],d=e[10],f=e[11],p=e[12],b=e[13],g=e[14],m=e[15],_=i[0],v=i[1],x=i[2],w=i[3];return t[0]=_*n+v*s+x*l+w*p,t[1]=_*a+v*h+x*M+w*b,t[2]=_*r+v*u+x*d+w*g,t[3]=_*o+v*c+x*f+w*m,_=i[4],v=i[5],x=i[6],w=i[7],t[4]=_*n+v*s+x*l+w*p,t[5]=_*a+v*h+x*M+w*b,t[6]=_*r+v*u+x*d+w*g,t[7]=_*o+v*c+x*f+w*m,_=i[8],v=i[9],x=i[10],w=i[11],t[8]=_*n+v*s+x*l+w*p,t[9]=_*a+v*h+x*M+w*b,t[10]=_*r+v*u+x*d+w*g,t[11]=_*o+v*c+x*f+w*m,_=i[12],v=i[13],x=i[14],w=i[15],t[12]=_*n+v*s+x*l+w*p,t[13]=_*a+v*h+x*M+w*b,t[14]=_*r+v*u+x*d+w*g,t[15]=_*o+v*c+x*f+w*m,t}function M(t,e,i){var n,a,r,o,s,h,u,c,l,M,d,f,p=i[0],b=i[1],g=i[2];return e===t?(t[12]=e[0]*p+e[4]*b+e[8]*g+e[12],t[13]=e[1]*p+e[5]*b+e[9]*g+e[13],t[14]=e[2]*p+e[6]*b+e[10]*g+e[14],t[15]=e[3]*p+e[7]*b+e[11]*g+e[15]):(n=e[0],a=e[1],r=e[2],o=e[3],s=e[4],h=e[5],u=e[6],c=e[7],l=e[8],M=e[9],d=e[10],f=e[11],t[0]=n,t[1]=a,t[2]=r,t[3]=o,t[4]=s,t[5]=h,t[6]=u,t[7]=c,t[8]=l,t[9]=M,t[10]=d,t[11]=f,t[12]=n*p+s*b+l*g+e[12],t[13]=a*p+h*b+M*g+e[13],t[14]=r*p+u*b+d*g+e[14],t[15]=o*p+c*b+f*g+e[15]),t}function d(t,e,i){var n=i[0],a=i[1],r=i[2];return t[0]=e[0]*n,t[1]=e[1]*n,t[2]=e[2]*n,t[3]=e[3]*n,t[4]=e[4]*a,t[5]=e[5]*a,t[6]=e[6]*a,t[7]=e[7]*a,t[8]=e[8]*r,t[9]=e[9]*r,t[10]=e[10]*r,t[11]=e[11]*r,t[12]=e[12],t[13]=e[13],t[14]=e[14],t[15]=e[15],t}function f(t,e){var i=t[0],n=t[1],a=t[2],o=t[3],s=t[4],h=t[5],u=t[6],c=t[7],l=t[8],M=t[9],d=t[10],f=t[11],p=t[12],b=t[13],g=t[14],m=t[15],_=e[0],v=e[1],x=e[2],w=e[3],y=e[4],P=e[5],j=e[6],F=e[7],N=e[8],$=e[9],L=e[10],z=e[11],S=e[12],T=e[13],A=e[14],Z=e[15];return Math.abs(i-_)<=r*Math.max(1,Math.abs(i),Math.abs(_))&&Math.abs(n-v)<=r*Math.max(1,Math.abs(n),Math.abs(v))&&Math.abs(a-x)<=r*Math.max(1,Math.abs(a),Math.abs(x))&&Math.abs(o-w)<=r*Math.max(1,Math.abs(o),Math.abs(w))&&Math.abs(s-y)<=r*Math.max(1,Math.abs(s),Math.abs(y))&&Math.abs(h-P)<=r*Math.max(1,Math.abs(h),Math.abs(P))&&Math.abs(u-j)<=r*Math.max(1,Math.abs(u),Math.abs(j))&&Math.abs(c-F)<=r*Math.max(1,Math.abs(c),Math.abs(F))&&Math.abs(l-N)<=r*Math.max(1,Math.abs(l),Math.abs(N))&&Math.abs(M-$)<=r*Math.max(1,Math.abs(M),Math.abs($))&&Math.abs(d-L)<=r*Math.max(1,Math.abs(d),Math.abs(L))&&Math.abs(f-z)<=r*Math.max(1,Math.abs(f),Math.abs(z))&&Math.abs(p-S)<=r*Math.max(1,Math.abs(p),Math.abs(S))&&Math.abs(b-T)<=r*Math.max(1,Math.abs(b),Math.abs(T))&&Math.abs(g-A)<=r*Math.max(1,Math.abs(g),Math.abs(A))&&Math.abs(m-Z)<=r*Math.max(1,Math.abs(m),Math.abs(Z))}function p(t,e,i){return t[0]=e[0]+i[0],t[1]=e[1]+i[1],t}function b(t,e,i,n){var a=e[0],r=e[1];return t[0]=a+n*(i[0]-a),t[1]=r+n*(i[1]-r),t}!function(){var t=new o(2);o!=Float32Array&&(t[0]=0,t[1]=0)}();function g(t,e){if(!t)throw new Error(e||"@math.gl/web-mercator: assertion failed.")}!function(){var t=new o(3);o!=Float32Array&&(t[0]=0,t[1]=0,t[2]=0)}();const m=Math.PI,_=m/4,v=m/180,x=180/m,w=512,y=85.051129,P=1.5;function j(t){return Math.pow(2,t)}function F(t){return c(t)}function N(t){const[e,i]=t;g(Number.isFinite(e)),g(Number.isFinite(i)&&i>=-90&&i<=90,"invalid latitude");const n=i*v;return[w*(e*v+m)/(2*m),w*(m+Math.log(Math.tan(_+.5*n)))/(2*m)]}function $(t){const[e,i]=t,n=e/w*(2*m)-m,a=2*(Math.atan(Math.exp(i/w*(2*m)-m))-_);return[n*x,a*x]}function L(t){const{latitude:e}=t;g(Number.isFinite(e));return F(4003e4*Math.cos(e*v))-9}function z(t){const{latitude:e,longitude:i,highPrecision:n=!1}=t;g(Number.isFinite(e)&&Number.isFinite(i));const a=Math.cos(e*v),r=512/360,o=r/a,s=12790407194604047e-21/a,h={unitsPerMeter:[s,s,s],metersPerUnit:[1/s,1/s,1/s],unitsPerDegree:[r,o,s],degreesPerUnit:[.703125,1/o,1/s]};if(n){const t=v*Math.tan(e*v)/a,i=r*t/2,n=12790407194604047e-21*t,u=n/o*s;h.unitsPerDegree2=[0,i,n],h.unitsPerMeter2=[u,0,u]}return h}function S(t,e){const[i,n,a]=t,[r,o,s]=e,{unitsPerMeter:h,unitsPerMeter2:u}=z({longitude:i,latitude:n,highPrecision:!0}),c=N(t);c[0]+=r*(h[0]+u[0]*o),c[1]+=o*(h[1]+u[1]*o);const l=$(c),M=(a||0)+(s||0);return Number.isFinite(a)||Number.isFinite(s)?[l[0],l[1],M]:l}function T(t){const{height:e,pitch:i,bearing:n,altitude:a,scale:r,center:o}=t,s=[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1];M(s,s,[0,0,-a]),function(t,e,i){var n=Math.sin(i),a=Math.cos(i),r=e[4],o=e[5],s=e[6],h=e[7],u=e[8],c=e[9],l=e[10],M=e[11];e!==t&&(t[0]=e[0],t[1]=e[1],t[2]=e[2],t[3]=e[3],t[12]=e[12],t[13]=e[13],t[14]=e[14],t[15]=e[15]),t[4]=r*a+u*n,t[5]=o*a+c*n,t[6]=s*a+l*n,t[7]=h*a+M*n,t[8]=u*a-r*n,t[9]=c*a-o*n,t[10]=l*a-s*n,t[11]=M*a-h*n}(s,s,-i*v),function(t,e,i){var n=Math.sin(i),a=Math.cos(i),r=e[0],o=e[1],s=e[2],h=e[3],u=e[4],c=e[5],l=e[6],M=e[7];e!==t&&(t[8]=e[8],t[9]=e[9],t[10]=e[10],t[11]=e[11],t[12]=e[12],t[13]=e[13],t[14]=e[14],t[15]=e[15]),t[0]=r*a+u*n,t[1]=o*a+c*n,t[2]=s*a+l*n,t[3]=h*a+M*n,t[4]=u*a-r*n,t[5]=c*a-o*n,t[6]=l*a-s*n,t[7]=M*a-h*n}(s,s,n*v);const h=r/e;return d(s,s,[h,h,h]),o&&M(s,s,function(t,e){return t[0]=-e[0],t[1]=-e[1],t[2]=-e[2],t}([],o)),s}function A(t){const{width:e,height:i,altitude:n,pitch:a=0,nearZMultiplier:r=1,farZMultiplier:o=1}=t;let{fovy:s=O(P)}=t;void 0!==n&&(s=O(n));const h=.5*s*v,u=D(s),c=a*v,l=Math.sin(h)*u/Math.sin(Math.min(Math.max(Math.PI/2-c-h,.01),Math.PI-.01));return{fov:2*h,aspect:e/i,focalDistance:u,near:r,far:(Math.sin(c)*l+u)*o}}function Z(t){const{fov:e,aspect:i,near:n,far:a}=A(t);return function(t,e,i,n,a){var r,o=1/Math.tan(e/2);return t[0]=o/i,t[1]=0,t[2]=0,t[3]=0,t[4]=0,t[5]=o,t[6]=0,t[7]=0,t[8]=0,t[9]=0,t[11]=-1,t[12]=0,t[13]=0,t[15]=0,null!=a&&a!==1/0?(r=1/(n-a),t[10]=(a+n)*r,t[14]=2*a*n*r):(t[10]=-1,t[14]=-2*n),t}([],e,i,n,a)}function O(t){return 2*Math.atan(.5/t)*x}function D(t){return.5/Math.tan(.5*t*v)}function U(t,e){const[i,n,a=0]=t;return g(Number.isFinite(i)&&Number.isFinite(n)&&Number.isFinite(a)),s(e,[i,n,a,1])}function B(t,e,i=0){const[n,a,r]=t;if(g(Number.isFinite(n)&&Number.isFinite(a),"invalid pixel coordinate"),Number.isFinite(r))return s(e,[n,a,r,1]);const o=s(e,[n,a,0,1]),h=s(e,[n,a,1,1]),u=o[2],c=h[2];return b([],o,h,u===c?0:((i||0)-u)/(c-u))}function E(t){const{width:e,height:i,bounds:n,minExtent:a=0,maxZoom:r=24,offset:o=[0,0]}=t,[[s,h],[l,M]]=n,d=function(t=0){return"number"==typeof t?{top:t,bottom:t,left:t,right:t}:(g(Number.isFinite(t.top)&&Number.isFinite(t.bottom)&&Number.isFinite(t.left)&&Number.isFinite(t.right)),t)}(t.padding),f=N([s,u(M,-y,y)]),p=N([l,u(h,-y,y)]),b=[Math.max(Math.abs(p[0]-f[0]),a),Math.max(Math.abs(p[1]-f[1]),a)],m=[e-d.left-d.right-2*Math.abs(o[0]),i-d.top-d.bottom-2*Math.abs(o[1])];g(m[0]>0&&m[1]>0);const _=m[0]/b[0],v=m[1]/b[1],x=(d.right-d.left)/2/_,w=(d.bottom-d.top)/2/v,P=$([(p[0]+f[0])/2+x,(p[1]+f[1])/2+w]),j=Math.min(r,c(Math.abs(Math.min(_,v))));return g(Number.isFinite(j)),{longitude:P[0],latitude:P[1],zoom:j}}const I=Math.PI/180;function C(t,e=0){const{width:i,height:n,unproject:a}=t,r={targetZ:e},o=a([0,n],r),s=a([i,n],r);let h,u;return(t.fovy?.5*t.fovy*I:Math.atan(.5/t.altitude))>(90-t.pitch)*I-.01?(h=H(t,0,e),u=H(t,i,e)):(h=a([0,0],r),u=a([i,0],r)),[o,s,u,h]}function H(t,e,i){const{pixelUnprojectionMatrix:n}=t,a=s(n,[e,0,1,1]),r=s(n,[e,t.height,1,1]),o=$(b([],a,r,(i*t.distanceScales.unitsPerMeter[2]-a[2])/(r[2]-a[2])));return o.push(i),o}class q{constructor(t={width:1,height:1}){n(this,"latitude",void 0),n(this,"longitude",void 0),n(this,"zoom",void 0),n(this,"pitch",void 0),n(this,"bearing",void 0),n(this,"altitude",void 0),n(this,"fovy",void 0),n(this,"meterOffset",void 0),n(this,"center",void 0),n(this,"width",void 0),n(this,"height",void 0),n(this,"scale",void 0),n(this,"distanceScales",void 0),n(this,"viewMatrix",void 0),n(this,"projectionMatrix",void 0),n(this,"viewProjectionMatrix",void 0),n(this,"pixelProjectionMatrix",void 0),n(this,"pixelUnprojectionMatrix",void 0),n(this,"equals",(t=>t instanceof q&&t.width===this.width&&t.height===this.height&&f(t.projectionMatrix,this.projectionMatrix)&&f(t.viewMatrix,this.viewMatrix))),n(this,"project",((t,e={})=>{const{topLeft:i=!0}=e,n=U(this.projectPosition(t),this.pixelProjectionMatrix),[a,r]=n,o=i?r:this.height-r;return 2===t.length?[a,o]:[a,o,n[2]]})),n(this,"unproject",((t,e={})=>{const{topLeft:i=!0,targetZ:n}=e,[a,r,o]=t,s=i?r:this.height-r,h=n&&n*this.distanceScales.unitsPerMeter[2],u=B([a,s,o],this.pixelUnprojectionMatrix,h),[c,l,M]=this.unprojectPosition(u);return Number.isFinite(o)?[c,l,M]:Number.isFinite(n)?[c,l,n]:[c,l]})),n(this,"projectPosition",(t=>{const[e,i]=N(t);return[e,i,(t[2]||0)*this.distanceScales.unitsPerMeter[2]]})),n(this,"unprojectPosition",(t=>{const[e,i]=$(t);return[e,i,(t[2]||0)*this.distanceScales.metersPerUnit[2]]}));let{width:e,height:i,altitude:a=null,fovy:r=null}=t;const{latitude:o=0,longitude:s=0,zoom:h=0,pitch:u=0,bearing:c=0,position:l=null,nearZMultiplier:M=.02,farZMultiplier:d=1.01}=t;e=e||1,i=i||1,null===r&&null===a?(a=P,r=O(a)):null===r?r=O(a):null===a&&(a=D(r));const p=j(h);a=Math.max(.75,a);const b=z({longitude:s,latitude:o}),g=N([s,o]);g.push(0),l&&function(t,e,i){t[0]=e[0]+i[0],t[1]=e[1]+i[1],t[2]=e[2]+i[2]}(g,g,function(t,e,i){return t[0]=e[0]*i[0],t[1]=e[1]*i[1],t[2]=e[2]*i[2],t}([],l,b.unitsPerMeter)),this.projectionMatrix=Z({width:e,height:i,pitch:u,fovy:r,nearZMultiplier:M,farZMultiplier:d}),this.viewMatrix=T({height:i,scale:p,center:g,pitch:u,bearing:c,altitude:a}),this.width=e,this.height=i,this.scale=p,this.latitude=o,this.longitude=s,this.zoom=h,this.pitch=u,this.bearing=c,this.altitude=a,this.fovy=r,this.center=g,this.meterOffset=l||[0,0,0],this.distanceScales=b,this._initMatrices(),Object.freeze(this)}_initMatrices(){const{width:t,height:e,projectionMatrix:i,viewMatrix:n}=this,a=[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1];l(a,a,i),l(a,a,n),this.viewProjectionMatrix=a;const r=[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1];d(r,r,[t/2,-e/2,1]),M(r,r,[1,-1,0]),l(r,r,a);const o=function(t,e){var i=e[0],n=e[1],a=e[2],r=e[3],o=e[4],s=e[5],h=e[6],u=e[7],c=e[8],l=e[9],M=e[10],d=e[11],f=e[12],p=e[13],b=e[14],g=e[15],m=i*s-n*o,_=i*h-a*o,v=i*u-r*o,x=n*h-a*s,w=n*u-r*s,y=a*u-r*h,P=c*p-l*f,j=c*b-M*f,F=c*g-d*f,N=l*b-M*p,$=l*g-d*p,L=M*g-d*b,z=m*L-_*$+v*N+x*F-w*j+y*P;return z?(z=1/z,t[0]=(s*L-h*$+u*N)*z,t[1]=(a*$-n*L-r*N)*z,t[2]=(p*y-b*w+g*x)*z,t[3]=(M*w-l*y-d*x)*z,t[4]=(h*F-o*L-u*j)*z,t[5]=(i*L-a*F+r*j)*z,t[6]=(b*v-f*y-g*_)*z,t[7]=(c*y-M*v+d*_)*z,t[8]=(o*$-s*F+u*P)*z,t[9]=(n*F-i*$-r*P)*z,t[10]=(f*w-p*v+g*m)*z,t[11]=(l*v-c*w-d*m)*z,t[12]=(s*j-o*N-h*P)*z,t[13]=(i*N-n*j+a*P)*z,t[14]=(p*_-f*x-b*m)*z,t[15]=(c*x-l*_+M*m)*z,t):null}([1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],r);if(!o)throw new Error("Pixel project matrix not invertible");this.pixelProjectionMatrix=r,this.pixelUnprojectionMatrix=o}projectFlat(t){return N(t)}unprojectFlat(t){return $(t)}getMapCenterByLngLatPosition({lngLat:t,pos:e}){const i=B(e,this.pixelUnprojectionMatrix),n=p([],N(t),function(t,e){return t[0]=-e[0],t[1]=-e[1],t}([],i));return $(p([],this.center,n))}fitBounds(t,e={}){const{width:i,height:n}=this,{longitude:a,latitude:r,zoom:o}=E(Object.assign({width:i,height:n,bounds:t},e));return new q({width:i,height:n,longitude:a,latitude:r,zoom:o})}getBounds(t){const e=this.getBoundingRegion(t),i=Math.min(...e.map((t=>t[0]))),n=Math.max(...e.map((t=>t[0])));return[[i,Math.min(...e.map((t=>t[1])))],[n,Math.max(...e.map((t=>t[1])))]]}getBoundingRegion(t={}){return C(this,t.z||0)}getLocationAtPoint({lngLat:t,pos:e}){return this.getMapCenterByLngLatPosition({lngLat:t,pos:e})}}function V(t){const{width:e,height:i,pitch:n=0}=t;let{longitude:a,latitude:r,zoom:o,bearing:s=0}=t;(a<-180||a>180)&&(a=h(a+180,360)-180),(s<-180||s>180)&&(s=h(s+180,360)-180);const u=c(i/512);if(o<=u)o=u,r=0;else{const t=i/2/Math.pow(2,o),e=$([0,t])[1];if(r<e)r=e;else{const e=$([0,512-t])[1];r>e&&(r=e)}}return{width:e,height:i,longitude:a,latitude:r,zoom:o,pitch:n,bearing:s}}const W=["longitude","latitude","zoom"],X={curve:1.414,speed:1.2};function R(t,e,i,n){const{startZoom:a,startCenterXY:r,uDelta:o,w0:s,u1:h,S:u,rho:c,rho2:l,r0:M}=k(t,e,n);if(h<.01){const n={};for(const a of W){const r=t[a],o=e[a];n[a]=(d=i)*o+(1-d)*r}return n}var d;const f=i*u,b=Math.cosh(M)/Math.cosh(M+c*f),g=s*((Math.cosh(M)*Math.tanh(M+c*f)-Math.sinh(M))/l)/h,m=a+F(1/b),_=function(t,e,i){return t[0]=e[0]*i,t[1]=e[1]*i,t}([],o,g);p(_,_,r);const v=$(_);return{longitude:v[0],latitude:v[1],zoom:m}}function Y(t,e,i){const n={...X,...i},{screenSpeed:a,speed:r,maxDuration:o}=n,{S:s,rho:h}=k(t,e,n),u=1e3*s;let c;return c=Number.isFinite(a)?u/(a/h):u/r,Number.isFinite(o)&&c>o?0:c}function k(t,e,i){const n=(i=Object.assign({},X,i)).curve,a=t.zoom,r=[t.longitude,t.latitude],o=j(a),s=e.zoom,h=[e.longitude,e.latitude],u=j(s-a),c=N(r),l=function(t,e,i){return t[0]=e[0]-i[0],t[1]=e[1]-i[1],t}([],N(h),c),M=Math.max(t.width,t.height),d=M/u,f=(w=(x=l)[0],y=x[1],Math.hypot(w,y)*o),p=Math.max(f,.01),b=n*n,g=(d*d-M*M+b*b*p*p)/(2*M*b*p),m=(d*d-M*M-b*b*p*p)/(2*d*b*p),_=Math.log(Math.sqrt(g*g+1)-g),v=Math.log(Math.sqrt(m*m+1)-m);var x,w,y;return{startZoom:a,startCenterXY:c,uDelta:l,w0:M,u1:f,S:(v-_)/n,rho:n,rho2:b,r0:_,r1:v}}},415:(t,e,i)=>{e.o=void 0;const n=i(173);e.o=function(t=[],e={},i){const a={margin:void 0!==e.margin?e.margin:0,border:void 0!==e.border&&e.border,padding:void 0!==e.padding?e.padding:0},r=new n.default({width:75,height:23,longitude:0,latitude:0,zoom:0}),o="          . _..::__:  ,-\"-\"._       |]       ,     _,.__                      \n  _.___ _ _<_>`!(._`.`-.    /        _._     `_ ,_/  '  '-._.---.-.__   \n.{     \" \" `-==,',._\\{  \\  / {) _   / _ \">_,-' `                 /-/_    \n\\_.:--.       `._ )`^-. \"'     / ( [_/(                       __,/-'       \n'\"'    \\        \"    _\\        -_,--'                  )     /. (|         \n       |           ,'         _)_.\\\\._<> {}              _,' /  '         \n       `.         /          [_/_'` `\"(                <'}  )            \n        \\\\    .-. )          /   `-'\"..' `:._          _)  '            \n `        \\  (  `(          /         `:\\  > \\  ,-^.  /' '             \n           `._,   \"\"        |           \\`'   \\|   ?_)  {\\             \n              `=.---.       `._._       ,'     \"`  |' ,- '.              \n                |    `-._        |     /          `:`<_|=--._             \n                (        >       .     | ,          `=.__.`-'\\             \n                 `.     /        |     |{|              ,-.,\\     .        \n                  |   ,'          \\   / `'            ,\"     \\            \n                  |  /             |_'                |  __  /                \n                  | |                                 '-'  `-'   \\.         \n                  |/                                        \"    /            \n                  \\.                                            '           \n                                                                             \n                   ,/           ______._.--._ _..---.---------.              \n__,-----\"-..?----_/ )\\    . ,-'\"             \"                  (__--/    \n                    /__/\\/                                               ".split("\n").map((t=>t.slice(0,70))),s=function(t){if(!t)return Array(25).fill(Array(80).fill(" ").slice(0));const{startHour:e,endHour:i,char:n,testHour:a}=t,r=[...Array(24).keys()].map((t=>t-11)),o=new Date,s=a||o.getUTCHours(),h=[];for(let a=0;a<75;a+=1){const o=(s+r[Math.floor(a/3)]+1+24)%24,u=a%3==0;o>=e&&o<i?h.push(n):t.showDateLine&&0===o&&u?h.push("|"):h.push(" ")}return Array(25).fill(h.slice(0))}(i),h=function(t,e,i,n){const{margin:a,border:r,padding:o}=e,s=" ".repeat(a),h="\n".repeat(Math.floor(a/2)),u=r?"|":"",c=r?"-":"",l=" ".repeat(o);let M="\n".repeat(Math.floor(o/2));r&&(M=`${s}${u}${" ".repeat(70+2*o)}${u}${s}\n`.repeat(Math.floor(o/2)));let d=h;r&&(d+=`${s}+${c.repeat(70+2*o)}+${s}\n`),d+=M;for(const[e,a]of Array.from(t.entries())){const t=[];for(const[r,o]of a.split("").entries())n||" "===o?t.push(i[e][r]):t.push(o);d+=`${s}${u}${l}${t.join("").replace(/\n/g,"")}${l}${u}${s}\n`}return d+=M,r&&(d+=`${s}+${c.repeat(70+2*o)}+${s}`),d+=h,d}(o,a,s,null==i?void 0:i.coverMap).split("\n"),u=t.map((t=>function(t,e){const i=e.project([t.lon,t.lat],{topLeft:!0}),n=(i[0]+219)/512,a=(i[1]+244)/510,[r,o]=[70,42],s=n*r-3,h=a*o-9;return{x:Math.floor(s),y:Math.floor(h),label:t.label?t.label:"#",icon:t.icon}}(t,r))),c=new Map(u.map((t=>[`${t.x}:${t.y}`,t.icon]))),{border:l,margin:M,padding:d}=a;let f=[];return h.forEach(((t,e)=>{const i=(l?1:0)+Math.floor(d/2)+Math.floor(M/2),n=(l?1:0)+d+M;let a="";Array.from(t).forEach(((t,r)=>{const o=`${r-n}:${e-i}`;c.get(o)?a+=c.get(o):a+=t})),f.push(a)})),f.join("\n")}}},i={};function n(t){var a=i[t];if(void 0!==a)return a.exports;var r=i[t]={exports:{}};return e[t](r,r.exports,n),r.exports}n.d=(t,e)=>{for(var i in e)n.o(e,i)&&!n.o(t,i)&&Object.defineProperty(t,i,{enumerable:!0,get:e[i]})},n.o=(t,e)=>Object.prototype.hasOwnProperty.call(t,e),n.r=t=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(t,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(t,"__esModule",{value:!0})},t=n(415),document.getElementById("map").innerHTML+="<pre>"+(0,t.o)([{label:"location",lon:lon,lat:lat,icon:"<span style='color:"+color+"'>#</span>"}],{border:!0,margin:0,padding:2})+"</pre>"})();
+	</script>
+</html>
